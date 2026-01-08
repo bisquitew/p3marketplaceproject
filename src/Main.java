@@ -26,8 +26,15 @@ public class Main {
                 break;
 
             case "demo":
-                System.out.println("Running in DEMO mode forcing demo data reload.");
+                System.out.println("Running in DEMO mode forcing demo data reload (in-memory only).");
                 loadDemoData(db, idGen);
+                break;
+
+            case "mysql":
+                System.out.println("Running in MYSQL mode: loading demo data into memory, then syncing to MySQL.");
+                loadDemoData(db, idGen);
+                DatabaseSyncService syncService = new DatabaseSyncService(db);
+                syncService.syncAllToMySQL();
                 break;
 
             case "default":
@@ -39,10 +46,10 @@ public class Main {
                 } catch (Exception e) {
                     System.out.println("No persisted users found or failed to load: " + e.getMessage());
                 }
+                if (db.getServices().isEmpty()) {
+                    loadDemoData(db, idGen);
+                }
                 break;
-        }
-        if (db.getServices().isEmpty()) {
-            loadDemoData(db, idGen);
         }
 
         Menu menu = new Menu(scanner, db, idGen, USERS_PATH);
