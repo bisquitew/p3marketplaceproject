@@ -1,28 +1,37 @@
 package app;
 
 import model.*;
-import model.enums.*;
+import model.enums.BookingStatus;
+import model.enums.UserRole;
 import model.exceptions.InvalidDataException;
-import repository.InMemoryDatabase;
+import repository.BookingDAO;
+import repository.ReviewDAO;
+import repository.ServiceDAO;
+import repository.UserDAO;
 import util.IdGenerator;
 
-import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
 public class Menu {
+
     private final Scanner scanner;
-    private final InMemoryDatabase db;
+    private final UserDAO userDAO;
+    private final ServiceDAO serviceDAO;
+    private final BookingDAO bookingDAO;
+    private final ReviewDAO reviewDAO;
     private final IdGenerator idGen;
-    private final String usersPath;
     private User currentUser;
 
-    public Menu(Scanner scanner, InMemoryDatabase db, IdGenerator idGen, String usersPath) {
+    public Menu(Scanner scanner) {
         this.scanner = scanner;
-        this.db = db;
-        this.idGen = idGen;
-        this.usersPath = usersPath;
+        this.userDAO = new UserDAO();
+        this.serviceDAO = new ServiceDAO();
+        this.bookingDAO = new BookingDAO();
+        this.reviewDAO = new ReviewDAO();
+        this.idGen = new IdGenerator(1000);
     }
 
     public void start() {
@@ -45,8 +54,9 @@ public class Menu {
             }
         }
     }
+
     private void showWelcomeMenu() {
-        System.out.println("\n Handyman Marketplace ");
+        System.out.println("\n=== Handyman Marketplace (MySQL) ===");
         System.out.println("1. Register");
         System.out.println("2. Login");
         System.out.println("3. List all services");
@@ -59,7 +69,7 @@ public class Menu {
             case 2 -> loginUser();
             case 3 -> listAllServicesPublic();
             case 4 -> {
-                persistUsers();
+                System.out.println("Goodbye!");
                 System.exit(0);
             }
             default -> System.out.println("Invalid choice.");
@@ -82,13 +92,14 @@ public class Menu {
             UserRole role = UserRole.valueOf(roleStr);
             User user = new User(idGen.nextId(), username, password, fullName, email, role);
             user.validate();
-            db.getUsers().put(user.getId(), user);
-            persistUsers();
+            userDAO.insert(user);
             System.out.println("Registered successfully!");
         } catch (IllegalArgumentException e) {
             System.out.println("Role must be CUSTOMER or HANDYMAN.");
         } catch (InvalidDataException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Validation error: " + e.getMessage());
+        } catch (SQLException e) {
+            System.out.println("Database error while registering: " + e.getMessage());
         }
     }
 
@@ -98,25 +109,31 @@ public class Menu {
         System.out.print("Password: ");
         String password = scanner.nextLine();
 
-        for (User user : db.getUsers().values()) {
-            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+        try {
+            User user = userDAO.findByUsernameAndPassword(username, password);
+            if (user != null) {
                 currentUser = user;
                 System.out.println("Welcome, " + user.getFullName() + " (" + user.getRole() + ")");
-                return;
+            } else {
+                System.out.println("Invalid credentials.");
             }
+        } catch (SQLException e) {
+            System.out.println("Database error during login: " + e.getMessage());
         }
-        System.out.println("Invalid credentials.");
     }
 
     private void listAllServicesPublic() {
-        System.out.println("\n All Services ");
-        List<Service> all = new ArrayList<>(db.getServices().values());
-        all.sort(Comparator.comparing(Service::getCity).thenComparing(Service::getCategory));
-        printServices(all);
+        System.out.println("\n=== All Active Services ===");
+        try {
+            List<Service> services = serviceDAO.findAllActive();
+            printServices(services);
+        } catch (SQLException e) {
+            System.out.println("Database error while listing services: " + e.getMessage());
+        }
     }
 
     private void customerMenu() {
-        System.out.println("\n Customer Menu ");
+        System.out.println("\n=== Customer Menu ===");
         System.out.println("1. View services by city");
         System.out.println("2. Search services by category and city");
         System.out.println("3. Make a booking");
@@ -140,8 +157,12 @@ public class Menu {
     private void viewServicesByCity() {
         System.out.print("Enter city: ");
         String city = scanner.nextLine();
-        List<Service> services = db.findServicesByCategoryAndCity(null, city);
-        printServices(services);
+        try {
+            List<Service> services = serviceDAO.findByFilters(null, city);
+            printServices(services);
+        } catch (SQLException e) {
+            System.out.println("Database error: " + e.getMessage());
+        }
     }
 
     private void searchServices() {
@@ -152,131 +173,107 @@ public class Menu {
         String city = scanner.nextLine();
         if (city.isBlank()) city = null;
 
-        List<Service> services = db.findServicesByCategoryAndCity(category, city);
-        printServices(services);
+        try {
+            List<Service> services = serviceDAO.findByFilters(category, city);
+            printServices(services);
+        } catch (SQLException e) {
+            System.out.println("Database error: " + e.getMessage());
+        }
     }
 
     private void makeBooking() {
         System.out.print("Enter service ID: ");
         long serviceId = readLong();
-        Service service = db.getServices().get(serviceId);
-        if (service == null || !service.isActive()) {
-            System.out.println("Service not found or inactive.");
-            return;
-        }
-
-        System.out.print("Enter address: ");
-        String address = scanner.nextLine();
-
-        System.out.print("Enter scheduled date time (YYYY-MM-DDTHH:MM), e.g., 2025-12-01T10:30: ");
-        String dt = scanner.nextLine();
-        LocalDateTime dateTime;
         try {
-            dateTime = LocalDateTime.parse(dt);
-        } catch (DateTimeParseException e) {
-            System.out.println("Invalid date-time format. Using default tomorrow 10:00.");
-            dateTime = LocalDateTime.now().plusDays(1).withHour(10).withMinute(0);
-        }
+            Service service = serviceDAO.findById(serviceId);
+            if (service == null || !service.isActive()) {
+                System.out.println("Service not found or inactive.");
+                return;
+            }
 
-        Booking booking = new Booking(idGen.nextId(), currentUser.getId(), serviceId, dateTime, address, service.getPrice());
-        try {
+            System.out.print("Enter address: ");
+            String address = scanner.nextLine();
+
+            System.out.print("Enter scheduled date time (YYYY-MM-DDTHH:MM), e.g., 2025-12-01T10:30: ");
+            String dt = scanner.nextLine();
+            LocalDateTime dateTime;
+            try {
+                dateTime = LocalDateTime.parse(dt);
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid date-time format. Using default tomorrow 10:00.");
+                dateTime = LocalDateTime.now().plusDays(1).withHour(10).withMinute(0);
+            }
+
+            Booking booking = new Booking(idGen.nextId(), currentUser.getId(), serviceId, dateTime, address, service.getPrice());
             booking.validate();
-            db.getBookings().put(booking.getId(), booking);
+            bookingDAO.insert(booking);
             System.out.println("Booking created with ID: " + booking.getId() + " (Status: " + booking.getStatus() + ")");
         } catch (InvalidDataException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Validation error: " + e.getMessage());
+        } catch (SQLException e) {
+            System.out.println("Database error while creating booking: " + e.getMessage());
         }
     }
 
     private void viewCustomerBookings() {
         System.out.println("Your bookings:");
-        db.getBookings().values().stream()
-                .filter(b -> b.getCustomerId() == currentUser.getId())
-                .forEach(b -> {
-                    Service s = db.getServices().get(b.getServiceId());
-                    System.out.println("ID: " + b.getId()
-                            + " | Service: " + (s != null ? s.getTitle() : "?")
-                            + " | Status: " + b.getStatus()
-                            + " | Scheduled: " + b.getScheduledDateTime()
-                            + " | Address: " + b.getAddress()
-                            + " | Total: " + b.getTotalPrice());
-                });
+        try {
+            List<Booking> bookings = bookingDAO.findByCustomerId(currentUser.getId());
+            for (Booking b : bookings) {
+                Service s = serviceDAO.findById(b.getServiceId());
+                System.out.println("ID: " + b.getId()
+                        + " | Service: " + (s != null ? s.getTitle() : "?")
+                        + " | Status: " + b.getStatus()
+                        + " | Scheduled: " + b.getScheduledDateTime()
+                        + " | Address: " + b.getAddress()
+                        + " | Total: " + b.getTotalPrice());
+            }
+        } catch (SQLException e) {
+            System.out.println("Database error while fetching bookings: " + e.getMessage());
+        }
     }
 
     private void addReview() {
         System.out.print("Enter completed booking ID: ");
         long bookingId = readLong();
-        Booking booking = db.getBookings().get(bookingId);
-        if (booking == null || booking.getCustomerId() != currentUser.getId()) {
-            System.out.println("Booking not found or not yours.");
-            return;
-        }
-        if (booking.getStatus() != BookingStatus.COMPLETED) {
-            System.out.println("Booking is not completed yet.");
-            return;
-        }
-
-        System.out.print("Rating (1-5): ");
-        int rating = readInt();
-        scanner.nextLine();
-        System.out.print("Comment: ");
-        String comment = scanner.nextLine();
-
-        Review review = new Review(idGen.nextId(), bookingId, rating, comment);
         try {
+            Booking booking = bookingDAO.findById(bookingId);
+            if (booking == null || booking.getCustomerId() != currentUser.getId()) {
+                System.out.println("Booking not found or not yours.");
+                return;
+            }
+            if (booking.getStatus() != BookingStatus.COMPLETED) {
+                System.out.println("Booking is not completed yet.");
+                return;
+            }
+
+            System.out.print("Rating (1-5): ");
+            int rating = readInt();
+            scanner.nextLine();
+            System.out.print("Comment: ");
+            String comment = scanner.nextLine();
+
+            Review review = new Review(idGen.nextId(), bookingId, rating, comment);
             review.validate();
-            db.getReviews().put(review.getId(), review);
+            reviewDAO.insert(review);
             System.out.println("Review saved with ID: " + review.getId());
 
-            Service s = db.getServices().get(booking.getServiceId());
+            Service s = serviceDAO.findById(booking.getServiceId());
             if (s != null) {
                 long handymanId = s.getHandymanId();
-                double avg = calculateHandymanAverageRating(handymanId);
-                User handyman = db.getUsers().get(handymanId);
-                if (handyman != null) handyman.setRating(avg);
+                double avg = reviewDAO.calculateHandymanAverageRating(handymanId);
+                userDAO.updateRating(handymanId, avg);
                 System.out.println("Handyman new average rating: " + avg);
             }
         } catch (InvalidDataException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-    }
-
-    private double calculateHandymanAverageRating(long handymanId) {
-        List<Long> bookingIds = new ArrayList<>();
-        for (Booking b : db.getBookings().values()) {
-            Service s = db.getServices().get(b.getServiceId());
-            if (s != null && s.getHandymanId() == handymanId && b.getStatus() == BookingStatus.COMPLETED) {
-                bookingIds.add(b.getId());
-            }
-        }
-        int sum = 0;
-        int count = 0;
-        for (Review r : db.getReviews().values()) {
-            if (bookingIds.contains(r.getBookingId())) {
-                sum += r.getRating();
-                count++;
-            }
-        }
-        return count == 0 ? 0.0 : Math.round((sum * 1.0 / count) * 100.0) / 100.0;
-    }
-
-    private void printServices(List<Service> services) {
-        if (services == null || services.isEmpty()) {
-            System.out.println("No services found.");
-            return;
-        }
-        for (Service s : services) {
-            System.out.println(s.getId() + ": " + s.getTitle()
-                    + " | " + s.getCategory()
-                    + " | " + s.getCity()
-                    + " | " + s.getPrice() + " RON"
-                    + " | Active: " + (s.isActive() ? "yes" : "no")
-                    + " | HandymanId: " + s.getHandymanId());
+            System.out.println("Validation error: " + e.getMessage());
+        } catch (SQLException e) {
+            System.out.println("Database error while adding review: " + e.getMessage());
         }
     }
 
     private void handymanMenu() {
-        System.out.println("\n Handyman Menu ");
+        System.out.println("\n=== Handyman Menu ===");
         System.out.println("1. Add service");
         System.out.println("2. View my bookings");
         System.out.println("3. Accept booking");
@@ -307,159 +304,123 @@ public class Menu {
         System.out.print("Price: ");
         double price = readDouble();
         scanner.nextLine();
-        System.out.print("Category (Plumbing/Electrical/Cleaning/Painting): ");
+        System.out.print("Category: ");
         String category = scanner.nextLine();
-        System.out.print("City (Cluj-Napoca/Timisoara/Bucharest): ");
+        System.out.print("City: ");
         String city = scanner.nextLine();
 
         Service service = new Service(idGen.nextId(), currentUser.getId(), title, description, price, category, city);
         try {
             service.validate();
-            db.getServices().put(service.getId(), service);
+            serviceDAO.insert(service);
             System.out.println("Service added with ID: " + service.getId());
         } catch (InvalidDataException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Validation error: " + e.getMessage());
+        } catch (SQLException e) {
+            System.out.println("Database error while adding service: " + e.getMessage());
         }
     }
 
     private void viewHandymanBookings() {
         System.out.println("Your bookings:");
-        for (Booking b : db.getBookings().values()) {
-            Service s = db.getServices().get(b.getServiceId());
-            if (s != null && s.getHandymanId() == currentUser.getId()) {
-                System.out.println("Booking ID: " + b.getId()
+        try {
+            List<Booking> bookings = bookingDAO.findByHandymanId(currentUser.getId());
+            for (Booking b : bookings) {
+                Service s = serviceDAO.findById(b.getServiceId());
+                User customer = userDAO.findById(b.getCustomerId());
+                System.out.println("ID: " + b.getId()
+                        + " | Customer: " + (customer != null ? customer.getFullName() : "?")
+                        + " | Service: " + (s != null ? s.getTitle() : "?")
                         + " | Status: " + b.getStatus()
-                        + " | Address: " + b.getAddress()
                         + " | Scheduled: " + b.getScheduledDateTime()
+                        + " | Address: " + b.getAddress()
                         + " | Total: " + b.getTotalPrice());
             }
+        } catch (SQLException e) {
+            System.out.println("Database error while fetching handyman bookings: " + e.getMessage());
         }
     }
 
     private void updateBookingStatusForHandyman(BookingStatus newStatus) {
         System.out.print("Enter booking ID: ");
         long bookingId = readLong();
-        Booking b = db.getBookings().get(bookingId);
-        if (b == null) {
-            System.out.println("Booking not found.");
-            return;
+        try {
+            boolean updated = bookingDAO.updateStatusIfOwnedByHandyman(bookingId, currentUser.getId(), newStatus);
+            if (updated) {
+                System.out.println("Booking status updated to " + newStatus);
+            } else {
+                System.out.println("Booking not found or not assigned to you.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Database error while updating booking: " + e.getMessage());
         }
-        Service s = db.getServices().get(b.getServiceId());
-        if (s == null || s.getHandymanId() != currentUser.getId()) {
-            System.out.println("This booking does not belong to your services.");
-            return;
-        }
-        b.setStatus(newStatus);
-        System.out.println("Booking " + b.getId() + " set to " + newStatus);
     }
 
     private void toggleServiceActive() {
-        System.out.print("Enter your service ID: ");
+        System.out.print("Enter service ID: ");
         long serviceId = readLong();
-        Service s = db.getServices().get(serviceId);
-        if (s == null || s.getHandymanId() != currentUser.getId()) {
-            System.out.println("Service not found or not yours.");
-            return;
+        try {
+            boolean toggled = serviceDAO.toggleActiveForHandyman(serviceId, currentUser.getId());
+            if (toggled) {
+                System.out.println("Service active state toggled.");
+            } else {
+                System.out.println("Service not found or not yours.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Database error while toggling service: " + e.getMessage());
         }
-        s.setActive(!s.isActive());
-        System.out.println("Service " + s.getId() + " is now " + (s.isActive() ? "Active" : "Inactive"));
     }
 
     private void adminMenu() {
-        System.out.println("\n Admin Menu ");
+        System.out.println("\n=== Admin Menu ===");
         System.out.println("1. List all users");
         System.out.println("2. List all services");
-        System.out.println("3. List all bookings");
-        System.out.println("4. Disable a user");
-        System.out.println("5. Deactivate a service");
-        System.out.println("6. Logout");
+        System.out.println("3. Logout");
         System.out.print("Choose: ");
         int choice = readInt();
 
-        switch (choice) {
-            case 1 -> listUsers();
-            case 2 -> listServices();
-            case 3 -> listBookings();
-            case 4 -> disableUser();
-            case 5 -> deactivateService();
-            case 6 -> currentUser = null;
-            default -> System.out.println("Invalid choice.");
-        }
-    }
-
-    private void listUsers() {
-        System.out.println("Users:");
-        for (User u : db.getUsers().values()) {
-            System.out.println(u.getId() + ": " + u.getUsername() + " (" + u.getRole() + ") rating=" + u.getRating());
-        }
-    }
-
-    private void listServices() {
-        System.out.println("Services:");
-        for (Service s : db.getServices().values()) {
-            System.out.println(s.getId() + ": " + s.getTitle() + " - " + s.getCity()
-                    + " | " + s.getCategory()
-                    + " | " + s.getPrice() + " RON"
-                    + " | Active: " + s.isActive()
-                    + " | HandymanId: " + s.getHandymanId());
-        }
-    }
-
-    private void listBookings() {
-        System.out.println("Bookings:");
-        for (Booking b : db.getBookings().values()) {
-            Service s = db.getServices().get(b.getServiceId());
-            User cust = db.getUsers().get(b.getCustomerId());
-            System.out.println("Booking " + b.getId()
-                    + " | Service: " + (s != null ? s.getTitle() : "?")
-                    + " | Customer: " + (cust != null ? cust.getUsername() : "?")
-                    + " | Status: " + b.getStatus()
-                    + " | Scheduled: " + b.getScheduledDateTime()
-                    + " | Address: " + b.getAddress());
-        }
-    }
-
-    private void disableUser() {
-        System.out.print("Enter user ID to disable: ");
-        long userId = readLong();
-        User u = db.getUsers().get(userId);
-        if (u == null) {
-            System.out.println("User not found.");
-            return;
-        }
-        db.getUsers().remove(userId);
-        persistUsers();
-        System.out.println("User " + userId + " disabled (removed).");
-    }
-
-    private void deactivateService() {
-        System.out.print("Enter service ID to deactivate: ");
-        long serviceId = readLong();
-        Service s = db.getServices().get(serviceId);
-        if (s == null) {
-            System.out.println("Service not found.");
-            return;
-        }
-        s.setActive(false);
-        System.out.println("Service " + serviceId + " deactivated.");
-    }
-
-    private void persistUsers() {
         try {
-            db.saveUsers(usersPath);
-            System.out.println("Users saved.");
-        } catch (IOException e) {
-            System.out.println("Failed to save users: " + e.getMessage());
+            switch (choice) {
+                case 1 -> {
+                    List<User> users = userDAO.findAll();
+                    for (User u : users) {
+                        System.out.println(u.getId() + " | " + u.getUsername() + " | " + u.getRole() + " | rating=" + u.getRating());
+                    }
+                }
+                case 2 -> {
+                    List<Service> services = serviceDAO.findAll();
+                    printServices(services);
+                }
+                case 3 -> currentUser = null;
+                default -> System.out.println("Invalid choice.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Database error in admin menu: " + e.getMessage());
+        }
+    }
+
+    private void printServices(List<Service> services) {
+        if (services == null || services.isEmpty()) {
+            System.out.println("No services found.");
+            return;
+        }
+        for (Service s : services) {
+            System.out.println(s.getId() + ": " + s.getTitle()
+                    + " | " + s.getCategory()
+                    + " | " + s.getCity()
+                    + " | " + s.getPrice() + " RON"
+                    + " | Active: " + (s.isActive() ? "yes" : "no")
+                    + " | HandymanId: " + s.getHandymanId());
         }
     }
 
     private int readInt() {
         while (true) {
             try {
-                String line = scanner.nextLine();
-                return Integer.parseInt(line.trim());
+                int v = Integer.parseInt(scanner.nextLine());
+                return v;
             } catch (NumberFormatException e) {
-                System.out.print("Please enter a valid integer: ");
+                System.out.print("Enter a valid integer: ");
             }
         }
     }
@@ -467,10 +428,10 @@ public class Menu {
     private long readLong() {
         while (true) {
             try {
-                String line = scanner.nextLine();
-                return Long.parseLong(line.trim());
+                long v = Long.parseLong(scanner.nextLine());
+                return v;
             } catch (NumberFormatException e) {
-                System.out.print("Please enter a valid long number: ");
+                System.out.print("Enter a valid long: ");
             }
         }
     }
@@ -478,10 +439,10 @@ public class Menu {
     private double readDouble() {
         while (true) {
             try {
-                String line = scanner.nextLine();
-                return Double.parseDouble(line.trim());
+                double v = Double.parseDouble(scanner.nextLine());
+                return v;
             } catch (NumberFormatException e) {
-                System.out.print("Please enter a valid number: ");
+                System.out.print("Enter a valid number: ");
             }
         }
     }

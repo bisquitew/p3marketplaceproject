@@ -24,23 +24,48 @@ public class ReviewDAO {
         }
     }
 
-    public List<Review> findAll() throws SQLException {
-        String sql = "SELECT id, booking_id, rating, comment FROM reviews";
+    public List<Review> findByBookingId(long bookingId) throws SQLException {
+        String sql = "SELECT id, booking_id, rating, comment FROM reviews WHERE booking_id = ?";
         List<Review> reviews = new ArrayList<>();
         try (Connection conn = DatabaseConnector.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            while (rs.next()) {
-                Review r = new Review(
-                        rs.getLong("id"),
-                        rs.getLong("booking_id"),
-                        rs.getInt("rating"),
-                        rs.getString("comment")
-                );
-                reviews.add(r);
+            stmt.setLong(1, bookingId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Review r = new Review(
+                            rs.getLong("id"),
+                            rs.getLong("booking_id"),
+                            rs.getInt("rating"),
+                            rs.getString("comment")
+                    );
+                    reviews.add(r);
+                }
             }
         }
         return reviews;
+    }
+
+    public double calculateHandymanAverageRating(long handymanId) throws SQLException {
+        String sql = """
+                SELECT AVG(r.rating) AS avg_rating
+                FROM reviews r
+                JOIN bookings b ON r.booking_id = b.id
+                JOIN services s ON b.service_id = s.id
+                WHERE s.handyman_id = ?
+                """;
+        try (Connection conn = DatabaseConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, handymanId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    double avg = rs.getDouble("avg_rating");
+                    if (rs.wasNull()) return 0.0;
+                    return Math.round(avg * 100.0) / 100.0;
+                }
+            }
+        }
+        return 0.0;
     }
 }

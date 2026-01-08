@@ -31,26 +31,100 @@ public class BookingDAO {
         }
     }
 
-    public List<Booking> findAll() throws SQLException {
-        String sql = "SELECT id, customer_id, service_id, scheduled_datetime, status, address, total_price FROM bookings";
+    public Booking findById(long id) throws SQLException {
+        String sql = "SELECT id, customer_id, service_id, scheduled_datetime, status, address, total_price FROM bookings WHERE id = ?";
+        try (Connection conn = DatabaseConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Booking b = new Booking(
+                            rs.getLong("id"),
+                            rs.getLong("customer_id"),
+                            rs.getLong("service_id"),
+                            rs.getTimestamp("scheduled_datetime").toLocalDateTime(),
+                            rs.getString("address"),
+                            rs.getDouble("total_price")
+                    );
+                    b.setStatus(BookingStatus.valueOf(rs.getString("status")));
+                    return b;
+                }
+            }
+        }
+        return null;
+    }
+
+    public List<Booking> findByCustomerId(long customerId) throws SQLException {
+        String sql = "SELECT id, customer_id, service_id, scheduled_datetime, status, address, total_price FROM bookings WHERE customer_id = ?";
         List<Booking> bookings = new ArrayList<>();
         try (Connection conn = DatabaseConnector.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            while (rs.next()) {
-                Booking b = new Booking(
-                        rs.getLong("id"),
-                        rs.getLong("customer_id"),
-                        rs.getLong("service_id"),
-                        rs.getTimestamp("scheduled_datetime").toLocalDateTime(),
-                        rs.getString("address"),
-                        rs.getDouble("total_price")
-                );
-                b.setStatus(BookingStatus.valueOf(rs.getString("status")));
-                bookings.add(b);
+            stmt.setLong(1, customerId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Booking b = new Booking(
+                            rs.getLong("id"),
+                            rs.getLong("customer_id"),
+                            rs.getLong("service_id"),
+                            rs.getTimestamp("scheduled_datetime").toLocalDateTime(),
+                            rs.getString("address"),
+                            rs.getDouble("total_price")
+                    );
+                    b.setStatus(BookingStatus.valueOf(rs.getString("status")));
+                    bookings.add(b);
+                }
             }
         }
         return bookings;
+    }
+
+    public List<Booking> findByHandymanId(long handymanId) throws SQLException {
+        String sql = """
+                SELECT b.id, b.customer_id, b.service_id, b.scheduled_datetime, b.status, b.address, b.total_price
+                FROM bookings b
+                JOIN services s ON b.service_id = s.id
+                WHERE s.handyman_id = ?
+                """;
+        List<Booking> bookings = new ArrayList<>();
+        try (Connection conn = DatabaseConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, handymanId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Booking b = new Booking(
+                            rs.getLong("id"),
+                            rs.getLong("customer_id"),
+                            rs.getLong("service_id"),
+                            rs.getTimestamp("scheduled_datetime").toLocalDateTime(),
+                            rs.getString("address"),
+                            rs.getDouble("total_price")
+                    );
+                    b.setStatus(BookingStatus.valueOf(rs.getString("status")));
+                    bookings.add(b);
+                }
+            }
+        }
+        return bookings;
+    }
+
+    public boolean updateStatusIfOwnedByHandyman(long bookingId, long handymanId, BookingStatus newStatus) throws SQLException {
+        String sql = """
+                UPDATE bookings b
+                JOIN services s ON b.service_id = s.id
+                SET b.status = ?
+                WHERE b.id = ? AND s.handyman_id = ?
+                """;
+        try (Connection conn = DatabaseConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, newStatus.name());
+            stmt.setLong(2, bookingId);
+            stmt.setLong(3, handymanId);
+            int updated = stmt.executeUpdate();
+            return updated > 0;
+        }
     }
 }
