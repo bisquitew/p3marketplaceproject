@@ -7,7 +7,6 @@ import model.User;
 import model.enums.UserRole;
 import model.exceptions.InvalidDataException;
 import repository.UserDAO;
-import util.IdGenerator;
 
 import java.sql.SQLException;
 
@@ -21,7 +20,6 @@ public class RegisterController {
     @FXML private Label errorLabel;
 
     private final UserDAO userDAO = new UserDAO();
-    private final IdGenerator idGen = new IdGenerator(1000);
 
     @FXML
     private void initialize() {
@@ -31,31 +29,33 @@ public class RegisterController {
     @FXML
     private void onRegister() {
         try {
+            String username = usernameField.getText();
+            String password = passwordField.getText();
+            String fullName = fullNameField.getText();
+            String email = emailField.getText();
             String roleStr = roleCombo.getValue();
+
             if (roleStr == null) {
                 errorLabel.setText("Please select a role.");
                 return;
             }
 
             UserRole role = UserRole.valueOf(roleStr);
-            User user = new User(
-                    idGen.nextId(),
-                    usernameField.getText(),
-                    passwordField.getText(),
-                    fullNameField.getText(),
-                    emailField.getText(),
-                    role
-            );
+
+            // Let DB generate the ID
+            User user = new User(username, password, fullName, email, role);
 
             user.validate();
             userDAO.insert(user);
 
-            errorLabel.setText("Registered successfully!");
+            errorLabel.setText("Registered successfully! You can now log in.");
 
         } catch (InvalidDataException e) {
             errorLabel.setText("Validation error: " + e.getMessage());
         } catch (SQLException e) {
             errorLabel.setText("Database error: " + e.getMessage());
+        } catch (Exception e) {
+            errorLabel.setText("Unexpected error: " + e.getMessage());
         }
     }
 

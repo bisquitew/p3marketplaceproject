@@ -1,14 +1,12 @@
 package model;
 
-import java.io.Serializable;
 import model.enums.UserRole;
-import model.interfaces.Persistable;
-import model.interfaces.Validatable;
 import model.exceptions.InvalidDataException;
+import model.interfaces.Validatable;
 
-import java.io.*;
+import java.io.Serializable;
 
-public class User implements Validatable, Persistable, Serializable {
+public class User implements Validatable, Serializable {
     private static final long serialVersionUID = 1L;
 
     private long id;
@@ -17,55 +15,35 @@ public class User implements Validatable, Persistable, Serializable {
     private String fullName;
     private String email;
     private UserRole role;
-    private double rating; // average rating for HANDYMAN, 0 for others
+    private double rating;
 
-    public User() {}
-
-    public User(long id, String username, String password, String fullName, String email, UserRole role) {
+    public User(long id, String username, String password, String fullName, String email, UserRole role, double rating) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.fullName = fullName;
         this.email = email;
         this.role = role;
-        this.rating = 0.0;
+        this.rating = rating;
+    }
+
+    public User(String username, String password, String fullName, String email, UserRole role) {
+        this(0, username, password, fullName, email, role, 0.0);
     }
 
     @Override
     public void validate() throws InvalidDataException {
-        if (username == null || username.trim().isEmpty()) throw new InvalidDataException("Username cannot be empty");
-        if (password == null || password.length() < 4) throw new InvalidDataException("Password must be at least 4 characters");
-        if (fullName == null || fullName.trim().isEmpty()) throw new InvalidDataException("Full name cannot be empty");
-        if (email == null || !email.contains("@") || !email.contains(".")) throw new InvalidDataException("Invalid email");
-        if (role == null) throw new InvalidDataException("User role must be set");
-        if (rating < 0 || rating > 5) throw new InvalidDataException("Rating must be between 0 and 5");
+        if (username == null || username.trim().isEmpty())
+            throw new InvalidDataException("Username cannot be empty");
+        if (password == null || password.trim().isEmpty())
+            throw new InvalidDataException("Password cannot be empty");
+        if (fullName == null || fullName.trim().isEmpty())
+            throw new InvalidDataException("Full name cannot be empty");
+        if (email == null || email.trim().isEmpty())
+            throw new InvalidDataException("Email cannot be empty");
+        if (role == null)
+            throw new InvalidDataException("Role must be set");
     }
-
-    @Override
-    public void saveToFile(String filePath) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
-            oos.writeObject(this);
-        } catch (IOException e) {
-            System.err.println("Failed to save User: " + e.getMessage());
-        }
-    }
-
-    @Override
-    public void loadFromFile(String filePath) {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath))) {
-            User loaded = (User) ois.readObject();
-            this.id = loaded.id;
-            this.username = loaded.username;
-            this.password = loaded.password;
-            this.fullName = loaded.fullName;
-            this.email = loaded.email;
-            this.role = loaded.role;
-            this.rating = loaded.rating;
-        } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Failed to load User: " + e.getMessage());
-        }
-    }
-
 
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }

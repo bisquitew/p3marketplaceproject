@@ -9,18 +9,20 @@
             fx:controller="controller.LoginController">
 
     <center>
-        <VBox spacing="15" alignment="CENTER">
-            <padding><Insets top="40" right="40" bottom="40" left="40"/></padding>
+        <StackPane>
+            <VBox spacing="15" alignment="CENTER" maxWidth="400" styleClass="card-container">
+                <Label text="Handyman Marketplace" styleClass="title"/>
 
-            <Label text="Handyman Marketplace" styleClass="title"/>
+                <Label text="Welcome back! Please log in." styleClass="subtitle"/>
 
-            <TextField fx:id="usernameField" promptText="Username"/>
-            <PasswordField fx:id="passwordField" promptText="Password"/>
+                <TextField fx:id="usernameField" promptText="Username"/>
+                <PasswordField fx:id="passwordField" promptText="Password"/>
 
-            <Button text="Login" onAction="#onLogin" maxWidth="200"/>
-            <Button text="Register" onAction="#onGoToRegister" maxWidth="200"/>
+                <Button text="Login" onAction="#onLogin" maxWidth="Infinity"/>
+                <Button text="Create an account" onAction="#onGoToRegister" maxWidth="Infinity" styleClass="secondary"/>
 
-            <Label fx:id="errorLabel" textFill="red"/>
-        </VBox>
+                <Label fx:id="errorLabel" styleClass="error"/>
+            </VBox>
+        </StackPane>
     </center>
 </BorderPane>

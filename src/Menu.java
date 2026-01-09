@@ -90,7 +90,7 @@ public class Menu {
 
         try {
             UserRole role = UserRole.valueOf(roleStr);
-            User user = new User(idGen.nextId(), username, password, fullName, email, role);
+            User user = new User(username, password, fullName, email, role); // rating defaults to 0.0
             user.validate();
             userDAO.insert(user);
             System.out.println("Registered successfully!");
@@ -102,6 +102,7 @@ public class Menu {
             System.out.println("Database error while registering: " + e.getMessage());
         }
     }
+
 
     private void loginUser() {
         System.out.print("Username: ");

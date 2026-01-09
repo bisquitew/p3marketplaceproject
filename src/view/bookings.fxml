@@ -12,7 +12,7 @@
         <ToolBar>
             <Label text="My Bookings" styleClass="title"/>
             <Pane HBox.hgrow="ALWAYS"/>
-            <Button text="Back" onAction="#onBack"/>
+            <Button text="Back" onAction="#onBack" styleClass="secondary"/>
         </ToolBar>
     </top>
 
@@ -26,7 +26,7 @@
                     <TableColumn fx:id="serviceColumn" text="Service ID" prefWidth="80"/>
                     <TableColumn fx:id="dateColumn" text="Date" prefWidth="160"/>
                     <TableColumn fx:id="statusColumn" text="Status" prefWidth="100"/>
-                    <TableColumn fx:id="addressColumn" text="Address" prefWidth="200"/>
+                    <TableColumn fx:id="addressColumn" text="Address" prefWidth="220"/>
                     <TableColumn fx:id="priceColumn" text="Price" prefWidth="80"/>
                 </columns>
             </TableView>
@@ -36,7 +36,7 @@
                 <Button text="Add Review" onAction="#onAddReview"/>
             </HBox>
 
-            <Label fx:id="infoLabel" textFill="red"/>
+            <Label fx:id="infoLabel" styleClass="error"/>
         </VBox>
     </center>
 </BorderPane>

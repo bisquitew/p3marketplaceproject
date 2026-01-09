@@ -10,6 +10,13 @@ public class MainFX extends Application {
     @Override
     public void start(Stage stage) {
         sceneManager = new SceneManager(stage);
+
+        // Make the app bigger
+        stage.setWidth(1100);
+        stage.setHeight(700);
+        stage.setMinWidth(900);
+        stage.setMinHeight(600);
+
         sceneManager.showLoginScene();
         stage.show();
     }

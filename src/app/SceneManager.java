@@ -22,14 +22,14 @@ public class SceneManager {
             Parent root = FXMLLoader.load(getClass().getResource("/view/" + fxml));
             Scene scene = new Scene(root);
 
-            // Load global CSS
+            // Global CSS
             scene.getStylesheets().add(getClass().getResource("/view/style.css").toExternalForm());
 
             stage.setScene(scene);
-            stage.setTitle(title);
+            stage.setTitle("Handyman Marketplace - " + title);
 
-            // Fade animation
-            FadeTransition ft = new FadeTransition(Duration.millis(250), root);
+            // Fade-in animation
+            FadeTransition ft = new FadeTransition(Duration.millis(300), root);
             ft.setFromValue(0);
             ft.setToValue(1);
             ft.play();
