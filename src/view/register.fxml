@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.RegisterController">
+
+    <center>
+        <VBox spacing="10" alignment="CENTER">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <Label text="Register" style="-fx-font-size: 18;" />
+
+            <TextField fx:id="usernameField" promptText="Username" />
+            <PasswordField fx:id="passwordField" promptText="Password" />
+            <TextField fx:id="fullNameField" promptText="Full name" />
+            <TextField fx:id="emailField" promptText="Email" />
+
+            <ComboBox fx:id="roleCombo">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String>CUSTOMER</String>
+                        <String>HANDYMAN</String>
+                    </FXCollections>
+                </items>
+            </ComboBox>
+
+            <Button text="Register" onAction="#onRegister" maxWidth="Infinity"/>
+            <Button text="Back to Login" onAction="#onBack" maxWidth="Infinity"/>
+
+            <Label fx:id="errorLabel" textFill="red"/>
+        </VBox>
+    </center>
+</BorderPane>

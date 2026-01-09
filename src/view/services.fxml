@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.ServicesController">
+
+    <top>
+        <ToolBar>
+            <Label text="Services"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Button text="Back" onAction="#onBack"/>
+        </ToolBar>
+    </top>
+
+    <center>
+        <VBox spacing="10" padding="10">
+            <HBox spacing="10">
+                <TextField fx:id="categoryField" promptText="Category (optional)"/>
+                <TextField fx:id="cityField" promptText="City (optional)"/>
+                <Button text="Search" onAction="#onSearch"/>
+            </HBox>
+
+            <TableView fx:id="servicesTable">
+                <columns>
+                    <TableColumn fx:id="idColumn" text="ID" prefWidth="60"/>
+                    <TableColumn fx:id="titleColumn" text="Title" prefWidth="150"/>
+                    <TableColumn fx:id="cityColumn" text="City" prefWidth="100"/>
+                    <TableColumn fx:id="priceColumn" text="Price" prefWidth="80"/>
+                </columns>
+            </TableView>
+
+            <Button text="Make Booking for Selected" onAction="#onMakeBooking"/>
+            <Label fx:id="infoLabel" textFill="red"/>
+        </VBox>
+    </center>
+</BorderPane>
