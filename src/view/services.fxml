@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -11,17 +10,19 @@
 
     <top>
         <ToolBar>
-            <Label text="Services"/>
+            <Label text="Available Services" styleClass="title"/>
             <Pane HBox.hgrow="ALWAYS"/>
             <Button text="Back" onAction="#onBack"/>
         </ToolBar>
     </top>
 
     <center>
-        <VBox spacing="10" padding="10">
+        <VBox spacing="15">
+            <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
             <HBox spacing="10">
-                <TextField fx:id="categoryField" promptText="Category (optional)"/>
-                <TextField fx:id="cityField" promptText="City (optional)"/>
+                <TextField fx:id="categoryField" promptText="Category"/>
+                <TextField fx:id="cityField" promptText="City"/>
                 <Button text="Search" onAction="#onSearch"/>
             </HBox>
 
@@ -34,7 +35,7 @@
                 </columns>
             </TableView>
 
-            <Button text="Make Booking for Selected" onAction="#onMakeBooking"/>
+            <Button text="Book Selected Service" onAction="#onMakeBooking" maxWidth="200"/>
             <Label fx:id="infoLabel" textFill="red"/>
         </VBox>
     </center>

@@ -15,6 +15,8 @@ public class CustomerDashboardController {
         User u = Session.getCurrentUser();
         if (u != null) {
             welcomeLabel.setText("Welcome, " + u.getFullName() + " (" + u.getRole() + ")");
+        } else {
+            welcomeLabel.setText("Welcome, customer");
         }
     }
 
@@ -30,7 +32,7 @@ public class CustomerDashboardController {
 
     @FXML
     private void onLogout() {
-        Session.setCurrentUser(null);
+        Session.clear();
         MainFX.getSceneManager().showLoginScene();
     }
 }

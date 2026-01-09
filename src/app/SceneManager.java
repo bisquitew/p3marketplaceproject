@@ -1,9 +1,11 @@
 package app;
 
+import javafx.animation.FadeTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 
@@ -18,30 +20,28 @@ public class SceneManager {
     private void switchScene(String fxml, String title) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/view/" + fxml));
-            stage.setScene(new Scene(root));
+            Scene scene = new Scene(root);
+
+            // Load global CSS
+            scene.getStylesheets().add(getClass().getResource("/view/style.css").toExternalForm());
+
+            stage.setScene(scene);
             stage.setTitle(title);
+
+            // Fade animation
+            FadeTransition ft = new FadeTransition(Duration.millis(250), root);
+            ft.setFromValue(0);
+            ft.setToValue(1);
+            ft.play();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void showLoginScene() {
-        switchScene("login.fxml", "Login - Handyman Marketplace");
-    }
-
-    public void showRegisterScene() {
-        switchScene("register.fxml", "Register - Handyman Marketplace");
-    }
-
-    public void showCustomerDashboard() {
-        switchScene("customer_dashboard.fxml", "Customer Dashboard");
-    }
-
-    public void showServicesScene() {
-        switchScene("services.fxml", "Services");
-    }
-
-    public void showBookingsScene() {
-        switchScene("bookings.fxml", "My Bookings");
-    }
+    public void showLoginScene() { switchScene("login.fxml", "Login"); }
+    public void showRegisterScene() { switchScene("register.fxml", "Register"); }
+    public void showCustomerDashboard() { switchScene("customer_dashboard.fxml", "Dashboard"); }
+    public void showServicesScene() { switchScene("services.fxml", "Services"); }
+    public void showBookingsScene() { switchScene("bookings.fxml", "My Bookings"); }
 }

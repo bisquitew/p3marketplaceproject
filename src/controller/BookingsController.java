@@ -14,16 +14,29 @@ import java.util.List;
 
 public class BookingsController {
 
-    @FXML private TableView<Booking> bookingsTable;
+    @FXML
+    private TableView<Booking> bookingsTable;
 
-    @FXML private TableColumn<Booking, Long> idColumn;
-    @FXML private TableColumn<Booking, Long> serviceColumn;
-    @FXML private TableColumn<Booking, String> dateColumn;
-    @FXML private TableColumn<Booking, String> statusColumn;
-    @FXML private TableColumn<Booking, String> addressColumn;
-    @FXML private TableColumn<Booking, Double> priceColumn;
+    @FXML
+    private TableColumn<Booking, Long> idColumn;
 
-    @FXML private Label infoLabel;
+    @FXML
+    private TableColumn<Booking, Long> serviceColumn;
+
+    @FXML
+    private TableColumn<Booking, String> dateColumn;
+
+    @FXML
+    private TableColumn<Booking, String> statusColumn;
+
+    @FXML
+    private TableColumn<Booking, String> addressColumn;
+
+    @FXML
+    private TableColumn<Booking, Double> priceColumn;
+
+    @FXML
+    private Label infoLabel;
 
     private final BookingDAO bookingDAO = new BookingDAO();
 
@@ -48,6 +61,8 @@ public class BookingsController {
             bookingsTable.setItems(FXCollections.observableArrayList(list));
         } catch (SQLException e) {
             infoLabel.setText("Database error: " + e.getMessage());
+        } catch (NullPointerException e) {
+            infoLabel.setText("No logged-in user.");
         }
     }
 
@@ -69,8 +84,7 @@ public class BookingsController {
             return;
         }
 
-        // You will later redirect to a review screen
-        infoLabel.setText("Review feature coming next.");
+        infoLabel.setText("Review feature not implemented yet.");
     }
 
     @FXML

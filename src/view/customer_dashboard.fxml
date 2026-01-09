@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -10,7 +9,7 @@
 
     <top>
         <ToolBar>
-            <Label text="Customer Dashboard"/>
+            <Label text="Dashboard" styleClass="title"/>
             <Pane HBox.hgrow="ALWAYS"/>
             <Button text="Services" onAction="#onGoToServices"/>
             <Button text="My Bookings" onAction="#onGoToBookings"/>
@@ -19,8 +18,8 @@
     </top>
 
     <center>
-        <VBox alignment="CENTER" spacing="10">
-            <Label fx:id="welcomeLabel" style="-fx-font-size: 18;"/>
+        <VBox alignment="CENTER" spacing="20">
+            <Label fx:id="welcomeLabel" styleClass="title"/>
         </VBox>
     </center>
 </BorderPane>

@@ -10,14 +10,15 @@
 
     <top>
         <ToolBar>
-            <Label text="My Bookings"/>
+            <Label text="My Bookings" styleClass="title"/>
             <Pane HBox.hgrow="ALWAYS"/>
             <Button text="Back" onAction="#onBack"/>
         </ToolBar>
     </top>
 
     <center>
-        <VBox spacing="10" padding="10">
+        <VBox spacing="15">
+            <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
 
             <TableView fx:id="bookingsTable">
                 <columns>
@@ -38,5 +39,4 @@
             <Label fx:id="infoLabel" textFill="red"/>
         </VBox>
     </center>
-
 </BorderPane>

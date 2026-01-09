@@ -9,29 +9,20 @@
             fx:controller="controller.RegisterController">
 
     <center>
-        <VBox spacing="10" alignment="CENTER">
-            <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
-            </padding>
+        <VBox spacing="15" alignment="CENTER">
+            <padding><Insets top="40" right="40" bottom="40" left="40"/></padding>
 
-            <Label text="Register" style="-fx-font-size: 18;" />
+            <Label text="Create Account" styleClass="title"/>
 
-            <TextField fx:id="usernameField" promptText="Username" />
-            <PasswordField fx:id="passwordField" promptText="Password" />
-            <TextField fx:id="fullNameField" promptText="Full name" />
-            <TextField fx:id="emailField" promptText="Email" />
+            <TextField fx:id="usernameField" promptText="Username"/>
+            <PasswordField fx:id="passwordField" promptText="Password"/>
+            <TextField fx:id="fullNameField" promptText="Full Name"/>
+            <TextField fx:id="emailField" promptText="Email"/>
 
-            <ComboBox fx:id="roleCombo">
-                <items>
-                    <FXCollections fx:factory="observableArrayList">
-                        <String>CUSTOMER</String>
-                        <String>HANDYMAN</String>
-                    </FXCollections>
-                </items>
-            </ComboBox>
+            <ComboBox fx:id="roleCombo" promptText="Select Role"/>
 
-            <Button text="Register" onAction="#onRegister" maxWidth="Infinity"/>
-            <Button text="Back to Login" onAction="#onBack" maxWidth="Infinity"/>
+            <Button text="Register" onAction="#onRegister" maxWidth="200"/>
+            <Button text="Back to Login" onAction="#onBack" maxWidth="200"/>
 
             <Label fx:id="errorLabel" textFill="red"/>
         </VBox>

@@ -93,7 +93,7 @@ public class ServicesController {
                     idGen.nextId(),
                     user.getId(),
                     selected.getId(),
-                    LocalDateTime.now().plusDays(1), // for now, tomorrow
+                    LocalDateTime.now().plusDays(1),
                     address,
                     selected.getPrice()
             );
