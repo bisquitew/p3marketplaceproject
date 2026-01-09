@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -12,7 +11,6 @@
         <StackPane>
             <VBox spacing="15" alignment="CENTER" maxWidth="400" styleClass="card-container">
                 <Label text="Handyman Marketplace" styleClass="title"/>
-
                 <Label text="Welcome back! Please log in." styleClass="subtitle"/>
 
                 <TextField fx:id="usernameField" promptText="Username"/>

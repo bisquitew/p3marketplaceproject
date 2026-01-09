@@ -7,21 +7,17 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="controller.CustomerDashboardController">
 
-    <top>
-        <ToolBar>
-            <Label text="Handyman Marketplace" styleClass="title"/>
-            <Pane HBox.hgrow="ALWAYS"/>
-            <Button text="Services" onAction="#onGoToServices" styleClass="secondary"/>
-            <Button text="My Bookings" onAction="#onGoToBookings" styleClass="secondary"/>
-            <Button text="Logout" onAction="#onLogout"/>
-        </ToolBar>
-    </top>
-
     <center>
         <StackPane>
             <VBox alignment="CENTER" spacing="20" maxWidth="500" styleClass="card-container">
                 <Label fx:id="welcomeLabel" styleClass="title"/>
-                <Label text="Use the top menu to browse services or view your bookings."/>
+                <Label text="Use the buttons below to browse services or view your bookings."/>
+                <HBox spacing="10" alignment="CENTER">
+                    <Button text="Services" onAction="#onGoToServices"/>
+                    <Button text="My Bookings" onAction="#onGoToBookings"/>
+                    <Button text="Logout" onAction="#onLogout"/>
+                </HBox>
+                <Button text="Toggle Dark Mode" onAction="#onToggleDarkMode" styleClass="secondary"/>
             </VBox>
         </StackPane>
     </center>

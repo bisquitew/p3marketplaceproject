@@ -4,19 +4,17 @@ import app.MainFX;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import model.User;
+import model.enums.UserRole;
 
 public class CustomerDashboardController {
 
-    @FXML
-    private Label welcomeLabel;
+    @FXML private Label welcomeLabel;
 
     @FXML
     private void initialize() {
-        User u = Session.getCurrentUser();
-        if (u != null) {
-            welcomeLabel.setText("Welcome, " + u.getFull_name() + " (" + u.getRole() + ")");
-        } else {
-            welcomeLabel.setText("Welcome, customer");
+        User user = Session.getCurrentUser();
+        if (user != null) {
+            welcomeLabel.setText("Welcome, " + user.getFull_name() + " (" + user.getRole() + ")");
         }
     }
 
@@ -34,5 +32,10 @@ public class CustomerDashboardController {
     private void onLogout() {
         Session.clear();
         MainFX.getSceneManager().showLoginScene();
+    }
+
+    @FXML
+    private void onToggleDarkMode() {
+        MainFX.getSceneManager().toggleDarkMode();
     }
 }

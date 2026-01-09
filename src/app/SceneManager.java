@@ -7,11 +7,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.io.IOException;
-
 public class SceneManager {
 
     private final Stage stage;
+    private boolean darkMode = false;
+    private String currentFxml = null;
 
     public SceneManager(Stage stage) {
         this.stage = stage;
@@ -19,23 +19,32 @@ public class SceneManager {
 
     private void switchScene(String fxml, String title) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/view/" + fxml));
+            currentFxml = fxml; // track current scene
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/" + fxml));
+            Parent root = loader.load();
             Scene scene = new Scene(root);
 
-            // Global CSS
             scene.getStylesheets().add(getClass().getResource("/view/style.css").toExternalForm());
+            if (darkMode) root.getStyleClass().add("dark");
 
             stage.setScene(scene);
             stage.setTitle("Handyman Marketplace - " + title);
 
-            // Fade-in animation
             FadeTransition ft = new FadeTransition(Duration.millis(300), root);
             ft.setFromValue(0);
             ft.setToValue(1);
             ft.play();
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void toggleDarkMode() {
+        darkMode = !darkMode;
+        if (currentFxml != null) {
+            // reload current scene with new theme
+            switchScene(currentFxml, stage.getTitle().replace("Handyman Marketplace - ", ""));
         }
     }
 

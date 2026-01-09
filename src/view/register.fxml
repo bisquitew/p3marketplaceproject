@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -12,14 +11,12 @@
         <StackPane>
             <VBox spacing="15" alignment="CENTER" maxWidth="450" styleClass="card-container">
                 <Label text="Create Account" styleClass="title"/>
-
                 <Label text="Join the Handyman Marketplace" styleClass="subtitle"/>
 
                 <TextField fx:id="usernameField" promptText="Username"/>
                 <PasswordField fx:id="passwordField" promptText="Password"/>
                 <TextField fx:id="fullNameField" promptText="Full Name"/>
                 <TextField fx:id="emailField" promptText="Email"/>
-
                 <ComboBox fx:id="roleCombo" promptText="Select Role"/>
 
                 <Button text="Register" onAction="#onRegister" maxWidth="Infinity"/>
