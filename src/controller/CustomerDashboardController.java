@@ -14,7 +14,7 @@ public class CustomerDashboardController {
     private void initialize() {
         User u = Session.getCurrentUser();
         if (u != null) {
-            welcomeLabel.setText("Welcome, " + u.getFullName() + " (" + u.getRole() + ")");
+            welcomeLabel.setText("Welcome, " + u.getFull_name() + " (" + u.getRole() + ")");
         } else {
             welcomeLabel.setText("Welcome, customer");
         }

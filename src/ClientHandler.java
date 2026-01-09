@@ -75,7 +75,7 @@ public class ClientHandler extends Thread {
         try {
             User user = userDAO.findByUsernameAndPassword(username, password);
             if (user != null) {
-                out.println("LOGIN_SUCCESS " + user.getFullName() + " (" + user.getRole() + ")");
+                out.println("LOGIN_SUCCESS " + user.getFull_name() + " (" + user.getRole() + ")");
             } else {
                 out.println("LOGIN_FAILED");
             }

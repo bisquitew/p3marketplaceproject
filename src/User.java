@@ -12,23 +12,23 @@ public class User implements Validatable, Serializable {
     private long id;
     private String username;
     private String password;
-    private String fullName;
+    private String full_name; // updated to match SQL
     private String email;
     private UserRole role;
     private double rating;
 
-    public User(long id, String username, String password, String fullName, String email, UserRole role, double rating) {
+    public User(long id, String username, String password, String full_name, String email, UserRole role, double rating) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.fullName = fullName;
+        this.full_name = full_name;
         this.email = email;
         this.role = role;
         this.rating = rating;
     }
 
-    public User(String username, String password, String fullName, String email, UserRole role) {
-        this(0, username, password, fullName, email, role, 0.0);
+    public User(String username, String password, String full_name, String email, UserRole role) {
+        this(0, username, password, full_name, email, role, 0.0);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class User implements Validatable, Serializable {
             throw new InvalidDataException("Username cannot be empty");
         if (password == null || password.trim().isEmpty())
             throw new InvalidDataException("Password cannot be empty");
-        if (fullName == null || fullName.trim().isEmpty())
+        if (full_name == null || full_name.trim().isEmpty())
             throw new InvalidDataException("Full name cannot be empty");
         if (email == null || email.trim().isEmpty())
             throw new InvalidDataException("Email cannot be empty");
@@ -54,8 +54,8 @@ public class User implements Validatable, Serializable {
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
 
-    public String getFullName() { return fullName; }
-    public void setFullName(String fullName) { this.fullName = fullName; }
+    public String getFull_name() { return full_name; }
+    public void setFull_name(String full_name) { this.full_name = full_name; }
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }

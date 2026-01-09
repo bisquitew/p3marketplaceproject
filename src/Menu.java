@@ -114,7 +114,7 @@ public class Menu {
             User user = userDAO.findByUsernameAndPassword(username, password);
             if (user != null) {
                 currentUser = user;
-                System.out.println("Welcome, " + user.getFullName() + " (" + user.getRole() + ")");
+                System.out.println("Welcome, " + user.getFull_name() + " (" + user.getRole() + ")");
             } else {
                 System.out.println("Invalid credentials.");
             }
@@ -330,7 +330,7 @@ public class Menu {
                 Service s = serviceDAO.findById(b.getServiceId());
                 User customer = userDAO.findById(b.getCustomerId());
                 System.out.println("ID: " + b.getId()
-                        + " | Customer: " + (customer != null ? customer.getFullName() : "?")
+                        + " | Customer: " + (customer != null ? customer.getFull_name() : "?")
                         + " | Service: " + (s != null ? s.getTitle() : "?")
                         + " | Status: " + b.getStatus()
                         + " | Scheduled: " + b.getScheduledDateTime()

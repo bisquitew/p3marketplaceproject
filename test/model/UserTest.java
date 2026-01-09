@@ -20,7 +20,7 @@ class UserTest {
         assertEquals(1L, user.getId());
         assertEquals("john123", user.getUsername());
         assertEquals("pass123", user.getPassword());
-        assertEquals("John Doe", user.getFullName());
+        assertEquals("John Doe", user.getFull_name());
         assertEquals("john@mail.com", user.getEmail());
         assertEquals(UserRole.CUSTOMER, user.getRole());
     }
