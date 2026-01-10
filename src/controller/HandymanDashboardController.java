@@ -24,72 +24,35 @@ import java.util.List;
 
 public class HandymanDashboardController {
 
-    @FXML
-    private Label welcomeLabel;
+    @FXML private Label welcomeLabel;
+    @FXML private Label ratingLabel;
+    @FXML private Label ratingBreakdownLabel;
+    @FXML private Label infoLabel;
 
-    @FXML
-    private Label ratingLabel;
+    // Bookings table
+    @FXML private TableView<Booking> bookingsTable;
+    @FXML private TableColumn<Booking, Long> idColumn;
+    @FXML private TableColumn<Booking, Long> customerColumn;
+    @FXML private TableColumn<Booking, String> dateColumn;
+    @FXML private TableColumn<Booking, String> statusColumn;
+    @FXML private TableColumn<Booking, String> addressColumn;
+    @FXML private TableColumn<Booking, Double> priceColumn;
 
-    @FXML
-    private Label ratingBreakdownLabel;
+    // Services table
+    @FXML private TableView<Service> servicesTable;
+    @FXML private TableColumn<Service, Long> serviceIdColumn;
+    @FXML private TableColumn<Service, String> serviceTitleColumn;
+    @FXML private TableColumn<Service, String> serviceCityColumn;
+    @FXML private TableColumn<Service, String> serviceCategoryColumn;
+    @FXML private TableColumn<Service, Double> servicePriceColumn;
+    @FXML private TableColumn<Service, String> serviceActiveColumn;
 
-    @FXML
-    private TableView<Booking> bookingsTable;
-
-    @FXML
-    private TableColumn<Booking, Long> idColumn;
-
-    @FXML
-    private TableColumn<Booking, Long> customerColumn;
-
-    @FXML
-    private TableColumn<Booking, String> dateColumn;
-
-    @FXML
-    private TableColumn<Booking, String> statusColumn;
-
-    @FXML
-    private TableColumn<Booking, String> addressColumn;
-
-    @FXML
-    private TableColumn<Booking, Double> priceColumn;
-
-    @FXML
-    private TableView<Service> servicesTable;
-
-    @FXML
-    private TableColumn<Service, Long> serviceIdColumn;
-
-    @FXML
-    private TableColumn<Service, String> serviceTitleColumn;
-
-    @FXML
-    private TableColumn<Service, String> serviceCityColumn;
-
-    @FXML
-    private TableColumn<Service, Double> servicePriceColumn;
-
-    @FXML
-    private TableColumn<Service, String> serviceActiveColumn;
-
-    @FXML
-    private Label infoLabel;
-
-    // New fields for adding a service
-    @FXML
-    private TextField newServiceTitleField;
-
-    @FXML
-    private TextField newServiceCityField;
-
-    @FXML
-    private TextField newServicePriceField;
-
-    @FXML
-    private TextField newServiceCategoryField;
-
-    @FXML
-    private TextArea newServiceDescriptionArea;
+    // New service creation fields
+    @FXML private TextField newServiceTitleField;
+    @FXML private TextField newServiceCityField;
+    @FXML private TextField newServicePriceField;
+    @FXML private TextField newServiceCategoryField;
+    @FXML private TextArea newServiceDescriptionArea;
 
     private final BookingDAO bookingDAO = new BookingDAO();
     private final ServiceDAO serviceDAO = new ServiceDAO();
@@ -105,7 +68,7 @@ public class HandymanDashboardController {
             ratingLabel.setText("Average rating: " + u.getRating());
         }
 
-        // bookings table
+        // Bookings table bindings
         idColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleLongProperty(data.getValue().getId()).asObject());
         customerColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleLongProperty(data.getValue().getCustomerId()).asObject());
         dateColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(
@@ -115,10 +78,11 @@ public class HandymanDashboardController {
         addressColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getAddress()));
         priceColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleDoubleProperty(data.getValue().getTotalPrice()).asObject());
 
-        // services table
+        // Services table bindings
         serviceIdColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleLongProperty(data.getValue().getId()).asObject());
         serviceTitleColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getTitle()));
         serviceCityColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getCity()));
+        serviceCategoryColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getCategory()));
         servicePriceColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleDoubleProperty(data.getValue().getPrice()).asObject());
         serviceActiveColumn.setCellValueFactory(data ->
                 new javafx.beans.property.SimpleStringProperty(data.getValue().isActive() ? "Active" : "Inactive"));
@@ -130,17 +94,21 @@ public class HandymanDashboardController {
         try {
             long handymanId = Session.getCurrentUser().getId();
 
+            // Load bookings
             List<Booking> bookings = bookingDAO.findByHandymanId(handymanId);
             bookingsTable.setItems(FXCollections.observableArrayList(bookings));
 
+            // Load services
             List<Service> services = serviceDAO.findByHandyman(handymanId);
             servicesTable.setItems(FXCollections.observableArrayList(services));
 
+            // Refresh rating
             User refreshed = userDAO.findById(handymanId);
             if (refreshed != null) {
                 ratingLabel.setText("Average rating: " + refreshed.getRating());
             }
 
+            // Rating breakdown
             int[] breakdown = reviewDAO.getRatingBreakdownForHandyman(handymanId);
             ratingBreakdownLabel.setText(
                     "Ratings: 5★ " + breakdown[4] +
@@ -155,11 +123,9 @@ public class HandymanDashboardController {
         }
     }
 
-    private Booking getSelectedOrWarn() {
+    private Booking getSelectedBooking() {
         Booking b = bookingsTable.getSelectionModel().getSelectedItem();
-        if (b == null) {
-            infoLabel.setText("Select a booking first.");
-        }
+        if (b == null) infoLabel.setText("Select a booking first.");
         return b;
     }
 
@@ -173,21 +139,21 @@ public class HandymanDashboardController {
 
     @FXML
     private void onAccept() {
-        Booking b = getSelectedOrWarn();
+        Booking b = getSelectedBooking();
         if (b == null || isCompleted(b)) return;
         updateStatus(b.getId(), BookingStatus.ACCEPTED);
     }
 
     @FXML
     private void onComplete() {
-        Booking b = getSelectedOrWarn();
+        Booking b = getSelectedBooking();
         if (b == null || isCompleted(b)) return;
         updateStatus(b.getId(), BookingStatus.COMPLETED);
     }
 
     @FXML
     private void onCancel() {
-        Booking b = getSelectedOrWarn();
+        Booking b = getSelectedBooking();
         if (b == null || isCompleted(b)) return;
         updateStatus(b.getId(), BookingStatus.CANCELLED);
     }
@@ -196,12 +162,14 @@ public class HandymanDashboardController {
         try {
             long handymanId = Session.getCurrentUser().getId();
             boolean updated = bookingDAO.updateStatusIfOwnedByHandyman(bookingId, handymanId, status);
+
             if (updated) {
                 infoLabel.setText("Booking status updated to " + status);
                 loadData();
             } else {
-                infoLabel.setText("Booking not found, not assigned to you, or already completed.");
+                infoLabel.setText("Booking not found or not assigned to you.");
             }
+
         } catch (SQLException e) {
             infoLabel.setText("Database error: " + e.getMessage());
         }
@@ -209,13 +177,12 @@ public class HandymanDashboardController {
 
     @FXML
     private void onReschedule() {
-        Booking b = getSelectedOrWarn();
+        Booking b = getSelectedBooking();
         if (b == null || isCompleted(b)) return;
 
-        // Date
+        // Ask for date
         TextInputDialog dateDialog = new TextInputDialog(b.getScheduledDateTime().toLocalDate().toString());
-        dateDialog.setHeaderText("Enter new date:");
-        dateDialog.setContentText("Date (YYYY-MM-DD):");
+        dateDialog.setHeaderText("Enter new date (YYYY-MM-DD)");
         var dateOpt = dateDialog.showAndWait();
         if (dateOpt.isEmpty()) return;
 
@@ -227,10 +194,9 @@ public class HandymanDashboardController {
             return;
         }
 
-        // Time
+        // Ask for time
         TextInputDialog timeDialog = new TextInputDialog(b.getScheduledDateTime().toLocalTime().toString().substring(0, 5));
-        timeDialog.setHeaderText("Enter new time:");
-        timeDialog.setContentText("Time (HH:MM):");
+        timeDialog.setHeaderText("Enter new time (HH:MM)");
         var timeOpt = timeDialog.showAndWait();
         if (timeOpt.isEmpty()) return;
 
@@ -251,18 +217,22 @@ public class HandymanDashboardController {
                     handymanId,
                     java.sql.Timestamp.valueOf(newDateTime)
             );
+
             if (updated) {
                 infoLabel.setText("Booking rescheduled.");
                 loadData();
             } else {
-                infoLabel.setText("Booking not found, not assigned to you, or already completed.");
+                infoLabel.setText("Booking not found or not assigned to you.");
             }
+
         } catch (SQLException e) {
             infoLabel.setText("Database error: " + e.getMessage());
         }
     }
 
-    // ===== New: Add service for handyman =====
+    // ============================
+    //      ADD NEW SERVICE
+    // ============================
 
     @FXML
     private void onAddService() {
@@ -274,10 +244,8 @@ public class HandymanDashboardController {
         String category = newServiceCategoryField.getText();
         String description = newServiceDescriptionArea.getText();
 
-        if (title == null || title.isBlank()
-                || city == null || city.isBlank()
-                || priceStr == null || priceStr.isBlank()) {
-            infoLabel.setText("Title, city and price are required.");
+        if (title.isBlank() || city.isBlank() || priceStr.isBlank() || category.isBlank()) {
+            infoLabel.setText("Title, city, price, and category are required.");
             return;
         }
 
@@ -289,15 +257,9 @@ public class HandymanDashboardController {
             return;
         }
 
-        if (category == null || category.isBlank()) {
-            category = "General";
-        }
-        if (description == null) {
-            description = "";
-        }
-
         try {
             long handymanId = Session.getCurrentUser().getId();
+
             Service service = new Service(
                     idGen.nextId(),
                     handymanId,
@@ -307,10 +269,10 @@ public class HandymanDashboardController {
                     category,
                     city
             );
+
             service.validate();
             serviceDAO.insert(service);
 
-            // Clear fields
             newServiceTitleField.clear();
             newServiceCityField.clear();
             newServicePriceField.clear();
@@ -319,6 +281,7 @@ public class HandymanDashboardController {
 
             infoLabel.setText("Service created successfully.");
             loadData();
+
         } catch (InvalidDataException e) {
             infoLabel.setText("Validation error: " + e.getMessage());
         } catch (SQLException e) {
@@ -337,18 +300,22 @@ public class HandymanDashboardController {
         try {
             long handymanId = Session.getCurrentUser().getId();
             boolean toggled = serviceDAO.toggleActiveForHandyman(selected.getId(), handymanId);
+
             if (toggled) {
                 infoLabel.setText("Service active state toggled.");
                 loadData();
             } else {
                 infoLabel.setText("Service not found or not owned by you.");
             }
+
         } catch (SQLException e) {
-            infoLabel.setText("Database error while toggling service: " + e.getMessage());
+            infoLabel.setText("Database error: " + e.getMessage());
         }
     }
 
-    // ===== Navigation / theme =====
+    // ============================
+    //      NAVIGATION / THEME
+    // ============================
 
     @FXML
     private void onBackToLogin() {

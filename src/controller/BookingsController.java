@@ -1,154 +1,123 @@
-package controller;
+package repository;
 
-import app.MainFX;
-import javafx.collections.FXCollections;
-import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import model.Booking;
-import model.Review;
 import model.Service;
-import model.enums.BookingStatus;
-import model.exceptions.InvalidDataException;
-import repository.BookingDAO;
-import repository.ReviewDAO;
-import repository.ServiceDAO;
-import repository.UserDAO;
-import util.IdGenerator;
+import util.DatabaseConnector;
 
-import java.sql.SQLException;
-import java.time.format.DateTimeFormatter;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
-public class BookingsController {
+public class ServiceDAO {
 
-    @FXML
-    private TableView<Booking> bookingsTable;
+    public void insert(Service s) throws SQLException {
+        String sql = "INSERT INTO services (id, handyman_id, title, description, price, category, city, active) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-    @FXML
-    private TableColumn<Booking, Long> idColumn;
+        try (Connection conn = DatabaseConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-    @FXML
-    private TableColumn<Booking, Long> serviceColumn;
+            stmt.setLong(1, s.getId());
+            stmt.setLong(2, s.getHandymanId());
+            stmt.setString(3, s.getTitle());
+            stmt.setString(4, s.getDescription());
+            stmt.setDouble(5, s.getPrice());
+            stmt.setString(6, s.getCategory());
+            stmt.setString(7, s.getCity());
+            stmt.setBoolean(8, s.isActive());
 
-    @FXML
-    private TableColumn<Booking, String> dateColumn;
-
-    @FXML
-    private TableColumn<Booking, String> statusColumn;
-
-    @FXML
-    private TableColumn<Booking, String> addressColumn;
-
-    @FXML
-    private TableColumn<Booking, Double> priceColumn;
-
-    @FXML
-    private Label infoLabel;
-
-    private final BookingDAO bookingDAO = new BookingDAO();
-    private final ReviewDAO reviewDAO = new ReviewDAO();
-    private final ServiceDAO serviceDAO = new ServiceDAO();
-    private final UserDAO userDAO = new UserDAO();
-    private final IdGenerator idGen = new IdGenerator(3000);
-
-    @FXML
-    private void initialize() {
-        idColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleLongProperty(data.getValue().getId()).asObject());
-        serviceColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleLongProperty(data.getValue().getServiceId()).asObject());
-        dateColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(
-                data.getValue().getScheduledDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
-        ));
-        statusColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getStatus().toString()));
-        addressColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getAddress()));
-        priceColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleDoubleProperty(data.getValue().getTotalPrice()).asObject());
-
-        loadBookings();
-    }
-
-    private void loadBookings() {
-        try {
-            long userId = Session.getCurrentUser().getId();
-            List<Booking> list = bookingDAO.findByCustomerId(userId);
-            bookingsTable.setItems(FXCollections.observableArrayList(list));
-        } catch (SQLException e) {
-            infoLabel.setText("Database error: " + e.getMessage());
-        } catch (NullPointerException e) {
-            infoLabel.setText("No logged-in user.");
+            stmt.executeUpdate();
         }
     }
 
-    @FXML
-    private void onRefresh() {
-        loadBookings();
+    public List<Service> findAllActive() throws SQLException {
+        String sql = "SELECT * FROM services WHERE active = 1";
+        List<Service> list = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) list.add(mapRow(rs));
+        }
+        return list;
     }
 
-    @FXML
-    private void onAddReview() {
-        Booking selected = bookingsTable.getSelectionModel().getSelectedItem();
-        if (selected == null) {
-            infoLabel.setText("Select a booking first.");
-            return;
-        }
+    public List<Service> findByHandyman(long handymanId) throws SQLException {
+        String sql = "SELECT * FROM services WHERE handyman_id = ?";
+        List<Service> list = new ArrayList<>();
 
-        if (selected.getStatus() != BookingStatus.COMPLETED &&
-                selected.getStatus() != BookingStatus.CANCELLED) {
-            infoLabel.setText("You can review only completed or cancelled bookings.");
-            return;
-        }
+        try (Connection conn = DatabaseConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-        TextInputDialog ratingDialog = new TextInputDialog("5");
-        ratingDialog.setHeaderText("Rate this booking (1-5):");
-        ratingDialog.setContentText("Rating:");
-        var ratingOpt = ratingDialog.showAndWait();
-        if (ratingOpt.isEmpty()) return;
+            stmt.setLong(1, handymanId);
 
-        int rating;
-        try {
-            rating = Integer.parseInt(ratingOpt.get());
-            if (rating < 1 || rating > 5) {
-                infoLabel.setText("Rating must be between 1 and 5.");
-                return;
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) list.add(mapRow(rs));
             }
-        } catch (NumberFormatException e) {
-            infoLabel.setText("Invalid rating value.");
-            return;
         }
+        return list;
+    }
 
-        TextInputDialog commentDialog = new TextInputDialog();
-        commentDialog.setHeaderText("Leave a comment (optional):");
-        commentDialog.setContentText("Comment:");
-        var commentOpt = commentDialog.showAndWait();
-        if (commentOpt.isEmpty()) return;
-        String comment = commentOpt.get();
+    public List<Service> search(String category, String city) throws SQLException {
+        String sql = "SELECT * FROM services WHERE active = 1 AND " +
+                "(category LIKE ? OR ? = '') AND (city LIKE ? OR ? = '')";
 
-        try {
-            Review review = new Review(idGen.nextId(), selected.getId(), rating, comment);
-            review.validate();
-            reviewDAO.insert(review);
+        List<Service> list = new ArrayList<>();
 
-            Service s = serviceDAO.findById(selected.getServiceId());
-            if (s != null) {
-                long handymanId = s.getHandymanId();
-                double avg = reviewDAO.calculateHandymanAverageRating(handymanId);
-                userDAO.updateRating(handymanId, avg);
+        try (Connection conn = DatabaseConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, "%" + category + "%");
+            stmt.setString(2, category);
+            stmt.setString(3, "%" + city + "%");
+            stmt.setString(4, city);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) list.add(mapRow(rs));
             }
+        }
+        return list;
+    }
 
-            infoLabel.setText("Review saved. Thank you!");
-        } catch (InvalidDataException e) {
-            infoLabel.setText("Validation error: " + e.getMessage());
-        } catch (SQLException e) {
-            infoLabel.setText("Database error: " + e.getMessage());
+    public boolean toggleActiveForHandyman(long id, long handymanId) throws SQLException {
+        String sql = "UPDATE services SET active = NOT active WHERE id = ? AND handyman_id = ?";
+
+        try (Connection conn = DatabaseConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, id);
+            stmt.setLong(2, handymanId);
+            return stmt.executeUpdate() > 0;
         }
     }
 
-    @FXML
-    private void onToggleDarkMode() {
-        MainFX.getSceneManager().toggleDarkMode();
+    // ✅ NEW METHOD — REQUIRED BY BookingsController
+    public Service findById(long id) throws SQLException {
+        String sql = "SELECT * FROM services WHERE id = ?";
+
+        try (Connection conn = DatabaseConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, id);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapRow(rs);
+                }
+            }
+        }
+        return null;
     }
 
-
-    @FXML
-    private void onBack() {
-        MainFX.getSceneManager().showCustomerDashboard();
+    private Service mapRow(ResultSet rs) throws SQLException {
+        return new Service(
+                rs.getLong("id"),
+                rs.getLong("handyman_id"),
+                rs.getString("title"),
+                rs.getString("description"),
+                rs.getDouble("price"),
+                rs.getString("category"),
+                rs.getString("city")
+        );
     }
 }
