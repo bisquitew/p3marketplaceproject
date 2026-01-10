@@ -1,160 +1,88 @@
-/* ===== Global Layout ===== */
+/* ===== Modern Vibrant Palette ===== */
 .root {
-    -fx-font-family: "Segoe UI", "Roboto", sans-serif;
-    -fx-background-color: linear-gradient(to bottom right, #f5f6fa, #dcdde1);
+    -fx-font-family: "Segoe UI Semibold", sans-serif;
+    -fx-background-color: linear-gradient(to bottom right, #6a11cb, #2575fc); /* Deep Blue/Purple Gradient */
 }
 
-/* Centered card container */
+/* Card - Glassmorphism style */
 .card-container {
-    -fx-background-color: white;
-    -fx-background-radius: 16;
-    -fx-padding: 30;
-    -fx-spacing: 15;
-    -fx-alignment: center;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 22, 0.25, 0, 4);
+    -fx-background-color: rgba(255, 255, 255, 0.9);
+    -fx-background-radius: 25;
+    -fx-padding: 40;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 30, 0, 0, 15);
 }
 
-/* Titles & text */
 .title {
-    -fx-font-size: 26px;
+    -fx-font-size: 32px;
+    -fx-text-fill: #1a1a1a;
     -fx-font-weight: bold;
-    -fx-text-fill: #2f3640;
 }
 
 .subtitle {
-    -fx-font-size: 15px;
-    -fx-font-weight: normal;
-    -fx-text-fill: #4b6584;
+    -fx-font-size: 16px;
+    -fx-text-fill: #555555;
 }
 
-.label {
-    -fx-text-fill: #2f3640;
-}
-
-.label.error {
-    -fx-text-fill: #e84118;
-}
-
-.label.info {
-    -fx-text-fill: #2f3640;
-}
-
-/* Buttons with subtle animation */
+/* Animated Buttons */
 .button {
-    -fx-background-color: linear-gradient(to right, #4a90e2, #6c5ce7);
+    -fx-background-color: linear-gradient(to right, #ff416c, #ff4b2b); /* Vibrant Red/Orange */
     -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-background-radius: 20;
-    -fx-padding: 8 20;
+    -fx-font-weight: bold;
+    -fx-background-radius: 30;
+    -fx-padding: 12 30;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.20), 10, 0.25, 0, 2);
-    -fx-scale-x: 1;
-    -fx-scale-y: 1;
+    -fx-effect: dropshadow(gaussian, rgba(255, 65, 108, 0.4), 10, 0, 0, 4);
 }
 
 .button:hover {
-    -fx-background-color: linear-gradient(to right, #3b7ac2, #5c4ad7);
-    -fx-scale-x: 1.03;
-    -fx-scale-y: 1.03;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-background-color: linear-gradient(to right, #ff4b2b, #ff416c);
 }
 
-/* Inputs */
-.text-field, .password-field, .combo-box {
-    -fx-background-radius: 8;
-    -fx-background-color: #ffffff;
-    -fx-text-fill: #2f3640;
-    -fx-border-color: #dcdde1;
-    -fx-border-radius: 8;
-    -fx-padding: 8;
+.button.secondary {
+    -fx-background-color: transparent;
+    -fx-border-color: #2575fc;
+    -fx-border-width: 2;
+    -fx-text-fill: #2575fc;
+    -fx-border-radius: 30;
 }
 
-/* Toolbar */
-.tool-bar {
-    -fx-background-color: rgba(255,255,255,0.95);
-    -fx-padding: 10;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 12, 0.25, 0, 2);
-}
-
-/* Tables */
+/* Tables Styling */
 .table-view {
-    -fx-background-color: white;
-    -fx-border-color: #dcdde1;
+    -fx-background-color: transparent;
+    -fx-border-color: #e0e0e0;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
 }
 
-.table-view .table-row-cell {
-    -fx-text-fill: #2f3640;
+.table-view .column-header-background {
+    -fx-background-color: #f8f9fa;
 }
 
-/* ========================================= */
-/* ===== DARK THEME UPDATES FOR VISIBILITY ===== */
-/* ========================================= */
+.table-row-cell:selected {
+    -fx-background-color: #2575fc;
+}
 
+/* ===== Dark Mode - Cyber Neon ===== */
 .root.dark {
-    -fx-background-color: linear-gradient(to bottom right, #2f3640, #1e272e);
+    -fx-background-color: #0f0c29; /* Deep Space Blue */
 }
 
 .root.dark .card-container {
-    -fx-background-color: #353b48;
+    -fx-background-color: rgba(30, 39, 46, 0.95);
+    -fx-border-color: #00d2ff;
+    -fx-border-width: 1;
 }
 
-/* Ensure all labels and text elements are visible */
-.root.dark .title,
-.root.dark .subtitle,
-.root.dark .label,
-.root.dark .label.info,
-.root.dark .tool-bar .label {
-    -fx-text-fill: #f5f6fa !important;
+.root.dark .title { -fx-text-fill: #00d2ff; }
+.root.dark .label { -fx-text-fill: #dcdde1; }
+
+.root.dark .button {
+    -fx-background-color: linear-gradient(to right, #00d2ff, #3a7bd5);
+    -fx-effect: dropshadow(gaussian, rgba(0, 210, 255, 0.5), 15, 0, 0, 0);
 }
 
-.root.dark .label.error {
-    -fx-text-fill: #ff6b6b;
-}
-
-/* Fix for TableView Text (ID, Price, Service ID, etc.) */
-.root.dark .table-view {
-    -fx-background-color: #2f3640;
-    -fx-border-color: #444b5b;
-}
-
-.root.dark .table-view .column-header {
-    -fx-background-color: #353b48;
-}
-
-.root.dark .table-view .column-header .label {
-    -fx-text-fill: #f5f6fa;
-}
-
-.root.dark .table-view .table-row-cell {
-    -fx-background-color: #2f3640;
-}
-
-/* Explicitly target the text inside cells to be visible */
-.root.dark .table-view .table-cell {
-    -fx-text-fill: #f5f6fa;
-}
-
-.root.dark .table-row-cell:odd {
-    -fx-background-color: #333b47;
-}
-
-.root.dark .table-row-cell:selected {
-    -fx-background-color: #4a90e2;
-}
-
-.root.dark .table-row-cell:selected .table-cell {
-    -fx-text-fill: white;
-}
-
-/* Inputs in dark mode */
-.root.dark .text-field,
-.root.dark .password-field,
-.root.dark .combo-box {
-    -fx-background-color: #3d3d3d;
-    -fx-text-fill: white;
-    -fx-border-color: #718093;
-    -fx-prompt-text-fill: #b2bec3;
-}
-
-.root.dark .tool-bar {
-    -fx-background-color: #2f3640;
+.root.dark .table-cell {
+    -fx-text-fill: #00d2ff !important;
 }
