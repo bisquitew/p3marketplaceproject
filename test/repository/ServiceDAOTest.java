@@ -2,9 +2,7 @@ package repository;
 
 import model.Service;
 import org.junit.jupiter.api.Test;
-
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class ServiceDAOTest {
@@ -25,7 +23,8 @@ class ServiceDAOTest {
 
         dao.insert(s);
 
-        List<Service> results = dao.findByFilters(null, "Timisoara");
+        // Change findByFilters to search to match your DAO
+        List<Service> results = dao.search("", "Timisoara");
 
         assertTrue(results.stream().anyMatch(x -> x.getId() == 9200L));
     }

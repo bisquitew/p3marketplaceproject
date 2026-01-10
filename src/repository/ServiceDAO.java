@@ -31,153 +31,81 @@ public class ServiceDAO {
     }
 
     public Service findById(long id) throws SQLException {
-        String sql = "SELECT id, handyman_id, title, description, price, category, city, active FROM services WHERE id = ?";
+        String sql = "SELECT * FROM services WHERE id = ?";
         try (Connection conn = DatabaseConnector.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setLong(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    Service s = new Service(
-                            rs.getLong("id"),
-                            rs.getLong("handyman_id"),
-                            rs.getString("title"),
-                            rs.getString("description"),
-                            rs.getDouble("price"),
-                            rs.getString("category"),
-                            rs.getString("city")
-                    );
-                    s.setActive(rs.getBoolean("active"));
-                    return s;
-                }
+                if (rs.next()) return mapRow(rs);
             }
         }
         return null;
     }
 
     public List<Service> findAllActive() throws SQLException {
-        String sql = "SELECT id, handyman_id, title, description, price, category, city, active FROM services WHERE active = TRUE";
+        String sql = "SELECT * FROM services WHERE active = TRUE";
         List<Service> services = new ArrayList<>();
         try (Connection conn = DatabaseConnector.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                Service s = new Service(
-                        rs.getLong("id"),
-                        rs.getLong("handyman_id"),
-                        rs.getString("title"),
-                        rs.getString("description"),
-                        rs.getDouble("price"),
-                        rs.getString("category"),
-                        rs.getString("city")
-                );
-                s.setActive(rs.getBoolean("active"));
-                services.add(s);
-            }
+            while (rs.next()) services.add(mapRow(rs));
         }
         return services;
     }
 
-    public List<Service> findByFilters(String category, String city) throws SQLException {
-        StringBuilder sql = new StringBuilder("SELECT id, handyman_id, title, description, price, category, city, active FROM services WHERE active = TRUE");
-        List<Object> params = new ArrayList<>();
-
-        if (category != null) {
-            sql.append(" AND LOWER(category) = LOWER(?)");
-            params.add(category);
-        }
-        if (city != null) {
-            sql.append(" AND LOWER(city) = LOWER(?)");
-            params.add(city);
-        }
-
-        List<Service> services = new ArrayList<>();
-        try (Connection conn = DatabaseConnector.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
-
-            for (int i = 0; i < params.size(); i++) {
-                stmt.setObject(i + 1, params.get(i));
-            }
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    Service s = new Service(
-                            rs.getLong("id"),
-                            rs.getLong("handyman_id"),
-                            rs.getString("title"),
-                            rs.getString("description"),
-                            rs.getDouble("price"),
-                            rs.getString("category"),
-                            rs.getString("city")
-                    );
-                    s.setActive(rs.getBoolean("active"));
-                    services.add(s);
-                }
-            }
-        }
-        return services;
-    }
-
-    public List<Service> findAll() throws SQLException {
-        String sql = "SELECT id, handyman_id, title, description, price, category, city, active FROM services";
-        List<Service> services = new ArrayList<>();
-        try (Connection conn = DatabaseConnector.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                Service s = new Service(
-                        rs.getLong("id"),
-                        rs.getLong("handyman_id"),
-                        rs.getString("title"),
-                        rs.getString("description"),
-                        rs.getDouble("price"),
-                        rs.getString("category"),
-                        rs.getString("city")
-                );
-                s.setActive(rs.getBoolean("active"));
-                services.add(s);
-            }
-        }
-        return services;
-    }
-
-    public boolean toggleActiveForHandyman(long serviceId, long handymanId) throws SQLException {
-        String sql = "UPDATE services SET active = NOT active WHERE id = ? AND handyman_id = ?";
+    public List<Service> search(String category, String city) throws SQLException {
+        String sql = "SELECT * FROM services WHERE active = 1 AND " +
+                "(category LIKE ? OR ? = '') AND (city LIKE ? OR ? = '')";
+        List<Service> list = new ArrayList<>();
         try (Connection conn = DatabaseConnector.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setLong(1, serviceId);
-            stmt.setLong(2, handymanId);
-            int updated = stmt.executeUpdate();
-            return updated > 0;
+            stmt.setString(1, "%" + category + "%");
+            stmt.setString(2, category);
+            stmt.setString(3, "%" + city + "%");
+            stmt.setString(4, city);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) list.add(mapRow(rs));
+            }
         }
+        return list;
     }
 
     public List<Service> findByHandyman(long handymanId) throws SQLException {
-        String sql = "SELECT id, handyman_id, title, description, price, category, city, active FROM services WHERE handyman_id = ?";
-        List<Service> services = new ArrayList<>();
+        String sql = "SELECT * FROM services WHERE handyman_id = ?";
+        List<Service> list = new ArrayList<>();
         try (Connection conn = DatabaseConnector.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-
             stmt.setLong(1, handymanId);
             try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    Service s = new Service(
-                            rs.getLong("id"),
-                            rs.getLong("handyman_id"),
-                            rs.getString("title"),
-                            rs.getString("description"),
-                            rs.getDouble("price"),
-                            rs.getString("category"),
-                            rs.getString("city")
-                    );
-                    s.setActive(rs.getBoolean("active"));
-                    services.add(s);
-                }
+                while (rs.next()) list.add(mapRow(rs));
             }
         }
-        return services;
+        return list;
+    }
+
+    public boolean toggleActiveForHandyman(long id, long handymanId) throws SQLException {
+        String sql = "UPDATE services SET active = NOT active WHERE id = ? AND handyman_id = ?";
+        try (Connection conn = DatabaseConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, id);
+            stmt.setLong(2, handymanId);
+            return stmt.executeUpdate() > 0;
+        }
+    }
+
+    private Service mapRow(ResultSet rs) throws SQLException {
+        Service s = new Service(
+                rs.getLong("id"),
+                rs.getLong("handyman_id"),
+                rs.getString("title"),
+                rs.getString("description"),
+                rs.getDouble("price"),
+                rs.getString("category"),
+                rs.getString("city")
+        );
+        s.setActive(rs.getBoolean("active"));
+        return s;
     }
 }
