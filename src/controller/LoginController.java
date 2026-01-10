@@ -34,8 +34,8 @@ public class LoginController {
                 Session.setCurrentUser(user);
                 switch (user.getRole()) {
                     case CUSTOMER -> MainFX.getSceneManager().showCustomerDashboard();
-                    case HANDYMAN -> MainFX.getSceneManager().showCustomerDashboard(); // later: handyman dashboard
-                    case ADMIN -> MainFX.getSceneManager().showCustomerDashboard();    // later: admin dashboard
+                    case HANDYMAN -> MainFX.getSceneManager().showHandymanDashboard();
+                    case ADMIN -> MainFX.getSceneManager().showCustomerDashboard(); // simple admin reuse for now
                 }
             } else {
                 errorLabel.setText("Invalid credentials.");

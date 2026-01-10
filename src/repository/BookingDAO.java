@@ -5,7 +5,6 @@ import model.enums.BookingStatus;
 import util.DatabaseConnector;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,12 +117,19 @@ public class BookingDAO {
         return list;
     }
 
+    /**
+     * Update status only if:
+     * - booking belongs to handyman
+     * - booking is NOT already COMPLETED
+     */
     public boolean updateStatusIfOwnedByHandyman(long bookingId, long handymanId, BookingStatus newStatus) throws SQLException {
         String sql = """
                 UPDATE bookings b
                 JOIN services s ON b.service_id = s.id
                 SET b.status = ?
-                WHERE b.id = ? AND s.handyman_id = ?
+                WHERE b.id = ?
+                  AND s.handyman_id = ?
+                  AND b.status <> 'COMPLETED'
                 """;
 
         try (Connection conn = DatabaseConnector.getConnection();
@@ -137,7 +143,32 @@ public class BookingDAO {
         }
     }
 
-    // ⭐ NEW: required for the reminder thread
+    /**
+     * Reschedule only if:
+     * - booking belongs to handyman
+     * - booking is NOT already COMPLETED
+     */
+    public boolean rescheduleIfOwnedByHandyman(long bookingId, long handymanId, Timestamp newTime) throws SQLException {
+        String sql = """
+                UPDATE bookings b
+                JOIN services s ON b.service_id = s.id
+                SET b.scheduled_datetime = ?
+                WHERE b.id = ?
+                  AND s.handyman_id = ?
+                  AND b.status <> 'COMPLETED'
+                """;
+
+        try (Connection conn = DatabaseConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setTimestamp(1, newTime);
+            stmt.setLong(2, bookingId);
+            stmt.setLong(3, handymanId);
+
+            return stmt.executeUpdate() > 0;
+        }
+    }
+
     public List<Booking> findAll() throws SQLException {
         String sql = "SELECT * FROM bookings";
         List<Booking> list = new ArrayList<>();

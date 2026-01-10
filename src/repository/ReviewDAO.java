@@ -68,4 +68,40 @@ public class ReviewDAO {
         }
         return 0.0;
     }
+
+    /**
+     * Returns an int[5]:
+     * index 0 -> count of 1-star
+     * index 1 -> count of 2-star
+     * ...
+     * index 4 -> count of 5-star
+     */
+    public int[] getRatingBreakdownForHandyman(long handymanId) throws SQLException {
+        String sql = """
+                SELECT r.rating, COUNT(*) AS cnt
+                FROM reviews r
+                JOIN bookings b ON r.booking_id = b.id
+                JOIN services s ON b.service_id = s.id
+                WHERE s.handyman_id = ?
+                GROUP BY r.rating
+                """;
+
+        int[] breakdown = new int[5];
+
+        try (Connection conn = DatabaseConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, handymanId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int rating = rs.getInt("rating");
+                    int cnt = rs.getInt("cnt");
+                    if (rating >= 1 && rating <= 5) {
+                        breakdown[rating - 1] = cnt;
+                    }
+                }
+            }
+        }
+        return breakdown;
+    }
 }

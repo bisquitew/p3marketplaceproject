@@ -13,7 +13,9 @@ import repository.ServiceDAO;
 import util.IdGenerator;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 public class ServicesController {
@@ -80,20 +82,52 @@ public class ServicesController {
             return;
         }
 
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setHeaderText("Enter booking address:");
-        dialog.setContentText("Address:");
-        var result = dialog.showAndWait();
-        if (result.isEmpty()) return;
+        // Address
+        TextInputDialog addressDialog = new TextInputDialog();
+        addressDialog.setHeaderText("Enter booking address:");
+        addressDialog.setContentText("Address:");
+        var addressResult = addressDialog.showAndWait();
+        if (addressResult.isEmpty()) return;
+        String address = addressResult.get();
 
-        String address = result.get();
+        // Date
+        TextInputDialog dateDialog = new TextInputDialog(LocalDate.now().plusDays(1).toString());
+        dateDialog.setHeaderText("Enter booking date:");
+        dateDialog.setContentText("Date (YYYY-MM-DD):");
+        var dateOpt = dateDialog.showAndWait();
+        if (dateOpt.isEmpty()) return;
+
+        LocalDate date;
+        try {
+            date = LocalDate.parse(dateOpt.get());
+        } catch (Exception e) {
+            infoLabel.setText("Invalid date format.");
+            return;
+        }
+
+        // Time
+        TextInputDialog timeDialog = new TextInputDialog("10:00");
+        timeDialog.setHeaderText("Enter booking time:");
+        timeDialog.setContentText("Time (HH:MM):");
+        var timeOpt = timeDialog.showAndWait();
+        if (timeOpt.isEmpty()) return;
+
+        LocalTime time;
+        try {
+            time = LocalTime.parse(timeOpt.get());
+        } catch (Exception e) {
+            infoLabel.setText("Invalid time format.");
+            return;
+        }
+
+        LocalDateTime dateTime = LocalDateTime.of(date, time);
 
         try {
             Booking booking = new Booking(
                     idGen.nextId(),
                     user.getId(),
                     selected.getId(),
-                    LocalDateTime.now().plusDays(1),
+                    dateTime,
                     address,
                     selected.getPrice()
             );

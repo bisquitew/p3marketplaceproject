@@ -154,4 +154,30 @@ public class ServiceDAO {
             return updated > 0;
         }
     }
+
+    public List<Service> findByHandyman(long handymanId) throws SQLException {
+        String sql = "SELECT id, handyman_id, title, description, price, category, city, active FROM services WHERE handyman_id = ?";
+        List<Service> services = new ArrayList<>();
+        try (Connection conn = DatabaseConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, handymanId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Service s = new Service(
+                            rs.getLong("id"),
+                            rs.getLong("handyman_id"),
+                            rs.getString("title"),
+                            rs.getString("description"),
+                            rs.getDouble("price"),
+                            rs.getString("category"),
+                            rs.getString("city")
+                    );
+                    s.setActive(rs.getBoolean("active"));
+                    services.add(s);
+                }
+            }
+        }
+        return services;
+    }
 }

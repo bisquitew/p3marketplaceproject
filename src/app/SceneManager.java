@@ -19,13 +19,15 @@ public class SceneManager {
 
     private void switchScene(String fxml, String title) {
         try {
-            currentFxml = fxml; // track current scene
+            currentFxml = fxml;
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/" + fxml));
             Parent root = loader.load();
             Scene scene = new Scene(root);
 
             scene.getStylesheets().add(getClass().getResource("/view/style.css").toExternalForm());
-            if (darkMode) root.getStyleClass().add("dark");
+            if (darkMode) {
+                root.getStyleClass().add("dark");
+            }
 
             stage.setScene(scene);
             stage.setTitle("Handyman Marketplace - " + title);
@@ -43,14 +45,15 @@ public class SceneManager {
     public void toggleDarkMode() {
         darkMode = !darkMode;
         if (currentFxml != null) {
-            // reload current scene with new theme
-            switchScene(currentFxml, stage.getTitle().replace("Handyman Marketplace - ", ""));
+            String title = stage.getTitle().replace("Handyman Marketplace - ", "");
+            switchScene(currentFxml, title);
         }
     }
 
     public void showLoginScene() { switchScene("login.fxml", "Login"); }
     public void showRegisterScene() { switchScene("register.fxml", "Register"); }
     public void showCustomerDashboard() { switchScene("customer_dashboard.fxml", "Dashboard"); }
+    public void showHandymanDashboard() { switchScene("handyman_dashboard.fxml", "Handyman Dashboard"); }
     public void showServicesScene() { switchScene("services.fxml", "Services"); }
     public void showBookingsScene() { switchScene("bookings.fxml", "My Bookings"); }
 }
