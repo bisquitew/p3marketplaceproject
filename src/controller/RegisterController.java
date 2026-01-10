@@ -42,7 +42,6 @@ public class RegisterController {
 
             UserRole role = UserRole.valueOf(roleStr);
 
-            // Let DB generate the ID
             User user = new User(username, password, fullName, email, role);
 
             user.validate();
@@ -57,6 +56,11 @@ public class RegisterController {
         } catch (Exception e) {
             errorLabel.setText("Unexpected error: " + e.getMessage());
         }
+    }
+
+    @FXML
+    private void onToggleDarkMode() {
+        MainFX.getSceneManager().toggleDarkMode();
     }
 
     @FXML

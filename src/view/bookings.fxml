@@ -12,13 +12,16 @@
         <ToolBar>
             <Label text="My Bookings" styleClass="title"/>
             <Pane HBox.hgrow="ALWAYS"/>
+            <Button text="Toggle Dark Mode" onAction="#onToggleDarkMode" styleClass="secondary"/>
             <Button text="Back" onAction="#onBack" styleClass="secondary"/>
         </ToolBar>
     </top>
 
     <center>
         <VBox spacing="15">
-            <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
 
             <TableView fx:id="bookingsTable">
                 <columns>
@@ -31,7 +34,7 @@
                 </columns>
             </TableView>
 
-            <HBox spacing="10">
+            <HBox spacing="10" alignment="CENTER">
                 <Button text="Refresh" onAction="#onRefresh"/>
                 <Button text="Add Review" onAction="#onAddReview"/>
             </HBox>

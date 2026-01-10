@@ -21,6 +21,7 @@
 
                 <Button text="Register" onAction="#onRegister" maxWidth="Infinity"/>
                 <Button text="Back to Login" onAction="#onBack" maxWidth="Infinity" styleClass="secondary"/>
+                <Button text="Toggle Dark Mode" onAction="#onToggleDarkMode" maxWidth="Infinity" styleClass="secondary"/>
 
                 <Label fx:id="errorLabel" styleClass="error"/>
             </VBox>

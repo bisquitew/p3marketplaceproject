@@ -96,7 +96,6 @@ public class BookingsController {
             return;
         }
 
-        // Rating
         TextInputDialog ratingDialog = new TextInputDialog("5");
         ratingDialog.setHeaderText("Rate this booking (1-5):");
         ratingDialog.setContentText("Rating:");
@@ -115,7 +114,6 @@ public class BookingsController {
             return;
         }
 
-        // Comment
         TextInputDialog commentDialog = new TextInputDialog();
         commentDialog.setHeaderText("Leave a comment (optional):");
         commentDialog.setContentText("Comment:");
@@ -128,7 +126,6 @@ public class BookingsController {
             review.validate();
             reviewDAO.insert(review);
 
-            // Update handyman rating
             Service s = serviceDAO.findById(selected.getServiceId());
             if (s != null) {
                 long handymanId = s.getHandymanId();
@@ -143,6 +140,12 @@ public class BookingsController {
             infoLabel.setText("Database error: " + e.getMessage());
         }
     }
+
+    @FXML
+    private void onToggleDarkMode() {
+        MainFX.getSceneManager().toggleDarkMode();
+    }
+
 
     @FXML
     private void onBack() {

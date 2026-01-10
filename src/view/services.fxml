@@ -12,13 +12,16 @@
         <ToolBar>
             <Label text="Available Services" styleClass="title"/>
             <Pane HBox.hgrow="ALWAYS"/>
+            <Button text="Toggle Dark Mode" onAction="#onToggleDarkMode" styleClass="secondary"/>
             <Button text="Back" onAction="#onBack" styleClass="secondary"/>
         </ToolBar>
     </top>
 
     <center>
         <VBox spacing="15">
-            <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
 
             <HBox spacing="10">
                 <TextField fx:id="categoryField" promptText="Category"/>

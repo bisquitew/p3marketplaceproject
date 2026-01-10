@@ -82,7 +82,6 @@ public class ServicesController {
             return;
         }
 
-        // Address
         TextInputDialog addressDialog = new TextInputDialog();
         addressDialog.setHeaderText("Enter booking address:");
         addressDialog.setContentText("Address:");
@@ -90,7 +89,6 @@ public class ServicesController {
         if (addressResult.isEmpty()) return;
         String address = addressResult.get();
 
-        // Date
         TextInputDialog dateDialog = new TextInputDialog(LocalDate.now().plusDays(1).toString());
         dateDialog.setHeaderText("Enter booking date:");
         dateDialog.setContentText("Date (YYYY-MM-DD):");
@@ -105,7 +103,6 @@ public class ServicesController {
             return;
         }
 
-        // Time
         TextInputDialog timeDialog = new TextInputDialog("10:00");
         timeDialog.setHeaderText("Enter booking time:");
         timeDialog.setContentText("Time (HH:MM):");
@@ -140,6 +137,11 @@ public class ServicesController {
         } catch (Exception e) {
             infoLabel.setText("Error: " + e.getMessage());
         }
+    }
+
+    @FXML
+    private void onToggleDarkMode() {
+        MainFX.getSceneManager().toggleDarkMode();
     }
 
     @FXML

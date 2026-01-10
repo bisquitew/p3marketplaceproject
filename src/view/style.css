@@ -4,6 +4,7 @@
     -fx-background-color: linear-gradient(to bottom right, #f5f6fa, #dcdde1);
 }
 
+/* Card-like center container */
 .card-container {
     -fx-background-color: white;
     -fx-background-radius: 12;
@@ -13,6 +14,7 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 18, 0.2, 0, 4);
 }
 
+/* Titles and subtitles */
 .title {
     -fx-font-size: 26px;
     -fx-font-weight: bold;
@@ -25,6 +27,7 @@
     -fx-text-fill: #4b6584;
 }
 
+/* Buttons */
 .button {
     -fx-background-color: #4a90e2;
     -fx-text-fill: white;
@@ -54,6 +57,7 @@
     -fx-background-color: rgba(74,144,226,0.08);
 }
 
+/* Inputs */
 .text-field, .password-field, .combo-box {
     -fx-background-radius: 6;
     -fx-background-color: white;
@@ -67,14 +71,43 @@
     -fx-border-color: #4a90e2;
 }
 
+/* Labels */
+.label {
+    -fx-text-fill: #2f3640;
+}
+
+/* Error labels */
 .label.error {
     -fx-text-fill: #e84118;
 }
 
+/* ToolBar */
 .tool-bar {
     -fx-background-color: #ffffff;
     -fx-padding: 10;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0.2, 0, 2);
+}
+
+/* TableView light theme */
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #dcdde1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+.table-view .column-header {
+    -fx-background-color: #e6e9ef;
+    -fx-font-weight: bold;
+}
+
+.table-view .table-row-cell {
+    -fx-text-fill: #2f3640;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #4a90e2;
+    -fx-text-fill: white;
 }
 
 /* ===== Dark Theme ===== */
@@ -82,8 +115,14 @@
     -fx-background-color: linear-gradient(to bottom right, #2f3640, #1e272e);
 }
 
+/* Card in dark mode */
 .root.dark .card-container {
     -fx-background-color: #2f3640;
+}
+
+/* Text colors in dark mode */
+.root.dark .label {
+    -fx-text-fill: #f5f6fa;
 }
 
 .root.dark .title {
@@ -94,21 +133,54 @@
     -fx-text-fill: #dcdde1;
 }
 
-.root.dark .text-field, .root.dark .password-field, .root.dark .combo-box {
+/* Error labels remain readable */
+.root.dark .label.error {
+    -fx-text-fill: #ff6b6b;
+}
+
+/* Inputs in dark mode */
+.root.dark .text-field,
+.root.dark .password-field,
+.root.dark .combo-box {
     -fx-background-color: #3d3d3d;
     -fx-text-fill: white;
     -fx-border-color: #718093;
 }
 
-.root.dark .text-field:focused, .root.dark .password-field:focused, .root.dark .combo-box:focused {
+.root.dark .text-field:focused,
+.root.dark .password-field:focused,
+.root.dark .combo-box:focused {
     -fx-border-color: #00a8ff;
 }
 
+/* ToolBar in dark mode */
+.root.dark .tool-bar {
+    -fx-background-color: #2f3640;
+}
+
+/* Secondary buttons in dark mode */
 .root.dark .button.secondary {
     -fx-text-fill: #00a8ff;
     -fx-border-color: #00a8ff;
 }
 
-.root.dark .label.error {
-    -fx-text-fill: #ff6b6b;
+/* TableView in dark mode */
+.root.dark .table-view {
+    -fx-background-color: #2f3640;
+    -fx-border-color: #444b5b;
+}
+
+.root.dark .table-view .column-header {
+    -fx-background-color: #353b48;
+    -fx-text-fill: #f5f6fa;
+}
+
+.root.dark .table-view .table-row-cell {
+    -fx-background-color: #2f3640;
+    -fx-text-fill: #f5f6fa;
+}
+
+.root.dark .table-row-cell:selected {
+    -fx-background-color: #4a90e2;
+    -fx-text-fill: white;
 }
