@@ -19,9 +19,7 @@
 
     <center>
         <VBox spacing="15">
-            <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
-            </padding>
+            <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
 
             <TableView fx:id="bookingsTable">
                 <columns>
@@ -39,7 +37,7 @@
                 <Button text="Add Review" onAction="#onAddReview"/>
             </HBox>
 
-            <Label fx:id="infoLabel" styleClass="error"/>
+            <Label fx:id="infoLabel" styleClass="info"/>
         </VBox>
     </center>
 </BorderPane>

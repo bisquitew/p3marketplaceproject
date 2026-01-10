@@ -20,12 +20,9 @@
 
     <center>
         <VBox spacing="15">
-            <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
-            </padding>
+            <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
 
             <Label fx:id="welcomeLabel" styleClass="subtitle"/>
-
             <Label fx:id="ratingBreakdownLabel"/>
 
             <Label text="Your Bookings:" styleClass="subtitle"/>

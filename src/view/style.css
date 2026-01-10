@@ -81,6 +81,19 @@
     -fx-text-fill: #e84118;
 }
 
+/* Info label (light mode) */
+.label.info {
+    -fx-text-fill: #2f3640;
+    -fx-font-size: 14px;
+}
+
+/* Info label (dark mode) */
+.root.dark .label.info {
+    -fx-text-fill: #f5f6fa;
+    -fx-font-size: 14px;
+}
+
+
 /* ToolBar */
 .tool-bar {
     -fx-background-color: #ffffff;

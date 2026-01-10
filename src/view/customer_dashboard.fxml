@@ -11,7 +11,7 @@
         <StackPane>
             <VBox alignment="CENTER" spacing="20" maxWidth="500" styleClass="card-container">
                 <Label fx:id="welcomeLabel" styleClass="title"/>
-                <Label text="Use the buttons below to browse services or view your bookings."/>
+                <Label text="Use the buttons below to browse services or view your bookings." styleClass="subtitle"/>
                 <HBox spacing="10" alignment="CENTER">
                     <Button text="Services" onAction="#onGoToServices"/>
                     <Button text="My Bookings" onAction="#onGoToBookings"/>
