@@ -57,6 +57,7 @@
 .text-field, .password-field, .combo-box {
     -fx-background-radius: 6;
     -fx-background-color: white;
+    -fx-text-fill: black;
     -fx-border-color: #dcdde1;
     -fx-border-radius: 6;
     -fx-padding: 6;

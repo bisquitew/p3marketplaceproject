@@ -25,9 +25,7 @@ public class SceneManager {
             Scene scene = new Scene(root);
 
             scene.getStylesheets().add(getClass().getResource("/view/style.css").toExternalForm());
-            if (darkMode) {
-                root.getStyleClass().add("dark");
-            }
+            if (darkMode) root.getStyleClass().add("dark");
 
             stage.setScene(scene);
             stage.setTitle("Handyman Marketplace - " + title);
@@ -48,6 +46,10 @@ public class SceneManager {
             String title = stage.getTitle().replace("Handyman Marketplace - ", "");
             switchScene(currentFxml, title);
         }
+    }
+
+    public boolean isDarkMode() {
+        return darkMode;
     }
 
     public void showLoginScene() { switchScene("login.fxml", "Login"); }

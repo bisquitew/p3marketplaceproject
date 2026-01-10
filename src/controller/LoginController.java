@@ -35,7 +35,7 @@ public class LoginController {
                 switch (user.getRole()) {
                     case CUSTOMER -> MainFX.getSceneManager().showCustomerDashboard();
                     case HANDYMAN -> MainFX.getSceneManager().showHandymanDashboard();
-                    case ADMIN -> MainFX.getSceneManager().showCustomerDashboard(); // simple admin reuse for now
+                    case ADMIN -> MainFX.getSceneManager().showCustomerDashboard(); // reuse for now
                 }
             } else {
                 errorLabel.setText("Invalid credentials.");
@@ -48,5 +48,10 @@ public class LoginController {
     @FXML
     private void onGoToRegister() {
         MainFX.getSceneManager().showRegisterScene();
+    }
+
+    @FXML
+    private void onToggleDarkMode() {
+        MainFX.getSceneManager().toggleDarkMode();
     }
 }

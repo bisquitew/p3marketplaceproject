@@ -18,6 +18,7 @@
 
                 <Button text="Login" onAction="#onLogin" maxWidth="Infinity"/>
                 <Button text="Create an account" onAction="#onGoToRegister" maxWidth="Infinity" styleClass="secondary"/>
+                <Button text="Toggle Dark Mode" onAction="#onToggleDarkMode" maxWidth="Infinity" styleClass="secondary"/>
 
                 <Label fx:id="errorLabel" styleClass="error"/>
             </VBox>
