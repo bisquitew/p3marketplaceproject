@@ -5,22 +5,46 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.LoginController">
+            fx:controller="controller.LoginController"
+            prefWidth="1100" prefHeight="700">
 
     <center>
         <StackPane>
-            <VBox spacing="15" alignment="CENTER" maxWidth="400" styleClass="card-container">
-                <Label text="Handyman Marketplace" styleClass="title"/>
-                <Label text="Welcome back! Please log in." styleClass="subtitle"/>
+            <VBox spacing="15"
+                  alignment="CENTER"
+                  maxWidth="420"
+                  styleClass="card-container">
+                <Label text="Handyman Marketplace"
+                       styleClass="title"
+                       wrapText="true"/>
+                <Label text="Welcome back! Please log in."
+                       styleClass="subtitle"
+                       wrapText="true"
+                       maxWidth="360"/>
 
-                <TextField fx:id="usernameField" promptText="Username"/>
-                <PasswordField fx:id="passwordField" promptText="Password"/>
+                <TextField fx:id="usernameField"
+                           promptText="Username"
+                           maxWidth="360"/>
+                <PasswordField fx:id="passwordField"
+                               promptText="Password"
+                               maxWidth="360"/>
 
-                <Button text="Login" onAction="#onLogin" maxWidth="Infinity"/>
-                <Button text="Create an account" onAction="#onGoToRegister" maxWidth="Infinity" styleClass="secondary"/>
-                <Button text="Toggle Dark Mode" onAction="#onToggleDarkMode" maxWidth="Infinity" styleClass="secondary"/>
+                <Button text="Login"
+                        onAction="#onLogin"
+                        maxWidth="360"/>
+                <Button text="Create an account"
+                        onAction="#onGoToRegister"
+                        maxWidth="360"
+                        styleClass="secondary"/>
+                <Button text="Toggle Dark Mode"
+                        onAction="#onToggleDarkMode"
+                        maxWidth="360"
+                        styleClass="secondary"/>
 
-                <Label fx:id="errorLabel" styleClass="error"/>
+                <Label fx:id="errorLabel"
+                       styleClass="error"
+                       wrapText="true"
+                       maxWidth="360"/>
             </VBox>
         </StackPane>
     </center>

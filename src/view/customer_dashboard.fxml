@@ -5,19 +5,42 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.CustomerDashboardController">
+            fx:controller="controller.CustomerDashboardController"
+            prefWidth="1100" prefHeight="700">
 
     <center>
         <StackPane>
-            <VBox alignment="CENTER" spacing="20" maxWidth="500" styleClass="card-container">
-                <Label fx:id="welcomeLabel" styleClass="title"/>
-                <Label text="Use the buttons below to browse services or view your bookings." styleClass="subtitle"/>
-                <HBox spacing="10" alignment="CENTER">
-                    <Button text="Services" onAction="#onGoToServices"/>
-                    <Button text="My Bookings" onAction="#onGoToBookings"/>
-                    <Button text="Logout" onAction="#onLogout"/>
+            <VBox alignment="CENTER"
+                  spacing="18"
+                  maxWidth="520"
+                  styleClass="card-container">
+                <Label fx:id="welcomeLabel"
+                       styleClass="title"
+                       wrapText="true"
+                       maxWidth="480"/>
+                <Label text="Use the buttons below to browse services or view your bookings."
+                       styleClass="subtitle"
+                       wrapText="true"
+                       maxWidth="480"/>
+
+                <HBox spacing="10"
+                      alignment="CENTER">
+                    <Button text="Services"
+                            onAction="#onGoToServices"
+                            maxWidth="140"/>
+                    <Button text="My Bookings"
+                            onAction="#onGoToBookings"
+                            maxWidth="140"/>
+                    <Button text="Logout"
+                            onAction="#onLogout"
+                            maxWidth="140"
+                            styleClass="secondary"/>
                 </HBox>
-                <Button text="Toggle Dark Mode" onAction="#onToggleDarkMode" styleClass="secondary"/>
+
+                <Button text="Toggle Dark Mode"
+                        onAction="#onToggleDarkMode"
+                        styleClass="secondary"
+                        maxWidth="220"/>
             </VBox>
         </StackPane>
     </center>

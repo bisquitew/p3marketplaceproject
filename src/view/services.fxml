@@ -6,40 +6,77 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.ServicesController">
+            fx:controller="controller.ServicesController"
+            prefWidth="1100" prefHeight="700">
 
     <top>
         <ToolBar>
-            <Label text="Available Services" styleClass="title"/>
+            <Label text="Available Services"
+                   styleClass="title"
+                   wrapText="true"/>
             <Pane HBox.hgrow="ALWAYS"/>
-            <Button text="Toggle Dark Mode" onAction="#onToggleDarkMode" styleClass="secondary"/>
-            <Button text="Back" onAction="#onBack" styleClass="secondary"/>
+            <Button text="Toggle Dark Mode"
+                    onAction="#onToggleDarkMode"
+                    styleClass="secondary"/>
+            <Button text="Back"
+                    onAction="#onBack"
+                    styleClass="secondary"/>
         </ToolBar>
     </top>
 
     <center>
-        <VBox spacing="15">
+        <VBox spacing="12">
             <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
+                <Insets top="15" right="20" bottom="20" left="20"/>
             </padding>
 
             <HBox spacing="10">
-                <TextField fx:id="categoryField" promptText="Category"/>
-                <TextField fx:id="cityField" promptText="City"/>
-                <Button text="Search" onAction="#onSearch"/>
+                <TextField fx:id="categoryField"
+                           promptText="Category"
+                           maxWidth="200"/>
+                <TextField fx:id="cityField"
+                           promptText="City"
+                           maxWidth="200"/>
+                <Button text="Search"
+                        onAction="#onSearch"
+                        maxWidth="100"/>
             </HBox>
 
-            <TableView fx:id="servicesTable">
+            <TableView fx:id="servicesTable"
+                       prefHeight="450">
                 <columns>
-                    <TableColumn fx:id="idColumn" text="ID" prefWidth="60"/>
-                    <TableColumn fx:id="titleColumn" text="Title" prefWidth="200"/>
-                    <TableColumn fx:id="cityColumn" text="City" prefWidth="120"/>
-                    <TableColumn fx:id="priceColumn" text="Price" prefWidth="100"/>
+                    <TableColumn fx:id="idColumn"
+                                 text="ID"
+                                 prefWidth="60"
+                                 minWidth="60"
+                                 maxWidth="80"/>
+                    <TableColumn fx:id="titleColumn"
+                                 text="Title"
+                                 prefWidth="260"
+                                 minWidth="200"/>
+                    <TableColumn fx:id="cityColumn"
+                                 text="City"
+                                 prefWidth="160"
+                                 minWidth="120"
+                                 maxWidth="200"/>
+                    <TableColumn fx:id="priceColumn"
+                                 text="Price"
+                                 prefWidth="120"
+                                 minWidth="80"
+                                 maxWidth="140"/>
                 </columns>
             </TableView>
 
-            <Button text="Book Selected Service" onAction="#onMakeBooking" maxWidth="200"/>
-            <Label fx:id="infoLabel" styleClass="error"/>
+            <HBox alignment="CENTER">
+                <Button text="Book Selected Service"
+                        onAction="#onMakeBooking"
+                        maxWidth="220"/>
+            </HBox>
+
+            <Label fx:id="infoLabel"
+                   styleClass="error"
+                   wrapText="true"
+                   maxWidth="600"/>
         </VBox>
     </center>
 </BorderPane>

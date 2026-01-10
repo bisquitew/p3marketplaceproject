@@ -14,7 +14,8 @@ class UserTest {
                 "pass123",
                 "John Doe",
                 "john@mail.com",
-                UserRole.CUSTOMER
+                UserRole.CUSTOMER,
+                0.0 // ✅ Add rating argument
         );
 
         assertEquals(1L, user.getId());
@@ -23,5 +24,6 @@ class UserTest {
         assertEquals("John Doe", user.getFull_name());
         assertEquals("john@mail.com", user.getEmail());
         assertEquals(UserRole.CUSTOMER, user.getRole());
+        assertEquals(0.0, user.getRating());
     }
 }

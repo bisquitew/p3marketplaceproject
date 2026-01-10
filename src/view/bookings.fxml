@@ -6,29 +6,61 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.BookingsController">
+            fx:controller="controller.BookingsController"
+            prefWidth="1100" prefHeight="700">
 
     <top>
         <ToolBar>
-            <Label text="My Bookings" styleClass="title"/>
+            <Label text="My Bookings"
+                   styleClass="title"
+                   wrapText="true"/>
             <Pane HBox.hgrow="ALWAYS"/>
-            <Button text="Toggle Dark Mode" onAction="#onToggleDarkMode" styleClass="secondary"/>
-            <Button text="Back" onAction="#onBack" styleClass="secondary"/>
+            <Button text="Toggle Dark Mode"
+                    onAction="#onToggleDarkMode"
+                    styleClass="secondary"/>
+            <Button text="Back"
+                    onAction="#onBack"
+                    styleClass="secondary"/>
         </ToolBar>
     </top>
 
     <center>
-        <VBox spacing="15">
-            <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+        <VBox spacing="12">
+            <padding>
+                <Insets top="15" right="20" bottom="20" left="20"/>
+            </padding>
 
-            <TableView fx:id="bookingsTable">
+            <TableView fx:id="bookingsTable"
+                       prefHeight="470">
                 <columns>
-                    <TableColumn fx:id="idColumn" text="ID" prefWidth="60"/>
-                    <TableColumn fx:id="serviceColumn" text="Service ID" prefWidth="80"/>
-                    <TableColumn fx:id="dateColumn" text="Date" prefWidth="160"/>
-                    <TableColumn fx:id="statusColumn" text="Status" prefWidth="100"/>
-                    <TableColumn fx:id="addressColumn" text="Address" prefWidth="220"/>
-                    <TableColumn fx:id="priceColumn" text="Price" prefWidth="80"/>
+                    <TableColumn fx:id="idColumn"
+                                 text="ID"
+                                 prefWidth="60"
+                                 minWidth="60"
+                                 maxWidth="80"/>
+                    <TableColumn fx:id="serviceColumn"
+                                 text="Service ID"
+                                 prefWidth="90"
+                                 minWidth="80"
+                                 maxWidth="110"/>
+                    <TableColumn fx:id="dateColumn"
+                                 text="Date"
+                                 prefWidth="180"
+                                 minWidth="150"/>
+                    <TableColumn fx:id="statusColumn"
+                                 text="Status"
+                                 prefWidth="100"
+                                 minWidth="90"
+                                 maxWidth="130"/>
+                    <TableColumn fx:id="addressColumn"
+                                 text="Address"
+                                 prefWidth="260"
+                                 minWidth="200"/>
+                    <TableColumn fx:id="priceColumn"
+                                 text="Price"
+                                 prefWidth="90"
+                                 minWidth="80"
+                                 maxWidth="110"/>
                 </columns>
             </TableView>
 
@@ -37,7 +69,10 @@
                 <Button text="Add Review" onAction="#onAddReview"/>
             </HBox>
 
-            <Label fx:id="infoLabel" styleClass="info"/>
+            <Label fx:id="infoLabel"
+                   styleClass="info"
+                   wrapText="true"
+                   maxWidth="600"/>
         </VBox>
     </center>
 </BorderPane>

@@ -6,36 +6,80 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.HandymanDashboardController">
+            fx:controller="controller.HandymanDashboardController"
+            prefWidth="1100" prefHeight="700">
 
     <top>
         <ToolBar>
-            <Label text="Handyman Dashboard" styleClass="title"/>
+            <Label text="Handyman Dashboard"
+                   styleClass="title"
+                   wrapText="true"/>
             <Pane HBox.hgrow="ALWAYS"/>
-            <Label fx:id="ratingLabel"/>
-            <Button text="Toggle Dark Mode" onAction="#onToggleDarkMode" styleClass="secondary"/>
-            <Button text="Logout" onAction="#onBackToLogin"/>
+            <Label fx:id="ratingLabel"
+                   wrapText="true"
+                   maxWidth="200"/>
+            <Button text="Toggle Dark Mode"
+                    onAction="#onToggleDarkMode"
+                    styleClass="secondary"/>
+            <Button text="Logout"
+                    onAction="#onBackToLogin"
+                    styleClass="secondary"/>
         </ToolBar>
     </top>
 
     <center>
-        <VBox spacing="15">
-            <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="15" right="20" bottom="20" left="20"/>
+            </padding>
 
-            <Label fx:id="welcomeLabel" styleClass="subtitle"/>
-            <Label fx:id="ratingBreakdownLabel" styleClass="info"/>
-            <Label fx:id="infoLabel" styleClass="info"/>
+            <Label fx:id="welcomeLabel"
+                   styleClass="subtitle"
+                   wrapText="true"
+                   maxWidth="800"/>
+            <Label fx:id="ratingBreakdownLabel"
+                   styleClass="info"
+                   wrapText="true"
+                   maxWidth="800"/>
+            <Label fx:id="infoLabel"
+                   styleClass="info"
+                   wrapText="true"
+                   maxWidth="800"/>
 
-
-            <Label text="Your Bookings:" styleClass="subtitle"/>
-            <TableView fx:id="bookingsTable">
+            <Label text="Your Bookings:"
+                   styleClass="subtitle"
+                   wrapText="true"/>
+            <TableView fx:id="bookingsTable"
+                       prefHeight="240">
                 <columns>
-                    <TableColumn fx:id="idColumn" text="Booking ID" prefWidth="80"/>
-                    <TableColumn fx:id="customerColumn" text="Customer ID" prefWidth="80"/>
-                    <TableColumn fx:id="dateColumn" text="Date/Time" prefWidth="160"/>
-                    <TableColumn fx:id="statusColumn" text="Status" prefWidth="100"/>
-                    <TableColumn fx:id="addressColumn" text="Address" prefWidth="220"/>
-                    <TableColumn fx:id="priceColumn" text="Price" prefWidth="80"/>
+                    <TableColumn fx:id="idColumn"
+                                 text="Booking ID"
+                                 prefWidth="80"
+                                 minWidth="70"
+                                 maxWidth="100"/>
+                    <TableColumn fx:id="customerColumn"
+                                 text="Customer ID"
+                                 prefWidth="90"
+                                 minWidth="80"
+                                 maxWidth="110"/>
+                    <TableColumn fx:id="dateColumn"
+                                 text="Date/Time"
+                                 prefWidth="180"
+                                 minWidth="160"/>
+                    <TableColumn fx:id="statusColumn"
+                                 text="Status"
+                                 prefWidth="100"
+                                 minWidth="90"
+                                 maxWidth="130"/>
+                    <TableColumn fx:id="addressColumn"
+                                 text="Address"
+                                 prefWidth="260"
+                                 minWidth="200"/>
+                    <TableColumn fx:id="priceColumn"
+                                 text="Price"
+                                 prefWidth="90"
+                                 minWidth="80"
+                                 maxWidth="110"/>
                 </columns>
             </TableView>
 
@@ -43,23 +87,45 @@
                 <Button text="Accept" onAction="#onAccept"/>
                 <Button text="Complete" onAction="#onComplete"/>
                 <Button text="Cancel" onAction="#onCancel"/>
-                <Button text="Reschedule" onAction="#onReschedule" styleClass="secondary"/>
+                <Button text="Reschedule"
+                        onAction="#onReschedule"
+                        styleClass="secondary"/>
             </HBox>
 
             <Separator/>
 
-            <Label text="Your Services:" styleClass="subtitle"/>
-            <TableView fx:id="servicesTable">
+            <Label text="Your Services:"
+                   styleClass="subtitle"
+                   wrapText="true"/>
+            <TableView fx:id="servicesTable"
+                       prefHeight="180">
                 <columns>
-                    <TableColumn fx:id="serviceIdColumn" text="Service ID" prefWidth="80"/>
-                    <TableColumn fx:id="serviceTitleColumn" text="Title" prefWidth="200"/>
-                    <TableColumn fx:id="serviceCityColumn" text="City" prefWidth="120"/>
-                    <TableColumn fx:id="servicePriceColumn" text="Price" prefWidth="80"/>
-                    <TableColumn fx:id="serviceActiveColumn" text="Status" prefWidth="100"/>
+                    <TableColumn fx:id="serviceIdColumn"
+                                 text="Service ID"
+                                 prefWidth="80"
+                                 minWidth="70"
+                                 maxWidth="100"/>
+                    <TableColumn fx:id="serviceTitleColumn"
+                                 text="Title"
+                                 prefWidth="260"
+                                 minWidth="200"/>
+                    <TableColumn fx:id="serviceCityColumn"
+                                 text="City"
+                                 prefWidth="160"
+                                 minWidth="120"
+                                 maxWidth="200"/>
+                    <TableColumn fx:id="servicePriceColumn"
+                                 text="Price"
+                                 prefWidth="120"
+                                 minWidth="80"
+                                 maxWidth="140"/>
+                    <TableColumn fx:id="serviceActiveColumn"
+                                 text="Status"
+                                 prefWidth="120"
+                                 minWidth="90"
+                                 maxWidth="150"/>
                 </columns>
             </TableView>
-
-            <Label fx:id="infoLabel" styleClass="error"/>
         </VBox>
     </center>
 </BorderPane>

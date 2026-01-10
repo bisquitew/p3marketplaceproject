@@ -12,14 +12,15 @@ class UserDAOTest {
     void testLoginSuccess() throws Exception {
         UserDAO dao = new UserDAO();
 
-        // Insert a test user
+        // Insert a test user with correct constructor
         User u = new User(
                 9001L,
                 "testLoginUser",
                 "pass123",
                 "Test User",
                 "test@login.com",
-                UserRole.CUSTOMER
+                UserRole.CUSTOMER,
+                0.0 // ✅ Add rating
         );
         dao.insert(u);
 
@@ -28,6 +29,6 @@ class UserDAOTest {
 
         assertNotNull(found);
         assertEquals("testLoginUser", found.getUsername());
-        assertEquals("Test User", found.getFullName());
+        assertEquals("Test User", found.getFull_name()); // ✅ Correct method name
     }
 }
