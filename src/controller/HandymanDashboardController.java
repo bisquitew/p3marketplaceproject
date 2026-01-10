@@ -8,10 +8,12 @@ import model.Booking;
 import model.Service;
 import model.User;
 import model.enums.BookingStatus;
+import model.exceptions.InvalidDataException;
 import repository.BookingDAO;
 import repository.ReviewDAO;
 import repository.ServiceDAO;
 import repository.UserDAO;
+import util.IdGenerator;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -73,10 +75,27 @@ public class HandymanDashboardController {
     @FXML
     private Label infoLabel;
 
+    // New fields for adding a service
+    @FXML
+    private TextField newServiceTitleField;
+
+    @FXML
+    private TextField newServiceCityField;
+
+    @FXML
+    private TextField newServicePriceField;
+
+    @FXML
+    private TextField newServiceCategoryField;
+
+    @FXML
+    private TextArea newServiceDescriptionArea;
+
     private final BookingDAO bookingDAO = new BookingDAO();
     private final ServiceDAO serviceDAO = new ServiceDAO();
     private final UserDAO userDAO = new UserDAO();
     private final ReviewDAO reviewDAO = new ReviewDAO();
+    private final IdGenerator idGen = new IdGenerator(4000);
 
     @FXML
     private void initialize() {
@@ -242,6 +261,94 @@ public class HandymanDashboardController {
             infoLabel.setText("Database error: " + e.getMessage());
         }
     }
+
+    // ===== New: Add service for handyman =====
+
+    @FXML
+    private void onAddService() {
+        infoLabel.setText("");
+
+        String title = newServiceTitleField.getText();
+        String city = newServiceCityField.getText();
+        String priceStr = newServicePriceField.getText();
+        String category = newServiceCategoryField.getText();
+        String description = newServiceDescriptionArea.getText();
+
+        if (title == null || title.isBlank()
+                || city == null || city.isBlank()
+                || priceStr == null || priceStr.isBlank()) {
+            infoLabel.setText("Title, city and price are required.");
+            return;
+        }
+
+        double price;
+        try {
+            price = Double.parseDouble(priceStr);
+        } catch (NumberFormatException e) {
+            infoLabel.setText("Price must be a valid number.");
+            return;
+        }
+
+        if (category == null || category.isBlank()) {
+            category = "General";
+        }
+        if (description == null) {
+            description = "";
+        }
+
+        try {
+            long handymanId = Session.getCurrentUser().getId();
+            Service service = new Service(
+                    idGen.nextId(),
+                    handymanId,
+                    title,
+                    description,
+                    price,
+                    category,
+                    city
+            );
+            service.validate();
+            serviceDAO.insert(service);
+
+            // Clear fields
+            newServiceTitleField.clear();
+            newServiceCityField.clear();
+            newServicePriceField.clear();
+            newServiceCategoryField.clear();
+            newServiceDescriptionArea.clear();
+
+            infoLabel.setText("Service created successfully.");
+            loadData();
+        } catch (InvalidDataException e) {
+            infoLabel.setText("Validation error: " + e.getMessage());
+        } catch (SQLException e) {
+            infoLabel.setText("Database error while adding service: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void onToggleServiceActive() {
+        Service selected = servicesTable.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            infoLabel.setText("Select a service first.");
+            return;
+        }
+
+        try {
+            long handymanId = Session.getCurrentUser().getId();
+            boolean toggled = serviceDAO.toggleActiveForHandyman(selected.getId(), handymanId);
+            if (toggled) {
+                infoLabel.setText("Service active state toggled.");
+                loadData();
+            } else {
+                infoLabel.setText("Service not found or not owned by you.");
+            }
+        } catch (SQLException e) {
+            infoLabel.setText("Database error while toggling service: " + e.getMessage());
+        }
+    }
+
+    // ===== Navigation / theme =====
 
     @FXML
     private void onBackToLogin() {

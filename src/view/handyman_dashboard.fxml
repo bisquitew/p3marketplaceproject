@@ -46,11 +46,12 @@
                    wrapText="true"
                    maxWidth="800"/>
 
+            <!-- Bookings section -->
             <Label text="Your Bookings:"
                    styleClass="subtitle"
                    wrapText="true"/>
             <TableView fx:id="bookingsTable"
-                       prefHeight="240">
+                       prefHeight="220">
                 <columns>
                     <TableColumn fx:id="idColumn"
                                  text="Booking ID"
@@ -94,11 +95,12 @@
 
             <Separator/>
 
+            <!-- Services section -->
             <Label text="Your Services:"
                    styleClass="subtitle"
                    wrapText="true"/>
             <TableView fx:id="servicesTable"
-                       prefHeight="180">
+                       prefHeight="170">
                 <columns>
                     <TableColumn fx:id="serviceIdColumn"
                                  text="Service ID"
@@ -126,6 +128,45 @@
                                  maxWidth="150"/>
                 </columns>
             </TableView>
+
+            <HBox spacing="10" alignment="CENTER_RIGHT">
+                <Button text="Toggle Active / Inactive"
+                        onAction="#onToggleServiceActive"
+                        styleClass="secondary"/>
+            </HBox>
+
+            <!-- Add service form -->
+            <Separator/>
+
+            <Label text="Add New Service:"
+                   styleClass="subtitle"
+                   wrapText="true"/>
+
+            <HBox spacing="10">
+                <TextField fx:id="newServiceTitleField"
+                           promptText="Title"
+                           maxWidth="200"/>
+                <TextField fx:id="newServiceCityField"
+                           promptText="City"
+                           maxWidth="160"/>
+                <TextField fx:id="newServicePriceField"
+                           promptText="Price"
+                           maxWidth="120"/>
+                <TextField fx:id="newServiceCategoryField"
+                           promptText="Category"
+                           maxWidth="160"/>
+            </HBox>
+
+            <TextArea fx:id="newServiceDescriptionArea"
+                      promptText="Description (optional)"
+                      prefRowCount="2"
+                      wrapText="true"/>
+
+            <HBox alignment="CENTER_RIGHT">
+                <Button text="Create Service"
+                        onAction="#onAddService"
+                        maxWidth="180"/>
+            </HBox>
         </VBox>
     </center>
 </BorderPane>
