@@ -41,9 +41,18 @@
             <Separator/>
 
             <Label text="Book Selected Service:" styleClass="subtitle"/>
+
             <HBox spacing="10" alignment="CENTER_LEFT">
-                <TextField fx:id="bookingAddressField" promptText="Delivery Address" prefWidth="300"/>
-                <TextField fx:id="bookingDateTimeField" promptText="YYYY-MM-DDTHH:MM" prefWidth="200"/>
+                <TextField fx:id="bookingAddressField" promptText="Delivery Address" prefWidth="250"/>
+
+                <Label text="Date:"/>
+                <DatePicker fx:id="datePicker" prefWidth="150"/>
+
+                <Label text="Time:"/>
+                <ComboBox fx:id="hourCombo" prefWidth="70" promptText="HH"/>
+                <Label text=":"/>
+                <ComboBox fx:id="minuteCombo" prefWidth="70" promptText="MM"/>
+
                 <Button text="Book Now" onAction="#onBookService" styleClass="main-btn"/>
             </HBox>
 
