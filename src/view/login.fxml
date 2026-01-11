@@ -14,7 +14,7 @@
         <HBox alignment="CENTER" spacing="0">
             <VBox fx:id="heroSection" alignment="CENTER" spacing="25" HBox.hgrow="ALWAYS"
                   styleClass="hero-box">
-                <Label text="Marketplace Solution" styleClass="hero-title" wrapText="true"/>
+                <Label text="Handyman Marketplace, hire a Handyman!" styleClass="hero-title" wrapText="true"/>
                 <Label text="Connecting certified handymen with quality-driven customers."
                        styleClass="hero-subtitle" wrapText="true" maxWidth="400"/>
                 <ImageView fitWidth="380" preserveRatio="true">
