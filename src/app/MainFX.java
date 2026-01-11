@@ -11,11 +11,15 @@ public class MainFX extends Application {
     public void start(Stage stage) {
         sceneManager = new SceneManager(stage);
 
-        // Make the app bigger
-        stage.setWidth(1100);
-        stage.setHeight(700);
-        stage.setMinWidth(900);
-        stage.setMinHeight(600);
+        // Professional window settings
+        stage.setWidth(1280);
+        stage.setHeight(800);
+        stage.setMinWidth(1024);
+        stage.setMinHeight(768);
+
+        // Set Fullscreen but allow exit via ESC
+        stage.setFullScreen(true);
+        stage.setFullScreenExitHint("ESC to minimize | Professional Marketplace");
 
         sceneManager.showLoginScene();
         stage.show();
