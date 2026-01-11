@@ -28,7 +28,7 @@
                 <Button text="Search" onAction="#onSearch" maxWidth="100"/>
             </HBox>
 
-            <TableView fx:id="servicesTable" prefHeight="450">
+            <TableView fx:id="servicesTable" prefHeight="400">
                 <columns>
                     <TableColumn fx:id="idColumn" text="ID" prefWidth="60"/>
                     <TableColumn fx:id="titleColumn" text="Title" prefWidth="200"/>
@@ -38,7 +38,16 @@
                 </columns>
             </TableView>
 
-            <Label fx:id="infoLabel" styleClass="error" wrapText="true" maxWidth="600"/>
+            <Separator/>
+
+            <Label text="Book Selected Service:" styleClass="subtitle"/>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <TextField fx:id="bookingAddressField" promptText="Delivery Address" prefWidth="300"/>
+                <TextField fx:id="bookingDateTimeField" promptText="YYYY-MM-DDTHH:MM" prefWidth="200"/>
+                <Button text="Book Now" onAction="#onBookService" styleClass="main-btn"/>
+            </HBox>
+
+            <Label fx:id="infoLabel" styleClass="info" wrapText="true" maxWidth="600"/>
         </VBox>
     </center>
 </BorderPane>
