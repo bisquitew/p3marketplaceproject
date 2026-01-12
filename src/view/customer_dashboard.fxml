@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -7,40 +6,20 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="controller.CustomerDashboardController"
             prefWidth="1100" prefHeight="700">
-
     <center>
         <StackPane>
-            <VBox alignment="CENTER"
-                  spacing="18"
-                  maxWidth="520"
-                  styleClass="card-container">
-                <Label fx:id="welcomeLabel"
-                       styleClass="title"
-                       wrapText="true"
-                       maxWidth="480"/>
-                <Label text="Use the buttons below to browse services or view your bookings."
-                       styleClass="subtitle"
-                       wrapText="true"
-                       maxWidth="480"/>
+            <VBox alignment="CENTER" spacing="25" maxWidth="520" styleClass="card-container">
+                <Label fx:id="welcomeLabel" styleClass="title" wrapText="true" />
+                <Label text="Browse services or manage your existing bookings below."
+                       styleClass="subtitle" wrapText="true" />
 
-                <HBox spacing="10"
-                      alignment="CENTER">
-                    <Button text="Services"
-                            onAction="#onGoToServices"
-                            maxWidth="140"/>
-                    <Button text="My Bookings"
-                            onAction="#onGoToBookings"
-                            maxWidth="140"/>
-                    <Button text="Logout"
-                            onAction="#onLogout"
-                            maxWidth="140"
-                            styleClass="secondary"/>
+                <HBox spacing="15" alignment="CENTER">
+                    <Button text="Services" onAction="#onGoToServices" prefWidth="150"/>
+                    <Button text="My Bookings" onAction="#onGoToBookings" prefWidth="150"/>
                 </HBox>
 
-                <Button text="Toggle Dark Mode"
-                        onAction="#onToggleDarkMode"
-                        styleClass="secondary"
-                        maxWidth="220"/>
+                <Button text="Logout" onAction="#onLogout" styleClass="secondary" prefWidth="120"/>
+                <Button text="Toggle Theme" onAction="#onToggleDarkMode" styleClass="secondary" prefWidth="200"/>
             </VBox>
         </StackPane>
     </center>

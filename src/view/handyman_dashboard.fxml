@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
@@ -8,61 +7,56 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="controller.HandymanDashboardController"
             prefWidth="1100" prefHeight="700">
-
     <top>
         <ToolBar>
-            <Label text="Handyman Dashboard" styleClass="title"/>
-            <Pane HBox.hgrow="ALWAYS"/>
-            <Label fx:id="ratingLabel" styleClass="subtitle" style="-fx-text-fill: #F39C12; -fx-font-weight: bold;"/>
-            <Button text="Theme" onAction="#onToggleDarkMode" styleClass="secondary"/>
-            <Button text="Logout" onAction="#onBackToLogin" styleClass="secondary"/>
+            <Label text="Handyman Dashboard" styleClass="title" />
+            <Pane HBox.hgrow="ALWAYS" />
+            <Label fx:id="ratingLabel" styleClass="subtitle" />
+            <Button text="Theme" onAction="#onToggleDarkMode" styleClass="secondary" />
+            <Button text="Logout" onAction="#onBackToLogin" styleClass="secondary" />
         </ToolBar>
     </top>
-
     <center>
         <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;">
             <VBox spacing="20">
-                <padding>
-                    <Insets top="20" right="30" bottom="20" left="30"/>
-                </padding>
+                <padding><Insets top="20" right="30" bottom="20" left="30" /></padding>
 
-                <VBox spacing="5" styleClass="card-container">
-                    <Label fx:id="welcomeLabel" styleClass="title"/>
-                    <Label fx:id="ratingBreakdownLabel" styleClass="subtitle"/>
+                <VBox spacing="10" styleClass="card-container">
+                    <Label fx:id="welcomeLabel" styleClass="title" />
+                    <Label fx:id="ratingBreakdownLabel" styleClass="subtitle" />
                 </VBox>
 
                 <VBox spacing="10" styleClass="card-container">
-                    <Label text="Active Bookings" styleClass="title" style="-fx-font-size: 18;"/>
+                    <Label text="Bookings Management" styleClass="title" style="-fx-font-size: 18;" />
                     <TableView fx:id="bookingsTable" prefHeight="200">
                         <columns>
-                            <TableColumn fx:id="idColumn" text="ID" prefWidth="60"/>
-                            <TableColumn fx:id="customerColumn" text="Customer" prefWidth="120"/>
-                            <TableColumn fx:id="dateColumn" text="Date/Time" prefWidth="150"/>
-                            <TableColumn fx:id="statusColumn" text="Status" prefWidth="100"/>
-                            <TableColumn fx:id="addressColumn" text="Location" prefWidth="250"/>
+                            <TableColumn fx:id="idColumn" text="ID" prefWidth="60" />
+                            <TableColumn fx:id="customerColumn" text="Customer" prefWidth="120" />
+                            <TableColumn fx:id="dateColumn" text="Date" prefWidth="150" />
+                            <TableColumn fx:id="statusColumn" text="Status" prefWidth="100" />
+                            <TableColumn fx:id="addressColumn" text="Location" prefWidth="250" />
                         </columns>
                     </TableView>
                     <HBox spacing="10">
-                        <Button text="Accept" onAction="#onAccept"/>
-                        <Button text="Complete" onAction="#onComplete"/>
-                        <Button text="Reschedule" onAction="#onReschedule" styleClass="secondary"/>
+                        <Button text="Accept" onAction="#onAccept" />
+                        <Button text="Complete" onAction="#onComplete" />
                     </HBox>
                 </VBox>
 
                 <VBox spacing="10" styleClass="card-container">
-                    <Label text="Service Management" styleClass="title" style="-fx-font-size: 18;"/>
+                    <Label text="My Services" styleClass="title" style="-fx-font-size: 18;" />
                     <TableView fx:id="servicesTable" prefHeight="150">
                         <columns>
-                            <TableColumn fx:id="serviceTitleColumn" text="Title" prefWidth="250"/>
-                            <TableColumn fx:id="serviceCityColumn" text="City" prefWidth="150"/>
-                            <TableColumn fx:id="servicePriceColumn" text="Price" prefWidth="100"/>
-                            <TableColumn fx:id="serviceActiveColumn" text="Active" prefWidth="100"/>
+                            <TableColumn fx:id="serviceTitleColumn" text="Title" prefWidth="250" />
+                            <TableColumn fx:id="serviceCityColumn" text="City" prefWidth="150" />
+                            <TableColumn fx:id="servicePriceColumn" text="Price" prefWidth="100" />
+                            <TableColumn fx:id="serviceActiveColumn" text="Status" prefWidth="100" />
                         </columns>
                     </TableView>
-                    <Button text="Toggle Active Status" onAction="#onToggleServiceActive" styleClass="secondary"/>
+                    <Button text="Toggle Active" onAction="#onToggleServiceActive" styleClass="secondary" />
                 </VBox>
 
-                <Label fx:id="infoLabel" styleClass="subtitle" wrapText="true"/>
+                <Label fx:id="infoLabel" styleClass="subtitle" />
             </VBox>
         </ScrollPane>
     </center>
