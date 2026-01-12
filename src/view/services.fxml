@@ -19,44 +19,42 @@
     </top>
 
     <center>
-        <VBox spacing="12">
+        <VBox spacing="15">
             <padding><Insets top="15" right="20" bottom="20" left="20"/></padding>
 
-            <HBox spacing="10">
-                <TextField fx:id="categoryField" promptText="Category" maxWidth="200"/>
-                <TextField fx:id="cityField" promptText="City" maxWidth="200"/>
-                <Button text="Search" onAction="#onSearch" maxWidth="100"/>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <TextField fx:id="categoryField" promptText="Search Category" maxWidth="200"/>
+                <TextField fx:id="cityField" promptText="Search City" maxWidth="200"/>
+                <Button text="Search" onAction="#onSearch"/>
             </HBox>
 
-            <TableView fx:id="servicesTable" prefHeight="400">
+            <TableView fx:id="servicesTable" prefHeight="400" VBox.vgrow="ALWAYS">
                 <columns>
                     <TableColumn fx:id="idColumn" text="ID" prefWidth="60"/>
-                    <TableColumn fx:id="titleColumn" text="Title" prefWidth="200"/>
-                    <TableColumn fx:id="cityColumn" text="City" prefWidth="150"/>
+                    <TableColumn fx:id="titleColumn" text="Service Title" prefWidth="250"/>
+                    <TableColumn fx:id="cityColumn" text="Location" prefWidth="150"/>
                     <TableColumn fx:id="categoryColumn" text="Category" prefWidth="150"/>
-                    <TableColumn fx:id="priceColumn" text="Price" prefWidth="100"/>
+                    <TableColumn fx:id="priceColumn" text="Price (RON)" prefWidth="100"/>
                 </columns>
             </TableView>
 
             <Separator/>
 
-            <Label text="Book Selected Service:" styleClass="subtitle"/>
+            <VBox spacing="10">
+                <Label text="Book Selected Service" styleClass="title" style="-fx-font-size: 18;"/>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <TextField fx:id="bookingAddressField" promptText="Delivery Address" prefWidth="250"/>
+                    <Label text="Date:"/>
+                    <DatePicker fx:id="datePicker" prefWidth="150"/>
+                    <Label text="Time:"/>
+                    <ComboBox fx:id="hourCombo" prefWidth="75"/>
+                    <Label text=":"/>
+                    <ComboBox fx:id="minuteCombo" prefWidth="75"/>
+                    <Button text="Book Service Now" onAction="#onBookService"/>
+                </HBox>
+            </VBox>
 
-            <HBox spacing="10" alignment="CENTER_LEFT">
-                <TextField fx:id="bookingAddressField" promptText="Delivery Address" prefWidth="250"/>
-
-                <Label text="Date:"/>
-                <DatePicker fx:id="datePicker" prefWidth="150"/>
-
-                <Label text="Time:"/>
-                <ComboBox fx:id="hourCombo" prefWidth="70" promptText="HH"/>
-                <Label text=":"/>
-                <ComboBox fx:id="minuteCombo" prefWidth="70" promptText="MM"/>
-
-                <Button text="Book Now" onAction="#onBookService" styleClass="main-btn"/>
-            </HBox>
-
-            <Label fx:id="infoLabel" styleClass="info" wrapText="true" maxWidth="600"/>
+            <Label fx:id="infoLabel" styleClass="subtitle" wrapText="true"/>
         </VBox>
     </center>
 </BorderPane>

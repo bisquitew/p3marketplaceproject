@@ -11,38 +11,36 @@
 
     <top>
         <ToolBar>
-            <Label text="Booking History" styleClass="title"/>
+            <Label text="My Bookings" styleClass="title"/>
             <Pane HBox.hgrow="ALWAYS"/>
-            <Button text="Toggle Theme" onAction="#onToggleDarkMode" styleClass="secondary"/>
+            <Button text="Toggle Dark Mode" onAction="#onToggleDarkMode" styleClass="secondary"/>
             <Button text="Back" onAction="#onBack" styleClass="secondary"/>
         </ToolBar>
     </top>
 
     <center>
-        <VBox spacing="20">
+        <VBox spacing="12">
             <padding>
-                <Insets top="25" right="30" bottom="25" left="30"/>
+                <Insets top="15" right="20" bottom="20" left="20"/>
             </padding>
 
-            <VBox spacing="15" styleClass="card-container" VBox.vgrow="ALWAYS">
-                <TableView fx:id="bookingsTable" VBox.vgrow="ALWAYS">
-                    <columns>
-                        <TableColumn fx:id="idColumn" text="ID" prefWidth="70"/>
-                        <TableColumn fx:id="serviceColumn" text="Service ID" prefWidth="100"/>
-                        <TableColumn fx:id="dateColumn" text="Scheduled Date" prefWidth="180"/>
-                        <TableColumn fx:id="statusColumn" text="Status" prefWidth="120"/>
-                        <TableColumn fx:id="addressColumn" text="Delivery Address" prefWidth="300"/>
-                        <TableColumn fx:id="priceColumn" text="Total" prefWidth="100"/>
-                    </columns>
-                </TableView>
+            <TableView fx:id="bookingsTable" prefHeight="470" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="idColumn" text="ID" prefWidth="60"/>
+                    <TableColumn fx:id="serviceColumn" text="Service ID" prefWidth="100"/>
+                    <TableColumn fx:id="dateColumn" text="Scheduled Date" prefWidth="180"/>
+                    <TableColumn fx:id="statusColumn" text="Status" prefWidth="100"/>
+                    <TableColumn fx:id="addressColumn" text="Address" prefWidth="260"/>
+                    <TableColumn fx:id="priceColumn" text="Total Price" prefWidth="100"/>
+                </columns>
+            </TableView>
 
-                <HBox spacing="15" alignment="CENTER_LEFT">
-                    <Button text="Refresh List" onAction="#onRefresh"/>
-                    <Button text="Leave a Review" onAction="#onAddReview" styleClass="main-btn"/>
-                </HBox>
-            </VBox>
+            <HBox spacing="10" alignment="CENTER">
+                <Button text="Refresh" onAction="#onRefresh"/>
+                <Button text="Add Review" onAction="#onAddReview"/>
+            </HBox>
 
-            <Label fx:id="infoLabel" styleClass="subtitle"/>
+            <Label fx:id="infoLabel" styleClass="subtitle" wrapText="true" maxWidth="800"/>
         </VBox>
     </center>
 </BorderPane>
