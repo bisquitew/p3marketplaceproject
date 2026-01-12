@@ -1,10 +1,10 @@
 /* ===== GLOBAL LIGHT MODE (Default) ===== */
 .root {
     -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
-    -fx-background-color: #F4F7F9; /* Light Grey background */
+    -fx-background-color: #F4F7F9;
 }
 
-/* Force all text labels to be Black/Dark Navy in Light Mode */
+/* Default label color for Light Mode */
 .label {
     -fx-text-fill: #1B2631;
 }
@@ -14,9 +14,8 @@
     -fx-padding: 50;
 }
 
-/* The box on the right of login and the cards in dashboards */
 .card-container, .login-form-box {
-    -fx-background-color: #FFFFFF; /* Pure White in Light Mode */
+    -fx-background-color: #FFFFFF;
     -fx-background-radius: 12;
     -fx-padding: 40;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 15, 0, 0, 5);
@@ -28,9 +27,20 @@
     -fx-font-weight: bold;
 }
 
+.hero-title {
+    -fx-font-size: 34px;
+    -fx-text-fill: #F39C12;
+    -fx-font-weight: bold;
+}
+
 .subtitle {
     -fx-font-size: 15px;
     -fx-text-fill: #5D6D7E;
+}
+
+.hero-subtitle {
+    -fx-font-size: 17px;
+    -fx-text-fill: #D5DBDB;
 }
 
 .error {
@@ -51,14 +61,13 @@
     -fx-text-fill: #1B2631;
 }
 
-/* TABLE STYLING - LIGHT MODE */
 .table-view {
     -fx-background-color: #FFFFFF;
     -fx-border-color: #D5DBDB;
 }
 
 .table-cell {
-    -fx-text-fill: #1B2631; /* Black text in cells */
+    -fx-text-fill: #1B2631;
 }
 
 .table-view .column-header .label {
@@ -68,15 +77,34 @@
 
 /* ===== GLOBAL DARK MODE OVERRIDES ===== */
 .root.dark {
-    -fx-background-color: #0B1117; /* Deep Navy/Black */
+    -fx-background-color: #0B1117;
 }
 
-/* Force ALL labels to be White in Dark Mode */
+/* 1. Dashboard & Table Data: Force white text in all dashboards/tables */
 .root.dark .label {
     -fx-text-fill: #FFFFFF !important;
 }
 
-/* Ensure the Login/Register boxes and Dashboard cards turn Dark */
+.root.dark .table-cell {
+    -fx-text-fill: #000000 !important;
+}
+
+/* 2. SPECIFIC LOGIN PAGE "HERO" FIX (Keeps it as it is) */
+/* Targeted specifically to ensure left-side labels are white and wrapped only here */
+.root.dark #heroSection .label {
+    -fx-text-fill: #FFFFFF !important;
+    -fx-wrap-text: true;
+}
+
+.root.dark .hero-title {
+    -fx-text-fill: #F39C12 !important; /* Safety Gold title */
+}
+
+.root.dark .hero-subtitle {
+    -fx-text-fill: #D5DBDB !important; /* Slightly muted white */
+}
+
+/* 3. Dashboard Containers */
 .root.dark .card-container,
 .root.dark .login-form-box {
     -fx-background-color: #161B22 !important;
@@ -84,21 +112,17 @@
 }
 
 .root.dark .title {
-    -fx-text-fill: #F39C12 !important; /* Gold Title for contrast */
+    -fx-text-fill: #F39C12 !important;
 }
 
 .root.dark .subtitle {
     -fx-text-fill: #BDC3C7 !important;
 }
 
-/* TABLE STYLING - DARK MODE */
+/* 4. Table UI Dark Mode */
 .root.dark .table-view {
     -fx-background-color: #0D1117;
     -fx-border-color: #30363D;
-}
-
-.root.dark .table-cell {
-    -fx-text-fill: #000000 !important;
 }
 
 .root.dark .table-view .column-header,
@@ -115,15 +139,14 @@
 }
 
 .root.dark .table-row-cell:selected .table-cell {
-    -fx-text-fill: #0B1117 !important; /* Black text on gold selection */
+    -fx-text-fill: #FFFFFF !important;
 }
 
-/* ERROR FIX FOR DARK MODE */
+/* 5. Inputs & Feedback */
 .root.dark .error {
-    -fx-text-fill: #000000 !important;
+    -fx-text-fill: #FFFFFF !important;
 }
 
-/* INPUT FIXES FOR DARK MODE */
 .root.dark .text-field, .root.dark .password-field, .root.dark .combo-box {
     -fx-background-color: #0D1117;
     -fx-text-fill: white;
