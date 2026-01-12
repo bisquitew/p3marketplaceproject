@@ -1,88 +1,111 @@
-/* ===== Modern Vibrant Palette ===== */
+/* ===== Refined Industrial Palette ===== */
 .root {
-    -fx-font-family: "Segoe UI Semibold", sans-serif;
-    -fx-background-color: linear-gradient(to bottom right, #6a11cb, #2575fc); /* Deep Blue/Purple Gradient */
+    -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    /* Clean light gray background for a professional enterprise feel */
+    -fx-background-color: #F4F7F9;
 }
 
-/* Card - Glassmorphism style */
+/* Hero Section - Professional Navy Gradient for Login screen */
+#heroSection {
+    -fx-background-color: linear-gradient(to bottom, #1B2631, #2C3E50);
+    -fx-padding: 50;
+}
+
+/* Card - Clean Professional Glassmorphism style */
 .card-container {
-    -fx-background-color: rgba(255, 255, 255, 0.9);
-    -fx-background-radius: 25;
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 12;
     -fx-padding: 40;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 30, 0, 0, 15);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 15, 0, 0, 5);
 }
 
+/* Typography */
 .title {
-    -fx-font-size: 32px;
-    -fx-text-fill: #1a1a1a;
+    -fx-font-size: 28px;
+    -fx-text-fill: #1B2631;
+    -fx-font-weight: bold;
+}
+
+.hero-title {
+    -fx-font-size: 34px;
+    -fx-text-fill: #F39C12; /* Safety Gold Accent */
     -fx-font-weight: bold;
 }
 
 .subtitle {
-    -fx-font-size: 16px;
-    -fx-text-fill: #555555;
+    -fx-font-size: 15px;
+    -fx-text-fill: #5D6D7E;
 }
 
-/* Animated Buttons */
+.hero-subtitle {
+    -fx-font-size: 17px;
+    -fx-text-fill: #D5DBDB;
+}
+
+/* Modern Industrial Buttons */
 .button {
-    -fx-background-color: linear-gradient(to right, #ff416c, #ff4b2b); /* Vibrant Red/Orange */
-    -fx-text-fill: white;
+    -fx-background-color: #2C3E50;
+    -fx-text-fill: #FFFFFF;
     -fx-font-weight: bold;
-    -fx-background-radius: 30;
-    -fx-padding: 12 30;
+    -fx-background-radius: 4;
+    -fx-padding: 10 25;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(255, 65, 108, 0.4), 10, 0, 0, 4);
 }
 
 .button:hover {
-    -fx-scale-x: 1.05;
-    -fx-scale-y: 1.05;
-    -fx-background-color: linear-gradient(to right, #ff4b2b, #ff416c);
+    -fx-background-color: #F39C12; /* Golden hover state */
+    -fx-text-fill: #1B2631;
 }
 
 .button.secondary {
     -fx-background-color: transparent;
-    -fx-border-color: #2575fc;
-    -fx-border-width: 2;
-    -fx-text-fill: #2575fc;
-    -fx-border-radius: 30;
+    -fx-border-color: #2C3E50;
+    -fx-border-width: 1.5;
+    -fx-text-fill: #2C3E50;
+    -fx-border-radius: 4;
 }
 
-/* Tables Styling */
+/* Tables - Clean & High Contrast */
 .table-view {
-    -fx-background-color: transparent;
-    -fx-border-color: #e0e0e0;
-    -fx-background-radius: 15;
-    -fx-border-radius: 15;
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #D5DBDB;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
 }
 
 .table-view .column-header-background {
-    -fx-background-color: #f8f9fa;
+    -fx-background-color: #EBEDEF;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent #D5DBDB transparent transparent;
 }
 
 .table-row-cell:selected {
-    -fx-background-color: #2575fc;
+    -fx-background-color: #FDEBD0; /* Soft gold row selection */
+    -fx-text-fill: #1B2631;
 }
 
-/* ===== Dark Mode - Cyber Neon ===== */
+/* ===== Dark Mode - Professional Midnight (Retained) ===== */
 .root.dark {
-    -fx-background-color: #0f0c29; /* Deep Space Blue */
+    -fx-background-color: #17202A;
 }
 
 .root.dark .card-container {
-    -fx-background-color: rgba(30, 39, 46, 0.95);
-    -fx-border-color: #00d2ff;
-    -fx-border-width: 1;
+    -fx-background-color: #212F3D;
+    -fx-border-color: #2E4053;
 }
 
-.root.dark .title { -fx-text-fill: #00d2ff; }
-.root.dark .label { -fx-text-fill: #dcdde1; }
+.root.dark .title { -fx-text-fill: #F4F6F7; }
+.root.dark .label { -fx-text-fill: #BDC3C7; }
 
 .root.dark .button {
-    -fx-background-color: linear-gradient(to right, #00d2ff, #3a7bd5);
-    -fx-effect: dropshadow(gaussian, rgba(0, 210, 255, 0.5), 15, 0, 0, 0);
+    -fx-background-color: #F39C12;
+    -fx-text-fill: #1B2631;
 }
 
-.root.dark .table-cell {
-    -fx-text-fill: #00d2ff !important;
+.root.dark .table-view {
+    -fx-background-color: #1C2833;
+    -fx-text-fill: #F4F6F7;
 }
