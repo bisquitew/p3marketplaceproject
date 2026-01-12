@@ -5,7 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox; // Added for UI styling
+import javafx.scene.layout.VBox;
 import model.User;
 import repository.UserDAO;
 
@@ -14,7 +14,7 @@ import java.sql.SQLException;
 public class LoginController {
 
     @FXML
-    private VBox heroSection; // Linked to fx:id in login.fxml
+    private VBox heroSection;
 
     @FXML
     private TextField usernameField;
@@ -39,7 +39,7 @@ public class LoginController {
                 switch (user.getRole()) {
                     case CUSTOMER -> MainFX.getSceneManager().showCustomerDashboard();
                     case HANDYMAN -> MainFX.getSceneManager().showHandymanDashboard();
-                    case ADMIN -> MainFX.getSceneManager().showCustomerDashboard(); // reuse for now
+                    case ADMIN -> MainFX.getSceneManager().showCustomerDashboard();
                 }
             } else {
                 errorLabel.setText("Invalid credentials.");

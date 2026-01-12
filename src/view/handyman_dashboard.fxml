@@ -11,162 +11,59 @@
 
     <top>
         <ToolBar>
-            <Label text="Handyman Dashboard"
-                   styleClass="title"
-                   wrapText="true"/>
+            <Label text="Handyman Dashboard" styleClass="title"/>
             <Pane HBox.hgrow="ALWAYS"/>
-            <Label fx:id="ratingLabel"
-                   wrapText="true"
-                   maxWidth="200"/>
-            <Button text="Toggle Dark Mode"
-                    onAction="#onToggleDarkMode"
-                    styleClass="secondary"/>
-            <Button text="Logout"
-                    onAction="#onBackToLogin"
-                    styleClass="secondary"/>
+            <Label fx:id="ratingLabel" styleClass="subtitle" style="-fx-text-fill: #F39C12; -fx-font-weight: bold;"/>
+            <Button text="Theme" onAction="#onToggleDarkMode" styleClass="secondary"/>
+            <Button text="Logout" onAction="#onBackToLogin" styleClass="secondary"/>
         </ToolBar>
     </top>
 
     <center>
-        <VBox spacing="10">
-            <padding>
-                <Insets top="15" right="20" bottom="20" left="20"/>
-            </padding>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;">
+            <VBox spacing="20">
+                <padding>
+                    <Insets top="20" right="30" bottom="20" left="30"/>
+                </padding>
 
-            <Label fx:id="welcomeLabel"
-                   styleClass="subtitle"
-                   wrapText="true"
-                   maxWidth="800"/>
-            <Label fx:id="ratingBreakdownLabel"
-                   styleClass="info"
-                   wrapText="true"
-                   maxWidth="800"/>
-            <Label fx:id="infoLabel"
-                   styleClass="info"
-                   wrapText="true"
-                   maxWidth="800"/>
+                <VBox spacing="5" styleClass="card-container">
+                    <Label fx:id="welcomeLabel" styleClass="title"/>
+                    <Label fx:id="ratingBreakdownLabel" styleClass="subtitle"/>
+                </VBox>
 
-            <!-- Bookings section -->
-            <Label text="Your Bookings:"
-                   styleClass="subtitle"
-                   wrapText="true"/>
-            <TableView fx:id="bookingsTable"
-                       prefHeight="220">
-                <columns>
-                    <TableColumn fx:id="idColumn"
-                                 text="Booking ID"
-                                 prefWidth="80"
-                                 minWidth="70"
-                                 maxWidth="100"/>
-                    <TableColumn fx:id="customerColumn"
-                                 text="Customer ID"
-                                 prefWidth="90"
-                                 minWidth="80"
-                                 maxWidth="110"/>
-                    <TableColumn fx:id="dateColumn"
-                                 text="Date/Time"
-                                 prefWidth="180"
-                                 minWidth="160"/>
-                    <TableColumn fx:id="statusColumn"
-                                 text="Status"
-                                 prefWidth="100"
-                                 minWidth="90"
-                                 maxWidth="130"/>
-                    <TableColumn fx:id="addressColumn"
-                                 text="Address"
-                                 prefWidth="260"
-                                 minWidth="200"/>
-                    <TableColumn fx:id="priceColumn"
-                                 text="Price"
-                                 prefWidth="90"
-                                 minWidth="80"
-                                 maxWidth="110"/>
-                </columns>
-            </TableView>
+                <VBox spacing="10" styleClass="card-container">
+                    <Label text="Active Bookings" styleClass="title" style="-fx-font-size: 18;"/>
+                    <TableView fx:id="bookingsTable" prefHeight="200">
+                        <columns>
+                            <TableColumn fx:id="idColumn" text="ID" prefWidth="60"/>
+                            <TableColumn fx:id="customerColumn" text="Customer" prefWidth="120"/>
+                            <TableColumn fx:id="dateColumn" text="Date/Time" prefWidth="150"/>
+                            <TableColumn fx:id="statusColumn" text="Status" prefWidth="100"/>
+                            <TableColumn fx:id="addressColumn" text="Location" prefWidth="250"/>
+                        </columns>
+                    </TableView>
+                    <HBox spacing="10">
+                        <Button text="Accept" onAction="#onAccept"/>
+                        <Button text="Complete" onAction="#onComplete"/>
+                        <Button text="Reschedule" onAction="#onReschedule" styleClass="secondary"/>
+                    </HBox>
+                </VBox>
 
-            <HBox spacing="10" alignment="CENTER">
-                <Button text="Accept" onAction="#onAccept"/>
-                <Button text="Complete" onAction="#onComplete"/>
-                <Button text="Cancel" onAction="#onCancel"/>
-                <Button text="Reschedule"
-                        onAction="#onReschedule"
-                        styleClass="secondary"/>
-            </HBox>
+                <VBox spacing="10" styleClass="card-container">
+                    <Label text="Service Management" styleClass="title" style="-fx-font-size: 18;"/>
+                    <TableView fx:id="servicesTable" prefHeight="150">
+                        <columns>
+                            <TableColumn fx:id="serviceTitleColumn" text="Title" prefWidth="250"/>
+                            <TableColumn fx:id="serviceCityColumn" text="City" prefWidth="150"/>
+                            <TableColumn fx:id="servicePriceColumn" text="Price" prefWidth="100"/>
+                            <TableColumn fx:id="serviceActiveColumn" text="Active" prefWidth="100"/>
+                        </columns>
+                    </TableView>
+                    <Button text="Toggle Active Status" onAction="#onToggleServiceActive" styleClass="secondary"/>
+                </VBox>
 
-            <Separator/>
-
-            <!-- Services section -->
-            <Label text="Your Services:"
-                   styleClass="subtitle"
-                   wrapText="true"/>
-            <TableView fx:id="servicesTable"
-                       prefHeight="170">
-                <columns>
-                    <TableColumn fx:id="serviceIdColumn"
-                                 text="Service ID"
-                                 prefWidth="80"
-                                 minWidth="70"
-                                 maxWidth="100"/>
-                    <TableColumn fx:id="serviceTitleColumn"
-                                 text="Title"
-                                 prefWidth="260"
-                                 minWidth="200"/>
-                    <TableColumn fx:id="serviceCityColumn"
-                                 text="City"
-                                 prefWidth="160"
-                                 minWidth="120"
-                                 maxWidth="200"/>
-                    <TableColumn fx:id="servicePriceColumn"
-                                 text="Price"
-                                 prefWidth="120"
-                                 minWidth="80"
-                                 maxWidth="140"/>
-                    <TableColumn fx:id="serviceActiveColumn"
-                                 text="Status"
-                                 prefWidth="120"
-                                 minWidth="90"
-                                 maxWidth="150"/>
-                </columns>
-            </TableView>
-
-            <HBox spacing="10" alignment="CENTER_RIGHT">
-                <Button text="Toggle Active / Inactive"
-                        onAction="#onToggleServiceActive"
-                        styleClass="secondary"/>
-            </HBox>
-
-            <!-- Add service form -->
-            <Separator/>
-
-            <Label text="Add New Service:"
-                   styleClass="subtitle"
-                   wrapText="true"/>
-
-            <HBox spacing="10">
-                <TextField fx:id="newServiceTitleField"
-                           promptText="Title"
-                           maxWidth="200"/>
-                <TextField fx:id="newServiceCityField"
-                           promptText="City"
-                           maxWidth="160"/>
-                <TextField fx:id="newServicePriceField"
-                           promptText="Price"
-                           maxWidth="120"/>
-                <TextField fx:id="newServiceCategoryField"
-                           promptText="Category"
-                           maxWidth="160"/>
-            </HBox>
-
-            <TextArea fx:id="newServiceDescriptionArea"
-                      promptText="Description (optional)"
-                      prefRowCount="2"
-                      wrapText="true"/>
-
-            <HBox alignment="CENTER_RIGHT">
-                <Button text="Create Service"
-                        onAction="#onAddService"
-                        maxWidth="180"/>
-            </HBox>
-        </VBox>
+                <Label fx:id="infoLabel" styleClass="subtitle" wrapText="true"/>
+            </VBox>
+        </ScrollPane>
     </center>
 </BorderPane>

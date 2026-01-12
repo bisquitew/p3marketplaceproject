@@ -11,68 +11,38 @@
 
     <top>
         <ToolBar>
-            <Label text="My Bookings"
-                   styleClass="title"
-                   wrapText="true"/>
+            <Label text="Booking History" styleClass="title"/>
             <Pane HBox.hgrow="ALWAYS"/>
-            <Button text="Toggle Dark Mode"
-                    onAction="#onToggleDarkMode"
-                    styleClass="secondary"/>
-            <Button text="Back"
-                    onAction="#onBack"
-                    styleClass="secondary"/>
+            <Button text="Toggle Theme" onAction="#onToggleDarkMode" styleClass="secondary"/>
+            <Button text="Back" onAction="#onBack" styleClass="secondary"/>
         </ToolBar>
     </top>
 
     <center>
-        <VBox spacing="12">
+        <VBox spacing="20">
             <padding>
-                <Insets top="15" right="20" bottom="20" left="20"/>
+                <Insets top="25" right="30" bottom="25" left="30"/>
             </padding>
 
-            <TableView fx:id="bookingsTable"
-                       prefHeight="470">
-                <columns>
-                    <TableColumn fx:id="idColumn"
-                                 text="ID"
-                                 prefWidth="60"
-                                 minWidth="60"
-                                 maxWidth="80"/>
-                    <TableColumn fx:id="serviceColumn"
-                                 text="Service ID"
-                                 prefWidth="90"
-                                 minWidth="80"
-                                 maxWidth="110"/>
-                    <TableColumn fx:id="dateColumn"
-                                 text="Date"
-                                 prefWidth="180"
-                                 minWidth="150"/>
-                    <TableColumn fx:id="statusColumn"
-                                 text="Status"
-                                 prefWidth="100"
-                                 minWidth="90"
-                                 maxWidth="130"/>
-                    <TableColumn fx:id="addressColumn"
-                                 text="Address"
-                                 prefWidth="260"
-                                 minWidth="200"/>
-                    <TableColumn fx:id="priceColumn"
-                                 text="Price"
-                                 prefWidth="90"
-                                 minWidth="80"
-                                 maxWidth="110"/>
-                </columns>
-            </TableView>
+            <VBox spacing="15" styleClass="card-container" VBox.vgrow="ALWAYS">
+                <TableView fx:id="bookingsTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="idColumn" text="ID" prefWidth="70"/>
+                        <TableColumn fx:id="serviceColumn" text="Service ID" prefWidth="100"/>
+                        <TableColumn fx:id="dateColumn" text="Scheduled Date" prefWidth="180"/>
+                        <TableColumn fx:id="statusColumn" text="Status" prefWidth="120"/>
+                        <TableColumn fx:id="addressColumn" text="Delivery Address" prefWidth="300"/>
+                        <TableColumn fx:id="priceColumn" text="Total" prefWidth="100"/>
+                    </columns>
+                </TableView>
 
-            <HBox spacing="10" alignment="CENTER">
-                <Button text="Refresh" onAction="#onRefresh"/>
-                <Button text="Add Review" onAction="#onAddReview"/>
-            </HBox>
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <Button text="Refresh List" onAction="#onRefresh"/>
+                    <Button text="Leave a Review" onAction="#onAddReview" styleClass="main-btn"/>
+                </HBox>
+            </VBox>
 
-            <Label fx:id="infoLabel"
-                   styleClass="info"
-                   wrapText="true"
-                   maxWidth="600"/>
+            <Label fx:id="infoLabel" styleClass="subtitle"/>
         </VBox>
     </center>
 </BorderPane>
