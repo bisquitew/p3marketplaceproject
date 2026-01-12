@@ -15,7 +15,7 @@
             <VBox fx:id="heroSection" alignment="CENTER" spacing="25" HBox.hgrow="ALWAYS"
                   styleClass="hero-box">
                 <Label text="Handyman Marketplace, hire a Handyman!" styleClass="hero-title" wrapText="true"/>
-                <Label text="Connecting certified handymen with quality-driven customers."
+                <Label text="Connecting Customers to quality Handymen for various services."
                        styleClass="hero-subtitle" wrapText="true" maxWidth="400"/>
                 <ImageView fitWidth="380" preserveRatio="true">
                     <Image url="@handyman_hero.png"/>
@@ -26,8 +26,8 @@
                 <padding><Insets left="80" right="80"/></padding>
 
                 <VBox spacing="8">
-                    <Label text="System Login" styleClass="title"/>
-                    <Label text="Please enter your credentials to manage services." styleClass="subtitle"/>
+                    <Label text="Login" styleClass="title"/>
+                    <Label text="Please login or create a new account." styleClass="subtitle"/>
                 </VBox>
 
                 <VBox spacing="15" maxWidth="380">
