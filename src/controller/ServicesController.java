@@ -41,14 +41,12 @@ public class ServicesController {
 
     @FXML
     private void initialize() {
-        // Table Bindings
         idColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleLongProperty(data.getValue().getId()).asObject());
         titleColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getTitle()));
         cityColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getCity()));
         categoryColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getCategory()));
         priceColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleDoubleProperty(data.getValue().getPrice()).asObject());
 
-        // Initialize Dropdown values
         for (int i = 0; i < 24; i++) hourCombo.getItems().add(String.format("%02d", i));
         for (int i = 0; i < 60; i += 5) minuteCombo.getItems().add(String.format("%02d", i)); // 5-minute intervals
 

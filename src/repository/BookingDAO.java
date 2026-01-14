@@ -117,11 +117,6 @@ public class BookingDAO {
         return list;
     }
 
-    /**
-     * Update status only if:
-     * - booking belongs to handyman
-     * - booking is NOT already COMPLETED
-     */
     public boolean updateStatusIfOwnedByHandyman(long bookingId, long handymanId, BookingStatus newStatus) throws SQLException {
         String sql = """
                 UPDATE bookings b
@@ -143,11 +138,6 @@ public class BookingDAO {
         }
     }
 
-    /**
-     * Reschedule only if:
-     * - booking belongs to handyman
-     * - booking is NOT already COMPLETED
-     */
     public boolean rescheduleIfOwnedByHandyman(long bookingId, long handymanId, Timestamp newTime) throws SQLException {
         String sql = """
                 UPDATE bookings b

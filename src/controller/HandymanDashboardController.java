@@ -50,7 +50,6 @@ public class HandymanDashboardController {
     }
 
     private void setupTableColumns() {
-        // Bookings
         idColumn.setCellValueFactory(d -> new javafx.beans.property.SimpleLongProperty(d.getValue().getId()).asObject());
         customerColumn.setCellValueFactory(d -> new javafx.beans.property.SimpleStringProperty("User #" + d.getValue().getCustomerId()));
         dateColumn.setCellValueFactory(d -> new javafx.beans.property.SimpleStringProperty(
@@ -58,7 +57,6 @@ public class HandymanDashboardController {
         statusColumn.setCellValueFactory(d -> new javafx.beans.property.SimpleStringProperty(d.getValue().getStatus().toString()));
         addressColumn.setCellValueFactory(d -> new javafx.beans.property.SimpleStringProperty(d.getValue().getAddress()));
 
-        // Services
         serviceTitleColumn.setCellValueFactory(d -> new javafx.beans.property.SimpleStringProperty(d.getValue().getTitle()));
         serviceCityColumn.setCellValueFactory(d -> new javafx.beans.property.SimpleStringProperty(d.getValue().getCity()));
         servicePriceColumn.setCellValueFactory(d -> new javafx.beans.property.SimpleDoubleProperty(d.getValue().getPrice()).asObject());
@@ -76,7 +74,6 @@ public class HandymanDashboardController {
             bookingsTable.setItems(FXCollections.observableArrayList(bookingDAO.findByHandymanId(handymanId)));
             servicesTable.setItems(FXCollections.observableArrayList(serviceDAO.findByHandyman(handymanId)));
 
-            // Rating logic
             double avg = reviewDAO.calculateHandymanAverageRating(handymanId);
             ratingLabel.setText("Rating: " + avg + " ★");
 

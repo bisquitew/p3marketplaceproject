@@ -82,7 +82,6 @@ public class BookingsController {
             return;
         }
 
-        // Simple implementation for adding a review via dialogs
         TextInputDialog ratingDialog = new TextInputDialog("5");
         ratingDialog.setTitle("Add Review");
         ratingDialog.setHeaderText("Rate service (1-5)");
@@ -98,7 +97,6 @@ public class BookingsController {
                         review.validate();
                         reviewDAO.insert(review);
 
-                        // Update handyman rating
                         Service s = serviceDAO.findById(selected.getServiceId());
                         if (s != null) {
                             double avg = reviewDAO.calculateHandymanAverageRating(s.getHandymanId());

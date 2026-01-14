@@ -23,7 +23,6 @@ class ServiceDAOTest {
 
         dao.insert(s);
 
-        // Change findByFilters to search to match your DAO
         List<Service> results = dao.search("", "Timisoara");
 
         assertTrue(results.stream().anyMatch(x -> x.getId() == 9200L));

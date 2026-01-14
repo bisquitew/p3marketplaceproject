@@ -104,7 +104,6 @@ public class UserDAO {
         UserRole role = UserRole.valueOf(rs.getString("role"));
         double rating = rs.getDouble("rating");
 
-        // ✅ Match the correct constructor
         return new User(id, username, password, full_name, email, role, rating);
     }
 }

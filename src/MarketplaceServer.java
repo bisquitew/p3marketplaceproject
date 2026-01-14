@@ -17,7 +17,6 @@ public class MarketplaceServer {
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("[SERVER] New client connected: " + clientSocket.getInetAddress());
 
-                // Handle each client in its own thread
                 ClientHandler handler = new ClientHandler(clientSocket);
                 handler.start();
             }

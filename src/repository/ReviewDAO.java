@@ -69,13 +69,6 @@ public class ReviewDAO {
         return 0.0;
     }
 
-    /**
-     * Returns an int[5]:
-     * index 0 -> count of 1-star
-     * index 1 -> count of 2-star
-     * ...
-     * index 4 -> count of 5-star
-     */
     public int[] getRatingBreakdownForHandyman(long handymanId) throws SQLException {
         String sql = """
                 SELECT r.rating, COUNT(*) AS cnt

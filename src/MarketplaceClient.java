@@ -18,7 +18,6 @@ public class MarketplaceClient {
 
             System.out.println("[CLIENT] Connected to server.");
 
-            // Read server welcome messages
             System.out.println(in.readLine());
             System.out.println(in.readLine());
 
@@ -32,13 +31,11 @@ public class MarketplaceClient {
                     break;
                 }
 
-                // Read server response
                 String response;
                 while ((response = in.readLine()) != null) {
                     if (response.isEmpty()) break;
                     System.out.println(response);
 
-                    // Stop reading if server finished sending
                     if (!in.ready()) break;
                 }
             }

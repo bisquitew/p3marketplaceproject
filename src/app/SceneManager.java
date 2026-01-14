@@ -41,7 +41,6 @@ public class SceneManager {
             stage.setScene(scene);
             stage.setTitle("Handyman Marketplace - " + title);
 
-            // Combined fade + subtle scale animation for smoother transition
             FadeTransition fadeIn = new FadeTransition(Duration.millis(300), root);
             fadeIn.setFromValue(0);
             fadeIn.setToValue(1);

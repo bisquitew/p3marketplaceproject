@@ -15,7 +15,7 @@ class UserTest {
                 "John Doe",
                 "john@mail.com",
                 UserRole.CUSTOMER,
-                0.0 // ✅ Add rating argument
+                0.0
         );
 
         assertEquals(1L, user.getId());

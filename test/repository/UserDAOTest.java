@@ -12,7 +12,6 @@ class UserDAOTest {
     void testLoginSuccess() throws Exception {
         UserDAO dao = new UserDAO();
 
-        // Insert a test user with correct constructor
         User u = new User(
                 9001L,
                 "testLoginUser",
@@ -24,7 +23,6 @@ class UserDAOTest {
         );
         dao.insert(u);
 
-        // Attempt login
         User found = dao.findByUsernameAndPassword("testLoginUser", "pass123");
 
         assertNotNull(found);

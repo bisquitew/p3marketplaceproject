@@ -12,7 +12,7 @@ public class User implements Validatable, Serializable {
     private long id;
     private String username;
     private String password;
-    private String full_name; // updated to match SQL
+    private String full_name;
     private String email;
     private UserRole role;
     private double rating;

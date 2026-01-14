@@ -122,9 +122,6 @@ public class Menu {
         }
     }
 
-    // ============================
-    // CUSTOMER MENU
-    // ============================
 
     private void customerMenu() {
         System.out.println("\n=== Customer Menu ===");
@@ -277,9 +274,6 @@ public class Menu {
         }
     }
 
-    // ============================
-    // HANDYMAN MENU
-    // ============================
 
     private void handymanMenu() {
         System.out.println("\n=== Handyman Menu ===");
@@ -372,9 +366,6 @@ public class Menu {
         }
     }
 
-    // ============================
-    // ADMIN MENU
-    // ============================
 
     private void adminMenu() {
         System.out.println("\n=== Admin Menu ===");
@@ -393,7 +384,7 @@ public class Menu {
                     }
                 }
                 case 2 -> {
-                    List<Service> services = serviceDAO.findAllActive(); // replaced findAll()
+                    List<Service> services = serviceDAO.findAllActive();
                     printServices(services);
                 }
                 case 3 -> currentUser = null;
@@ -404,9 +395,6 @@ public class Menu {
         }
     }
 
-    // ============================
-    // UTILITIES
-    // ============================
 
     private void printServices(List<Service> services) {
         if (services == null || services.isEmpty()) {

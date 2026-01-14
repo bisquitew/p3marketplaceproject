@@ -13,7 +13,7 @@ public class BookingReminderThread extends Thread {
 
     public BookingReminderThread(BookingDAO bookingDAO) {
         this.bookingDAO = bookingDAO;
-        setDaemon(true); // thread stops when app stops
+        setDaemon(true);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class BookingReminderThread extends Thread {
                     }
                 }
 
-                Thread.sleep(10_000); // check every 10 seconds
+                Thread.sleep(10_000);
 
             } catch (Exception e) {
                 System.out.println("[THREAD] Error: " + e.getMessage());

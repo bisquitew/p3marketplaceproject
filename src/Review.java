@@ -13,7 +13,7 @@ public class Review implements Validatable, Persistable, Serializable {
 
     private long id;
     private long bookingId;
-    private int rating; // 1 to 5
+    private int rating;
     private String comment;
 
     public Review() {}

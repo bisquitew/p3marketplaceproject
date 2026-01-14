@@ -24,6 +24,6 @@ class ServiceTest {
         assertEquals(150.0, service.getPrice());
         assertEquals("Plumbing", service.getCategory());
         assertEquals("Cluj-Napoca", service.getCity());
-        assertTrue(service.isActive()); // default active = true
+        assertTrue(service.isActive());
     }
 }

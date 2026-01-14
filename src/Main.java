@@ -10,7 +10,6 @@ public class Main {
 
         System.out.println("Starting Handyman Marketplace in FULL MYSQL mode.");
 
-        // Start background thread for booking reminders
         BookingReminderThread reminderThread = new BookingReminderThread(new BookingDAO());
         reminderThread.start();
 
