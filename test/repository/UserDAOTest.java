@@ -19,7 +19,7 @@ class UserDAOTest {
                 "Test User",
                 "test@login.com",
                 UserRole.CUSTOMER,
-                0.0 // ✅ Add rating
+                0.0
         );
         dao.insert(u);
 
@@ -27,6 +27,6 @@ class UserDAOTest {
 
         assertNotNull(found);
         assertEquals("testLoginUser", found.getUsername());
-        assertEquals("Test User", found.getFull_name()); // ✅ Correct method name
+        assertEquals("Test User", found.getFull_name());
     }
 }
