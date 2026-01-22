@@ -1,26 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.CustomerDashboardController"
-            prefWidth="1100" prefHeight="700">
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.CustomerDashboardController">
+    <top>
+        <HBox style="-fx-background-color: white; -fx-padding: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);" alignment="CENTER_LEFT">
+            <Label text="🏠 Marketplace" style="-fx-font-weight: bold; -fx-font-size: 18;"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Button text="Logout" onAction="#onLogout" styleClass="secondary"/>
+        </HBox>
+    </top>
     <center>
-        <StackPane>
-            <VBox alignment="CENTER" spacing="25" maxWidth="520" styleClass="card-container">
-                <Label fx:id="welcomeLabel" styleClass="title" wrapText="true" />
-                <Label text="Browse services or manage your existing bookings below."
-                       styleClass="subtitle" wrapText="true" />
-
-                <HBox spacing="15" alignment="CENTER">
-                    <Button text="Services" onAction="#onGoToServices" prefWidth="150"/>
-                    <Button text="My Bookings" onAction="#onGoToBookings" prefWidth="150"/>
-                </HBox>
-
-                <Button text="Logout" onAction="#onLogout" styleClass="secondary" prefWidth="120"/>
-                <Button text="Toggle Theme" onAction="#onToggleDarkMode" styleClass="secondary" prefWidth="200"/>
+        <VBox alignment="TOP_CENTER" spacing="40" style="-fx-padding: 50;">
+            <VBox spacing="10" alignment="CENTER">
+                <Label fx:id="welcomeLabel" styleClass="title" />
+                <Label text="What would you like to do today?" styleClass="subtitle" />
             </VBox>
-        </StackPane>
+
+            <HBox spacing="30" alignment="CENTER">
+                <VBox spacing="20" alignment="CENTER" styleClass="card-container" prefWidth="300">
+                    <Label text="🔍" style="-fx-font-size: 40;"/>
+                    <Label text="Find Services" styleClass="title" style="-fx-font-size: 20;"/>
+                    <Label text="Explore plumbers, electricians, and more." wrapText="true" alignment="CENTER" textAlignment="CENTER"/>
+                    <Button text="Browse All" onAction="#onGoToServices" prefWidth="200"/>
+                </VBox>
+
+                <VBox spacing="20" alignment="CENTER" styleClass="card-container" prefWidth="300">
+                    <Label text="📅" style="-fx-font-size: 40;"/>
+                    <Label text="My Bookings" styleClass="title" style="-fx-font-size: 20;"/>
+                    <Label text="Check status and manage your appointments." wrapText="true" alignment="CENTER" textAlignment="CENTER"/>
+                    <Button text="View Schedule" onAction="#onGoToBookings" prefWidth="200"/>
+                </VBox>
+            </HBox>
+
+            <Button text="🌓 Toggle Appearance" onAction="#onToggleDarkMode" styleClass="secondary"/>
+        </VBox>
     </center>
 </BorderPane>

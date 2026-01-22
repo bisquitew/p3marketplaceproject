@@ -1,154 +1,97 @@
-/* ===== GLOBAL LIGHT MODE (Default) ===== */
+/* ===== MODERN PROFESSIONAL THEME ===== */
 .root {
-    -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
-    -fx-background-color: #F4F7F9;
+    -fx-font-family: "Inter", "Segoe UI", sans-serif;
+    -fx-background-color: #F8FAFC; /* Soft slate background */
 }
 
-/* Default label color for Light Mode */
-.label {
-    -fx-text-fill: #1B2631;
+/* Base Text */
+.label { -fx-text-fill: #1E293B; }
+
+/* Dashboard Cards */
+.card-container, .login-form-box {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 16;
+    -fx-padding: 30;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 20, 0, 0, 10);
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 1;
+    -fx-border-radius: 16;
 }
 
+/* Professional Gradients */
 #heroSection {
-    -fx-background-color: linear-gradient(to bottom, #1B2631, #2C3E50);
+    -fx-background-color: linear-gradient(to bottom right, #0F172A, #1E293B);
     -fx-padding: 50;
 }
 
-.card-container, .login-form-box {
-    -fx-background-color: #FFFFFF;
-    -fx-background-radius: 12;
-    -fx-padding: 40;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 15, 0, 0, 5);
-}
-
+/* Typography */
 .title {
-    -fx-font-size: 28px;
-    -fx-text-fill: #1B2631;
-    -fx-font-weight: bold;
+    -fx-font-size: 26px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #0F172A;
 }
 
 .hero-title {
-    -fx-font-size: 34px;
-    -fx-text-fill: #F39C12;
-    -fx-font-weight: bold;
+    -fx-font-size: 40px;
+    -fx-font-weight: 900;
+    -fx-text-fill: #F59E0B; /* Safety Gold */
 }
 
 .subtitle {
-    -fx-font-size: 15px;
-    -fx-text-fill: #5D6D7E;
+    -fx-font-size: 14px;
+    -fx-text-fill: #64748B;
 }
 
-.hero-subtitle {
-    -fx-font-size: 17px;
-    -fx-text-fill: #D5DBDB;
-}
-
-.error {
-    -fx-text-fill: #C0392B;
-    -fx-font-weight: bold;
-}
-
+/* Buttons */
 .button {
-    -fx-background-color: #2C3E50;
-    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #2563EB; /* Modern Blue */
+    -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-background-radius: 4;
-    -fx-padding: 10 25;
+    -fx-background-radius: 8;
+    -fx-padding: 12 24;
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s;
 }
 
 .button:hover {
-    -fx-background-color: #F39C12;
-    -fx-text-fill: #1B2631;
+    -fx-background-color: #1D4ED8;
+    -fx-translate-y: -2;
 }
 
+.secondary {
+    -fx-background-color: transparent;
+    -fx-border-color: #CBD5E1;
+    -fx-text-fill: #475569;
+}
+
+/* Table Design */
 .table-view {
-    -fx-background-color: #FFFFFF;
-    -fx-border-color: #D5DBDB;
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #E2E8F0;
 }
 
-.table-cell {
-    -fx-text-fill: #1B2631;
-}
+.table-view .column-header-background { -fx-background-color: #F1F5F9; }
+.table-view .column-header { -fx-background-color: transparent; }
 
-.table-view .column-header .label {
-    -fx-text-fill: #1B2631;
-    -fx-font-weight: bold;
-}
-
-/* ===== GLOBAL DARK MODE OVERRIDES ===== */
+/* ===== DARK MODE OVERHAUL ===== */
 .root.dark {
-    -fx-background-color: #0B1117;
+    -fx-background-color: #0F172A;
 }
 
-/* 1. Dashboard & Table Data: Force white text in all dashboards/tables */
-.root.dark .label {
-    -fx-text-fill: #FFFFFF !important;
+.root.dark .card-container, .root.dark .login-form-box {
+    -fx-background-color: #1E293B !important;
+    -fx-border-color: #334155;
 }
 
-.root.dark .table-cell {
-    -fx-text-fill: #000000 !important;
-}
+.root.dark .label { -fx-text-fill: #F8FAFC !important; }
+.root.dark .title { -fx-text-fill: #F59E0B !important; }
+.root.dark .subtitle { -fx-text-fill: #94A3B8 !important; }
 
-/* 2. SPECIFIC LOGIN PAGE "HERO" FIX (Keeps it as it is) */
-/* Targeted specifically to ensure left-side labels are white and wrapped only here */
-.root.dark #heroSection .label {
-    -fx-text-fill: #FFFFFF !important;
-    -fx-wrap-text: true;
-}
-
-.root.dark .hero-title {
-    -fx-text-fill: #F39C12 !important; /* Safety Gold title */
-}
-
-.root.dark .hero-subtitle {
-    -fx-text-fill: #D5DBDB !important; /* Slightly muted white */
-}
-
-/* 3. Dashboard Containers */
-.root.dark .card-container,
-.root.dark .login-form-box {
-    -fx-background-color: #161B22 !important;
-    -fx-border-color: #30363D;
-}
-
-.root.dark .title {
-    -fx-text-fill: #F39C12 !important;
-}
-
-.root.dark .subtitle {
-    -fx-text-fill: #BDC3C7 !important;
-}
-
-/* 4. Table UI Dark Mode */
-.root.dark .table-view {
-    -fx-background-color: #0D1117;
-    -fx-border-color: #30363D;
-}
-
-.root.dark .table-view .column-header,
-.root.dark .table-view .column-header-background {
-    -fx-background-color: #161B22;
-}
-
-.root.dark .table-view .column-header .label {
-    -fx-text-fill: #000000 !important;
-}
-
-.root.dark .table-row-cell:selected {
-    -fx-background-color: #F39C12;
-}
-
-.root.dark .table-row-cell:selected .table-cell {
-    -fx-text-fill: #FFFFFF !important;
-}
-
-/* 5. Inputs & Feedback */
-.root.dark .error {
-    -fx-text-fill: #FFFFFF !important;
-}
-
-.root.dark .text-field, .root.dark .password-field, .root.dark .combo-box {
-    -fx-background-color: #0D1117;
+.root.dark .text-field {
+    -fx-background-color: #0F172A;
     -fx-text-fill: white;
-    -fx-border-color: #30363D;
+    -fx-border-color: #334155;
+    -fx-border-radius: 6;
 }

@@ -27,6 +27,6 @@ class BookingTest {
         assertEquals(now, booking.getScheduledDateTime());
         assertEquals("Strada Mare 10", booking.getAddress());
         assertEquals(200.0, booking.getTotalPrice());
-        assertEquals(BookingStatus.PENDING, booking.getStatus()); // default
+        assertEquals(BookingStatus.PENDING, booking.getStatus());
     }
 }
