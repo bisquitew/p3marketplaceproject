@@ -10,6 +10,7 @@
                 <Label text="Handymen Marketplace" styleClass="hero-title" style="-fx-font-size: 40px; -fx-font-weight: 900; -fx-text-fill: #F59E0B;"/>
                 <Label text="For various services" styleClass="hero-title" style="-fx-font-size: 40px; -fx-font-weight: 900; -fx-text-fill: #1E293B;"/>
                 <Label text="The marketplace for certified professionals." styleClass="subtitle" />
+
             </VBox>
 
             <VBox spacing="30" alignment="CENTER" prefWidth="550" styleClass="login-form-box">

@@ -49,6 +49,7 @@
                 <Button text="Confirm Booking" onAction="#onBookService" style="-fx-background-color: #10B981;"/>
             </HBox>
 
+
             <Label fx:id="infoLabel" styleClass="error"/>
         </VBox>
     </center>
