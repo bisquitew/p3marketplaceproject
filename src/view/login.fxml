@@ -7,10 +7,9 @@
     <center>
         <HBox alignment="CENTER">
             <VBox fx:id="heroSection" alignment="CENTER" spacing="20" HBox.hgrow="ALWAYS">
-                <Label text="🛠️" style="-fx-font-size: 60px;"/>
-                <Label text="Handyman" styleClass="hero-title" style="-fx-font-size: 40px; -fx-font-weight: 900; -fx-text-fill: #F59E0B;"/>
-                <Label text="Marketplace" styleClass="hero-title" style="-fx-font-size: 40px; -fx-font-weight: 900; -fx-text-fill: #1E293B;"/>
-                <Label text="The #1 platform for local professionals." styleClass="subtitle" />
+                <Label text="Handymen Marketplace" styleClass="hero-title" style="-fx-font-size: 40px; -fx-font-weight: 900; -fx-text-fill: #F59E0B;"/>
+                <Label text="For various services" styleClass="hero-title" style="-fx-font-size: 40px; -fx-font-weight: 900; -fx-text-fill: #1E293B;"/>
+                <Label text="The marketplace for certified professionals." styleClass="subtitle" />
             </VBox>
 
             <VBox spacing="30" alignment="CENTER" prefWidth="550" styleClass="login-form-box">
@@ -27,15 +26,15 @@
                     <Label fx:id="errorLabel" styleClass="error" style="-fx-text-fill: red;"/>
                 </VBox>
 
-                <Button text="Sign In to Dashboard" onAction="#onLogin" prefWidth="350" prefHeight="50"/>
+                <Button text="Sign In" onAction="#onLogin" prefWidth="350" prefHeight="50"/>
 
                 <HBox alignment="CENTER" spacing="10">
-                    <Label text="New here?" styleClass="subtitle"/>
-                    <Hyperlink text="Create an account" onAction="#onGoToRegister" style="-fx-text-fill: #2563EB; -fx-font-weight: bold;"/>
+                    <Label text="Don't have an account?" styleClass="subtitle"/>
+                    <Hyperlink text="Create one here" onAction="#onGoToRegister" style="-fx-text-fill: #2563EB; -fx-font-weight: bold;"/>
                 </HBox>
 
                 <Separator maxWidth="200"/>
-                <Button text="🌓 Switch Theme" onAction="#onToggleDarkMode" styleClass="secondary" prefWidth="180"/>
+                <Button text="🌓 Dark mode" onAction="#onToggleDarkMode" styleClass="secondary" prefWidth="180"/>
             </VBox>
         </HBox>
     </center>
