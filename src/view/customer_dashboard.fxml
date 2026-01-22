@@ -3,33 +3,41 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.CustomerDashboardController">
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.CustomerDashboardController"
+            prefWidth="1100" prefHeight="700">
+
     <top>
-        <HBox style="-fx-background-color: white; -fx-padding: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);" alignment="CENTER_LEFT">
-            <Label text="🏠 Marketplace" style="-fx-font-weight: bold; -fx-font-size: 18;"/>
+        <HBox styleClass="header-bar" alignment="CENTER_LEFT" spacing="20">
+            <Label text="🏠 Marketplace" style="-fx-font-weight: bold; -fx-font-size: 20;"/>
             <Pane HBox.hgrow="ALWAYS"/>
-            <Button text="Logout" onAction="#onLogout" styleClass="secondary"/>
+            <Button text="👤 Logout" onAction="#onLogout" styleClass="secondary"/>
         </HBox>
     </top>
+
     <center>
-        <VBox alignment="TOP_CENTER" spacing="40" style="-fx-padding: 50;">
+        <VBox alignment="CENTER" spacing="40" style="-fx-padding: 40;">
+
             <VBox spacing="10" alignment="CENTER">
                 <Label fx:id="welcomeLabel" styleClass="title" />
-                <Label text="What would you like to do today?" styleClass="subtitle" />
+                <Label text="Manage your home services efficiently." styleClass="subtitle" />
             </VBox>
 
-            <HBox spacing="30" alignment="CENTER">
-                <VBox spacing="20" alignment="CENTER" styleClass="card-container" prefWidth="300">
-                    <Label text="🔍" style="-fx-font-size: 40;"/>
-                    <Label text="Find Services" styleClass="title" style="-fx-font-size: 20;"/>
-                    <Label text="Explore plumbers, electricians, and more." wrapText="true" alignment="CENTER" textAlignment="CENTER"/>
-                    <Button text="Browse All" onAction="#onGoToServices" prefWidth="200"/>
+            <HBox spacing="40" alignment="CENTER">
+                <VBox spacing="20" alignment="CENTER" styleClass="card-container" prefWidth="320" prefHeight="250">
+                    <Label text="🔍" style="-fx-font-size: 50;"/>
+                    <Label text="Find Services" styleClass="title" style="-fx-font-size: 22;"/>
+                    <Label text="Browse active listings for plumbing, cleaning, and repairs."
+                           wrapText="true" textAlignment="CENTER" styleClass="subtitle"/>
+                    <Button text="Browse Now" onAction="#onGoToServices" prefWidth="200"/>
                 </VBox>
 
-                <VBox spacing="20" alignment="CENTER" styleClass="card-container" prefWidth="300">
-                    <Label text="📅" style="-fx-font-size: 40;"/>
-                    <Label text="My Bookings" styleClass="title" style="-fx-font-size: 20;"/>
-                    <Label text="Check status and manage your appointments." wrapText="true" alignment="CENTER" textAlignment="CENTER"/>
+                <VBox spacing="20" alignment="CENTER" styleClass="card-container" prefWidth="320" prefHeight="250">
+                    <Label text="📅" style="-fx-font-size: 50;"/>
+                    <Label text="My Bookings" styleClass="title" style="-fx-font-size: 22;"/>
+                    <Label text="Check status, history, and reschedule appointments."
+                           wrapText="true" textAlignment="CENTER" styleClass="subtitle"/>
                     <Button text="View Schedule" onAction="#onGoToBookings" prefWidth="200"/>
                 </VBox>
             </HBox>

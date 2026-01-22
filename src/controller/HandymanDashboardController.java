@@ -14,7 +14,6 @@ import repository.ServiceDAO;
 import repository.UserDAO;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 public class HandymanDashboardController {
 
@@ -26,7 +25,7 @@ public class HandymanDashboardController {
     // Bookings Table
     @FXML private TableView<Booking> bookingsTable;
     @FXML private TableColumn<Booking, Long> idColumn;
-    @FXML private TableColumn<Booking, String> customerColumn; // Changed to String for Full Name
+    @FXML private TableColumn<Booking, String> customerColumn;
     @FXML private TableColumn<Booking, String> dateColumn;
     @FXML private TableColumn<Booking, String> statusColumn;
     @FXML private TableColumn<Booking, String> addressColumn;
@@ -50,13 +49,25 @@ public class HandymanDashboardController {
     }
 
     private void setupTableColumns() {
+        // Bookings Columns
         idColumn.setCellValueFactory(d -> new javafx.beans.property.SimpleLongProperty(d.getValue().getId()).asObject());
-        customerColumn.setCellValueFactory(d -> new javafx.beans.property.SimpleStringProperty("User #" + d.getValue().getCustomerId()));
+
+        customerColumn.setCellValueFactory(d -> {
+            try {
+                User u = userDAO.findById(d.getValue().getCustomerId());
+                return new javafx.beans.property.SimpleStringProperty(u != null ? u.getFull_name() : "Unknown");
+            } catch (SQLException e) {
+                return new javafx.beans.property.SimpleStringProperty("Error");
+            }
+        });
+
         dateColumn.setCellValueFactory(d -> new javafx.beans.property.SimpleStringProperty(
                 d.getValue().getScheduledDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))));
+
         statusColumn.setCellValueFactory(d -> new javafx.beans.property.SimpleStringProperty(d.getValue().getStatus().toString()));
         addressColumn.setCellValueFactory(d -> new javafx.beans.property.SimpleStringProperty(d.getValue().getAddress()));
 
+        // Services Columns
         serviceTitleColumn.setCellValueFactory(d -> new javafx.beans.property.SimpleStringProperty(d.getValue().getTitle()));
         serviceCityColumn.setCellValueFactory(d -> new javafx.beans.property.SimpleStringProperty(d.getValue().getCity()));
         servicePriceColumn.setCellValueFactory(d -> new javafx.beans.property.SimpleDoubleProperty(d.getValue().getPrice()).asObject());
@@ -68,19 +79,18 @@ public class HandymanDashboardController {
             User u = Session.getCurrentUser();
             if (u == null) return;
 
-            welcomeLabel.setText("Welcome, " + u.getFull_name());
+            welcomeLabel.setText("Welcome back, " + u.getFull_name());
 
             long handymanId = u.getId();
             bookingsTable.setItems(FXCollections.observableArrayList(bookingDAO.findByHandymanId(handymanId)));
             servicesTable.setItems(FXCollections.observableArrayList(serviceDAO.findByHandyman(handymanId)));
 
             double avg = reviewDAO.calculateHandymanAverageRating(handymanId);
-            ratingLabel.setText("Rating: " + avg + " ★");
+            ratingLabel.setText(String.format("%.1f ★", avg));
 
             int[] breakdown = reviewDAO.getRatingBreakdownForHandyman(handymanId);
-            ratingBreakdownLabel.setText(String.format("5★: %d | 4★: %d | 3★: %d | 2★: %d | 1★: %d",
+            ratingBreakdownLabel.setText(String.format("5★:%d  4★:%d  3★:%d  2★:%d  1★:%d",
                     breakdown[4], breakdown[3], breakdown[2], breakdown[1], breakdown[0]));
-
         } catch (SQLException e) {
             infoLabel.setText("Error loading data: " + e.getMessage());
         }
@@ -88,7 +98,7 @@ public class HandymanDashboardController {
 
     @FXML private void onAccept() { updateStatus(BookingStatus.ACCEPTED); }
     @FXML private void onComplete() { updateStatus(BookingStatus.COMPLETED); }
-    @FXML private void onReschedule() { infoLabel.setText("Reschedule clicked"); }
+    @FXML private void onReschedule() { infoLabel.setText("Reschedule feature coming soon."); }
 
     private void updateStatus(BookingStatus status) {
         Booking selected = bookingsTable.getSelectionModel().getSelectedItem();
@@ -97,8 +107,13 @@ public class HandymanDashboardController {
             return;
         }
         try {
-            bookingDAO.updateStatusIfOwnedByHandyman(selected.getId(), Session.getCurrentUser().getId(), status);
-            loadData();
+            boolean success = bookingDAO.updateStatusIfOwnedByHandyman(selected.getId(), Session.getCurrentUser().getId(), status);
+            if (success) {
+                loadData();
+                infoLabel.setText("Booking updated successfully.");
+            } else {
+                infoLabel.setText("Update failed. You may not own this booking.");
+            }
         } catch (SQLException e) {
             infoLabel.setText("Update failed: " + e.getMessage());
         }
@@ -114,6 +129,8 @@ public class HandymanDashboardController {
             } catch (SQLException e) {
                 infoLabel.setText("Toggle failed.");
             }
+        } else {
+            infoLabel.setText("Select a service to toggle.");
         }
     }
 

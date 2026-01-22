@@ -7,56 +7,70 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="controller.HandymanDashboardController"
             prefWidth="1100" prefHeight="700">
+
     <top>
-        <ToolBar>
-            <Label text="Handyman Dashboard" styleClass="title" />
+        <HBox styleClass="header-bar" alignment="CENTER_LEFT" spacing="20">
+            <Label text="🛠 Handyman Portal" style="-fx-font-weight: bold; -fx-font-size: 20;"/>
             <Pane HBox.hgrow="ALWAYS" />
-            <Label fx:id="ratingLabel" styleClass="subtitle" />
-            <Button text="Theme" onAction="#onToggleDarkMode" styleClass="secondary" />
+            <Button text="🌓 Theme" onAction="#onToggleDarkMode" styleClass="secondary" />
             <Button text="Logout" onAction="#onBackToLogin" styleClass="secondary" />
-        </ToolBar>
+        </HBox>
     </top>
+
     <center>
         <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;">
-            <VBox spacing="20">
-                <padding><Insets top="20" right="30" bottom="20" left="30" /></padding>
+            <VBox spacing="25">
+                <padding><Insets top="30" right="40" bottom="30" left="40" /></padding>
 
-                <VBox spacing="10" styleClass="card-container">
-                    <Label fx:id="welcomeLabel" styleClass="title" />
-                    <Label fx:id="ratingBreakdownLabel" styleClass="subtitle" />
-                </VBox>
+                <HBox spacing="20">
+                    <VBox spacing="10" styleClass="card-container" HBox.hgrow="ALWAYS">
+                        <Label fx:id="welcomeLabel" styleClass="title" />
+                        <HBox spacing="30" alignment="CENTER_LEFT">
+                            <Label fx:id="ratingLabel" styleClass="title" style="-fx-text-fill: #F59E0B;"/>
+                            <Label fx:id="ratingBreakdownLabel" styleClass="subtitle" />
+                        </HBox>
+                    </VBox>
+                </HBox>
 
-                <VBox spacing="10" styleClass="card-container">
-                    <Label text="Bookings Management" styleClass="title" style="-fx-font-size: 18;" />
-                    <TableView fx:id="bookingsTable" prefHeight="200">
-                        <columns>
-                            <TableColumn fx:id="idColumn" text="ID" prefWidth="60" />
-                            <TableColumn fx:id="customerColumn" text="Customer" prefWidth="120" />
-                            <TableColumn fx:id="dateColumn" text="Date" prefWidth="150" />
-                            <TableColumn fx:id="statusColumn" text="Status" prefWidth="100" />
-                            <TableColumn fx:id="addressColumn" text="Location" prefWidth="250" />
-                        </columns>
-                    </TableView>
-                    <HBox spacing="10">
-                        <Button text="Accept" onAction="#onAccept" />
-                        <Button text="Complete" onAction="#onComplete" />
-                    </HBox>
-                </VBox>
+                <HBox spacing="25">
+                    <VBox spacing="15" styleClass="card-container" HBox.hgrow="ALWAYS">
+                        <Label text="📅 Incoming Bookings" styleClass="title" style="-fx-font-size: 18;" />
+                        <TableView fx:id="bookingsTable" prefHeight="300">
+                            <columns>
+                                <TableColumn fx:id="idColumn" text="ID" prefWidth="50" />
+                                <TableColumn fx:id="customerColumn" text="Customer" prefWidth="120" />
+                                <TableColumn fx:id="dateColumn" text="Date &amp; Time" prefWidth="140" />
+                                <TableColumn fx:id="statusColumn" text="Status" prefWidth="100" />
+                                <TableColumn fx:id="addressColumn" text="Location" prefWidth="180" />
+                            </columns>
+                            <columnResizePolicy>
+                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                            </columnResizePolicy>
+                        </TableView>
+                        <HBox spacing="15" alignment="CENTER_RIGHT">
+                            <Button text="✓ Accept" onAction="#onAccept" style="-fx-background-color: #10B981;"/>
+                            <Button text="Done" onAction="#onComplete" />
+                        </HBox>
+                    </VBox>
+                </HBox>
 
-                <VBox spacing="10" styleClass="card-container">
-                    <Label text="My Services" styleClass="title" style="-fx-font-size: 18;" />
-                    <TableView fx:id="servicesTable" prefHeight="150">
+                <VBox spacing="15" styleClass="card-container">
+                    <Label text="💼 My Service Listings" styleClass="title" style="-fx-font-size: 18;" />
+                    <TableView fx:id="servicesTable" prefHeight="200">
                         <columns>
                             <TableColumn fx:id="serviceTitleColumn" text="Title" prefWidth="250" />
                             <TableColumn fx:id="serviceCityColumn" text="City" prefWidth="150" />
-                            <TableColumn fx:id="servicePriceColumn" text="Price" prefWidth="100" />
+                            <TableColumn fx:id="servicePriceColumn" text="Price (RON)" prefWidth="100" />
                             <TableColumn fx:id="serviceActiveColumn" text="Status" prefWidth="100" />
                         </columns>
+                        <columnResizePolicy>
+                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                        </columnResizePolicy>
                     </TableView>
-                    <Button text="Toggle Active" onAction="#onToggleServiceActive" styleClass="secondary" />
+                    <Button text="Toggle Active Status" onAction="#onToggleServiceActive" styleClass="secondary" />
                 </VBox>
 
-                <Label fx:id="infoLabel" styleClass="subtitle" />
+                <Label fx:id="infoLabel" styleClass="error" />
             </VBox>
         </ScrollPane>
     </center>

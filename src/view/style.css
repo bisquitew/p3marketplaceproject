@@ -1,40 +1,37 @@
 /* ===== MODERN PROFESSIONAL THEME ===== */
 .root {
-    -fx-font-family: "Inter", "Segoe UI", sans-serif;
+    -fx-font-family: "Segoe UI", sans-serif;
     -fx-background-color: #F8FAFC; /* Soft slate background */
 }
 
 /* Base Text */
-.label { -fx-text-fill: #1E293B; }
-
-/* Dashboard Cards */
-.card-container, .login-form-box {
-    -fx-background-color: #FFFFFF;
-    -fx-background-radius: 16;
-    -fx-padding: 30;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 20, 0, 0, 10);
-    -fx-border-color: #E2E8F0;
-    -fx-border-width: 1;
-    -fx-border-radius: 16;
+.label {
+    -fx-text-fill: #1E293B;
 }
 
-/* Professional Gradients */
-#heroSection {
-    -fx-background-color: linear-gradient(to bottom right, #0F172A, #1E293B);
-    -fx-padding: 50;
+/* Dashboard Cards (Glassmorphism-lite) */
+.card-container, .login-form-box {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 12;
+    -fx-padding: 25;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 4);
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 1;
+    -fx-border-radius: 12;
+}
+
+/* Professional Headers */
+.header-bar {
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);
 }
 
 /* Typography */
 .title {
-    -fx-font-size: 26px;
+    -fx-font-size: 24px;
     -fx-font-weight: 800;
     -fx-text-fill: #0F172A;
-}
-
-.hero-title {
-    -fx-font-size: 40px;
-    -fx-font-weight: 900;
-    -fx-text-fill: #F59E0B; /* Safety Gold */
 }
 
 .subtitle {
@@ -47,51 +44,85 @@
     -fx-background-color: #2563EB; /* Modern Blue */
     -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-background-radius: 8;
-    -fx-padding: 12 24;
+    -fx-background-radius: 6;
+    -fx-padding: 10 20;
     -fx-cursor: hand;
-    -fx-transition: all 0.3s;
+    -fx-transition: all 0.2s;
 }
 
 .button:hover {
     -fx-background-color: #1D4ED8;
-    -fx-translate-y: -2;
 }
 
 .secondary {
     -fx-background-color: transparent;
     -fx-border-color: #CBD5E1;
     -fx-text-fill: #475569;
+    -fx-border-radius: 6;
 }
 
-/* Table Design */
+/* Table Design (Light Mode) */
 .table-view {
     -fx-background-color: white;
-    -fx-background-radius: 12;
-    -fx-border-radius: 12;
+    -fx-background-radius: 8;
     -fx-border-color: #E2E8F0;
 }
-
 .table-view .column-header-background { -fx-background-color: #F1F5F9; }
 .table-view .column-header { -fx-background-color: transparent; }
+.table-view .column-header .label { -fx-text-fill: #475569; -fx-font-weight: bold; }
+.table-cell { -fx-text-fill: #1E293B; }
 
-/* ===== DARK MODE OVERHAUL ===== */
+/* ===== DARK MODE OVERHAUL (Inverted Colors) ===== */
 .root.dark {
-    -fx-background-color: #0F172A;
+    -fx-background-color: #0F172A; /* Deep Navy */
 }
 
-.root.dark .card-container, .root.dark .login-form-box {
+/* Dark Mode Cards */
+.root.dark .card-container,
+.root.dark .login-form-box {
     -fx-background-color: #1E293B !important;
     -fx-border-color: #334155;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 10, 0, 0, 4);
 }
 
+/* Dark Mode Header */
+.root.dark .header-bar {
+    -fx-background-color: #1E293B !important;
+    -fx-border-color: transparent transparent #334155 transparent;
+}
+
+/* Dark Mode Text Inversion */
 .root.dark .label { -fx-text-fill: #F8FAFC !important; }
-.root.dark .title { -fx-text-fill: #F59E0B !important; }
+.root.dark .title { -fx-text-fill: #F59E0B !important; } /* Amber Accent */
 .root.dark .subtitle { -fx-text-fill: #94A3B8 !important; }
 
-.root.dark .text-field {
+/* Dark Mode Tables */
+.root.dark .table-view {
+    -fx-background-color: #1E293B;
+    -fx-border-color: #334155;
+}
+.root.dark .table-view .column-header-background {
+    -fx-background-color: #0F172A;
+}
+.root.dark .table-view .column-header .label {
+    -fx-text-fill: #F59E0B !important;
+}
+.root.dark .table-cell {
+    -fx-text-fill: #E2E8F0 !important; /* White/Grey text for cells */
+}
+.root.dark .table-row-cell {
+    -fx-background-color: #1E293B;
+}
+.root.dark .table-row-cell:odd {
+    -fx-background-color: #273548; /* Slightly lighter for striping */
+}
+.root.dark .table-row-cell:selected {
+    -fx-background-color: #2563EB;
+}
+
+/* Dark Mode Inputs */
+.root.dark .text-field, .root.dark .combo-box {
     -fx-background-color: #0F172A;
     -fx-text-fill: white;
     -fx-border-color: #334155;
-    -fx-border-radius: 6;
 }
