@@ -8,7 +8,6 @@ import model.Booking;
 import model.Review;
 import model.Service;
 import model.enums.BookingStatus;
-import model.exceptions.InvalidDataException;
 import repository.BookingDAO;
 import repository.ReviewDAO;
 import repository.ServiceDAO;
@@ -28,6 +27,7 @@ public class BookingsController {
     @FXML private TableColumn<Booking, String> statusColumn;
     @FXML private TableColumn<Booking, String> addressColumn;
     @FXML private TableColumn<Booking, Double> priceColumn;
+    @FXML private TableColumn<Booking, Void> actionColumn; // NEW: Chat Button
     @FXML private Label infoLabel;
 
     private final BookingDAO bookingDAO = new BookingDAO();
@@ -47,15 +47,30 @@ public class BookingsController {
         addressColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getAddress()));
         priceColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleDoubleProperty(data.getValue().getTotalPrice()).asObject());
 
+        // CHAT BUTTON
+        actionColumn.setCellFactory(param -> new TableCell<>() {
+            private final Button btn = new Button("Message");
+            {
+                btn.getStyleClass().add("button");
+                btn.setStyle("-fx-font-size: 10px; -fx-padding: 5 10;");
+                btn.setOnAction(event -> {
+                    Booking b = getTableView().getItems().get(getIndex());
+                    MainFX.getSceneManager().showChatScene(b.getId());
+                });
+            }
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : btn);
+            }
+        });
+
         loadBookings();
     }
 
     private void loadBookings() {
         try {
-            if (Session.getCurrentUser() == null) {
-                infoLabel.setText("No logged-in user.");
-                return;
-            }
+            if (Session.getCurrentUser() == null) return;
             long userId = Session.getCurrentUser().getId();
             List<Booking> list = bookingDAO.findByCustomerId(userId);
             bookingsTable.setItems(FXCollections.observableArrayList(list));
@@ -64,23 +79,13 @@ public class BookingsController {
         }
     }
 
-    @FXML
-    private void onRefresh() {
-        loadBookings();
-    }
+    @FXML private void onRefresh() { loadBookings(); }
 
     @FXML
     private void onAddReview() {
         Booking selected = bookingsTable.getSelectionModel().getSelectedItem();
-        if (selected == null) {
-            infoLabel.setText("Select a booking first.");
-            return;
-        }
-
-        if (selected.getStatus() != BookingStatus.COMPLETED) {
-            infoLabel.setText("You can review only completed bookings.");
-            return;
-        }
+        if (selected == null) { infoLabel.setText("Select a booking first."); return; }
+        if (selected.getStatus() != BookingStatus.COMPLETED) { infoLabel.setText("You can review only completed bookings."); return; }
 
         TextInputDialog ratingDialog = new TextInputDialog("5");
         ratingDialog.setTitle("Add Review");
@@ -96,30 +101,18 @@ public class BookingsController {
                         Review review = new Review(idGen.nextId(), selected.getId(), rating, comment);
                         review.validate();
                         reviewDAO.insert(review);
-
                         Service s = serviceDAO.findById(selected.getServiceId());
                         if (s != null) {
                             double avg = reviewDAO.calculateHandymanAverageRating(s.getHandymanId());
                             userDAO.updateRating(s.getHandymanId(), avg);
                         }
                         infoLabel.setText("Review added successfully.");
-                    } catch (Exception e) {
-                        infoLabel.setText("Error: " + e.getMessage());
-                    }
+                    } catch (Exception e) { infoLabel.setText("Error: " + e.getMessage()); }
                 });
-            } catch (NumberFormatException e) {
-                infoLabel.setText("Invalid rating.");
-            }
+            } catch (NumberFormatException e) { infoLabel.setText("Invalid rating."); }
         });
     }
 
-    @FXML
-    private void onToggleDarkMode() {
-        MainFX.getSceneManager().toggleDarkMode();
-    }
-
-    @FXML
-    private void onBack() {
-        MainFX.getSceneManager().showCustomerDashboard();
-    }
+    @FXML private void onToggleDarkMode() { MainFX.getSceneManager().toggleDarkMode(); }
+    @FXML private void onBack() { MainFX.getSceneManager().showCustomerDashboard(); }
 }

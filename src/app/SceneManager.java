@@ -1,5 +1,6 @@
 package app;
 
+import controller.ChatController;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.ScaleTransition;
@@ -24,63 +25,83 @@ public class SceneManager {
             currentFxml = fxml;
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/" + fxml));
             Parent root = loader.load();
-
-            Scene scene = stage.getScene();
-            if (scene == null) {
-                scene = new Scene(root);
-                stage.setScene(scene);
-            } else {
-                scene.setRoot(root);
-            }
-
-            // Load and apply the professional stylesheet
-            scene.getStylesheets().clear();
-            scene.getStylesheets().add(getClass().getResource("/view/style.css").toExternalForm());
-
-            // Handle theme switching logic
-            if (darkMode) {
-                if (!root.getStyleClass().contains("dark")) {
-                    root.getStyleClass().add("dark");
-                }
-            } else {
-                root.getStyleClass().remove("dark");
-            }
-
-            stage.setTitle("Handyman Marketplace - " + title);
-
-            // Contest-ready Transitions
-            FadeTransition fadeIn = new FadeTransition(Duration.millis(400), root);
-            fadeIn.setFromValue(0.0);
-            fadeIn.setToValue(1.0);
-
-            ScaleTransition scaleIn = new ScaleTransition(Duration.millis(400), root);
-            scaleIn.setFromX(0.96);
-            scaleIn.setFromY(0.96);
-            scaleIn.setToX(1.0);
-            scaleIn.setToY(1.0);
-
-            ParallelTransition transition = new ParallelTransition(fadeIn, scaleIn);
-            transition.play();
-
+            applyScene(root, title);
         } catch (Exception e) {
             System.err.println("Error switching scene: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
-    public void toggleDarkMode() {
-        darkMode = !darkMode;
-        if (currentFxml != null) {
-            String title = stage.getTitle().replace("Handyman Marketplace - ", "");
-            switchScene(currentFxml, title);
+    public void showChatScene(long bookingId) {
+        try {
+            currentFxml = "chat.fxml";
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/chat.fxml"));
+            Parent root = loader.load();
+
+            ChatController controller = loader.getController();
+            controller.setBookingId(bookingId);
+
+            applyScene(root, "Chat");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    public boolean isDarkMode() {
-        return darkMode;
+    private void applyScene(Parent root, String title) {
+        Scene scene = stage.getScene();
+        if (scene == null) {
+            scene = new Scene(root);
+            stage.setScene(scene);
+        } else {
+            scene.setRoot(root);
+        }
+
+        scene.getStylesheets().clear();
+        scene.getStylesheets().add(getClass().getResource("/view/style.css").toExternalForm());
+
+        if (darkMode) {
+            if (!root.getStyleClass().contains("dark")) {
+                root.getStyleClass().add("dark");
+            }
+        } else {
+            root.getStyleClass().remove("dark");
+        }
+
+        stage.setTitle("Handyman Marketplace - " + title);
+
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(400), root);
+        fadeIn.setFromValue(0.0);
+        fadeIn.setToValue(1.0);
+
+        ScaleTransition scaleIn = new ScaleTransition(Duration.millis(400), root);
+        scaleIn.setFromX(0.96);
+        scaleIn.setFromY(0.96);
+        scaleIn.setToX(1.0);
+        scaleIn.setToY(1.0);
+
+        ParallelTransition transition = new ParallelTransition(fadeIn, scaleIn);
+        transition.play();
     }
 
-    // Navigation Methods
+    public void toggleDarkMode() {
+        darkMode = !darkMode;
+        if (currentFxml != null && !currentFxml.equals("chat.fxml")) {
+            String title = stage.getTitle().replace("Handyman Marketplace - ", "");
+            switchScene(currentFxml, title);
+        } else if (currentFxml != null && currentFxml.equals("chat.fxml")) {
+            // For chat, we simply re-apply styles to current root if possible,
+            // but simpler to just reload the last known chat if strictly needed.
+            // For now, toggle works, but immediate visual update might require reload.
+            Scene scene = stage.getScene();
+            if(scene != null && scene.getRoot() != null) {
+                if(darkMode) scene.getRoot().getStyleClass().add("dark");
+                else scene.getRoot().getStyleClass().remove("dark");
+            }
+        }
+    }
+
+    public boolean isDarkMode() { return darkMode; }
+
     public void showLoginScene() { switchScene("login.fxml", "Login"); }
     public void showRegisterScene() { switchScene("register.fxml", "Register"); }
     public void showCustomerDashboard() { switchScene("customer_dashboard.fxml", "Dashboard"); }

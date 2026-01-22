@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.ChatController"
+            prefWidth="600" prefHeight="700">
+
+    <top>
+        <HBox styleClass="header-bar" alignment="CENTER_LEFT" spacing="15">
+            <Button text="← Back" onAction="#onBack" styleClass="secondary"/>
+            <Label fx:id="headerLabel" text="Chat" styleClass="title" style="-fx-font-size: 18;"/>
+        </HBox>
+    </top>
+
+    <center>
+        <ListView fx:id="messageListView" style="-fx-background-color: transparent; -fx-padding: 10;"/>
+    </center>
+
+    <bottom>
+        <HBox spacing="10" style="-fx-padding: 15; -fx-background-color: rgba(255,255,255,0.5);">
+            <TextField fx:id="inputField" promptText="Type a message..." HBox.hgrow="ALWAYS" style="-fx-font-size: 14;"/>
+            <Button text="Send ➤" onAction="#onSend" defaultButton="true" style="-fx-background-color: #2563EB; -fx-text-fill: white; -fx-font-weight: bold;"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

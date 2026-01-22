@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
@@ -10,51 +9,47 @@
             prefWidth="1100" prefHeight="700">
 
     <top>
-        <ToolBar>
+        <HBox styleClass="header-bar" alignment="CENTER_LEFT" spacing="20">
+            <Button text="← Dashboard" onAction="#onBack" styleClass="secondary"/>
             <Label text="Available Services" styleClass="title"/>
             <Pane HBox.hgrow="ALWAYS"/>
-            <Button text="Toggle Dark Mode" onAction="#onToggleDarkMode" styleClass="secondary"/>
-            <Button text="Back" onAction="#onBack" styleClass="secondary"/>
-        </ToolBar>
+            <Button text="Dark Mode" onAction="#onToggleDarkMode" styleClass="secondary"/>
+        </HBox>
     </top>
 
     <center>
-        <VBox spacing="15">
-            <padding><Insets top="15" right="20" bottom="20" left="20"/></padding>
+        <VBox spacing="20" style="-fx-padding: 30;">
 
-            <HBox spacing="10" alignment="CENTER_LEFT">
-                <TextField fx:id="categoryField" promptText="Search Category" maxWidth="200"/>
-                <TextField fx:id="cityField" promptText="Search City" maxWidth="200"/>
+            <HBox spacing="15" alignment="CENTER_LEFT" styleClass="card-container">
+                <TextField fx:id="categoryField" promptText="Category (e.g. Plumbing)" prefWidth="200"/>
+                <TextField fx:id="cityField" promptText="City" prefWidth="200"/>
                 <Button text="Search" onAction="#onSearch"/>
             </HBox>
 
-            <TableView fx:id="servicesTable" prefHeight="400" VBox.vgrow="ALWAYS">
+            <TableView fx:id="servicesTable" VBox.vgrow="ALWAYS">
                 <columns>
-                    <TableColumn fx:id="idColumn" text="ID" prefWidth="60"/>
-                    <TableColumn fx:id="titleColumn" text="Service Title" prefWidth="250"/>
-                    <TableColumn fx:id="cityColumn" text="Location" prefWidth="150"/>
+                    <TableColumn fx:id="idColumn" text="ID" prefWidth="50"/>
+                    <TableColumn fx:id="titleColumn" text="Service" prefWidth="200"/>
                     <TableColumn fx:id="categoryColumn" text="Category" prefWidth="150"/>
+                    <TableColumn fx:id="cityColumn" text="City" prefWidth="150"/>
                     <TableColumn fx:id="priceColumn" text="Price (RON)" prefWidth="100"/>
                 </columns>
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                </columnResizePolicy>
             </TableView>
 
-            <Separator/>
+            <HBox spacing="15" alignment="CENTER_LEFT" styleClass="card-container">
+                <Label text="Book Selected:" style="-fx-font-weight: bold;"/>
+                <TextField fx:id="bookingAddressField" promptText="Your Address" prefWidth="250"/>
+                <DatePicker fx:id="datePicker" prefWidth="120"/>
+                <ComboBox fx:id="hourCombo" prefWidth="70"/>
+                <Label text=":"/>
+                <ComboBox fx:id="minuteCombo" prefWidth="70"/>
+                <Button text="Confirm Booking" onAction="#onBookService" style="-fx-background-color: #10B981;"/>
+            </HBox>
 
-            <VBox spacing="10">
-                <Label text="Book Selected Service" styleClass="title" style="-fx-font-size: 18;"/>
-                <HBox spacing="10" alignment="CENTER_LEFT">
-                    <TextField fx:id="bookingAddressField" promptText="Delivery Address" prefWidth="250"/>
-                    <Label text="Date:"/>
-                    <DatePicker fx:id="datePicker" prefWidth="150"/>
-                    <Label text="Time:"/>
-                    <ComboBox fx:id="hourCombo" prefWidth="75"/>
-                    <Label text=":"/>
-                    <ComboBox fx:id="minuteCombo" prefWidth="75"/>
-                    <Button text="Book Service Now" onAction="#onBookService"/>
-                </HBox>
-            </VBox>
-
-            <Label fx:id="infoLabel" styleClass="subtitle" wrapText="true"/>
+            <Label fx:id="infoLabel" styleClass="error"/>
         </VBox>
     </center>
 </BorderPane>

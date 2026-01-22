@@ -22,15 +22,14 @@ public class HandymanDashboardController {
     @FXML private Label ratingBreakdownLabel;
     @FXML private Label infoLabel;
 
-    // Bookings Table
     @FXML private TableView<Booking> bookingsTable;
     @FXML private TableColumn<Booking, Long> idColumn;
     @FXML private TableColumn<Booking, String> customerColumn;
     @FXML private TableColumn<Booking, String> dateColumn;
     @FXML private TableColumn<Booking, String> statusColumn;
     @FXML private TableColumn<Booking, String> addressColumn;
+    @FXML private TableColumn<Booking, Void> actionColumn; // NEW Chat
 
-    // Services Table
     @FXML private TableView<Service> servicesTable;
     @FXML private TableColumn<Service, String> serviceTitleColumn;
     @FXML private TableColumn<Service, String> serviceCityColumn;
@@ -49,7 +48,6 @@ public class HandymanDashboardController {
     }
 
     private void setupTableColumns() {
-        // Bookings Columns
         idColumn.setCellValueFactory(d -> new javafx.beans.property.SimpleLongProperty(d.getValue().getId()).asObject());
 
         customerColumn.setCellValueFactory(d -> {
@@ -63,11 +61,28 @@ public class HandymanDashboardController {
 
         dateColumn.setCellValueFactory(d -> new javafx.beans.property.SimpleStringProperty(
                 d.getValue().getScheduledDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))));
-
         statusColumn.setCellValueFactory(d -> new javafx.beans.property.SimpleStringProperty(d.getValue().getStatus().toString()));
         addressColumn.setCellValueFactory(d -> new javafx.beans.property.SimpleStringProperty(d.getValue().getAddress()));
 
-        // Services Columns
+        // Chat Button Column
+        actionColumn.setCellFactory(param -> new TableCell<>() {
+            private final Button btn = new Button("Chat");
+            {
+                btn.getStyleClass().add("button");
+                btn.setStyle("-fx-font-size: 10px; -fx-padding: 5 10;");
+                btn.setOnAction(event -> {
+                    Booking b = getTableView().getItems().get(getIndex());
+                    MainFX.getSceneManager().showChatScene(b.getId());
+                });
+            }
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : btn);
+            }
+        });
+
+        // Services
         serviceTitleColumn.setCellValueFactory(d -> new javafx.beans.property.SimpleStringProperty(d.getValue().getTitle()));
         serviceCityColumn.setCellValueFactory(d -> new javafx.beans.property.SimpleStringProperty(d.getValue().getCity()));
         servicePriceColumn.setCellValueFactory(d -> new javafx.beans.property.SimpleDoubleProperty(d.getValue().getPrice()).asObject());

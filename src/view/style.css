@@ -1,17 +1,16 @@
-/* ===== MODERN PROFESSIONAL THEME ===== */
+/* ===== GLOBAL GRADIENT THEME ===== */
 .root {
     -fx-font-family: "Segoe UI", sans-serif;
-    -fx-background-color: #F8FAFC; /* Soft slate background */
+    /* Professional Light Gradient */
+    -fx-background-color: linear-gradient(to bottom right, #E0F2FE, #F0F9FF);
 }
 
 /* Base Text */
-.label {
-    -fx-text-fill: #1E293B;
-}
+.label { -fx-text-fill: #1E293B; }
 
-/* Dashboard Cards (Glassmorphism-lite) */
+/* Dashboard Cards */
 .card-container, .login-form-box {
-    -fx-background-color: #FFFFFF;
+    -fx-background-color: rgba(255, 255, 255, 0.9);
     -fx-background-radius: 12;
     -fx-padding: 25;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 4);
@@ -20,39 +19,44 @@
     -fx-border-radius: 12;
 }
 
-/* Professional Headers */
+/* Headers */
 .header-bar {
-    -fx-background-color: #FFFFFF;
+    -fx-background-color: rgba(255, 255, 255, 0.95);
     -fx-padding: 15;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);
 }
 
-/* Typography */
-.title {
-    -fx-font-size: 24px;
-    -fx-font-weight: 800;
-    -fx-text-fill: #0F172A;
-}
-
-.subtitle {
+/* Chat Bubbles */
+.chat-bubble-me {
+    -fx-background-color: #2563EB;
+    -fx-background-radius: 15 15 0 15;
+    -fx-text-fill: white;
+    -fx-padding: 8 12;
     -fx-font-size: 14px;
-    -fx-text-fill: #64748B;
 }
 
-/* Buttons */
+.chat-bubble-other {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #CBD5E1;
+    -fx-border-radius: 15 15 15 0;
+    -fx-background-radius: 15 15 15 0;
+    -fx-text-fill: #1E293B;
+    -fx-padding: 8 12;
+    -fx-font-size: 14px;
+}
+
+/* Typography & Buttons */
+.title { -fx-font-size: 24px; -fx-font-weight: 800; -fx-text-fill: #0F172A; }
+.subtitle { -fx-font-size: 14px; -fx-text-fill: #64748B; }
+
 .button {
-    -fx-background-color: #2563EB; /* Modern Blue */
+    -fx-background-color: #2563EB;
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-radius: 6;
-    -fx-padding: 10 20;
     -fx-cursor: hand;
-    -fx-transition: all 0.2s;
 }
-
-.button:hover {
-    -fx-background-color: #1D4ED8;
-}
+.button:hover { -fx-background-color: #1D4ED8; }
 
 .secondary {
     -fx-background-color: transparent;
@@ -61,23 +65,20 @@
     -fx-border-radius: 6;
 }
 
-/* Table Design (Light Mode) */
+/* Table View */
 .table-view {
-    -fx-background-color: white;
-    -fx-background-radius: 8;
+    -fx-background-color: rgba(255, 255, 255, 0.8);
     -fx-border-color: #E2E8F0;
 }
-.table-view .column-header-background { -fx-background-color: #F1F5F9; }
-.table-view .column-header { -fx-background-color: transparent; }
-.table-view .column-header .label { -fx-text-fill: #475569; -fx-font-weight: bold; }
+.table-view .column-header-background { -fx-background-color: rgba(241, 245, 249, 0.9); }
 .table-cell { -fx-text-fill: #1E293B; }
 
-/* ===== DARK MODE OVERHAUL (Inverted Colors) ===== */
+/* ===== DARK MODE OVERHAUL ===== */
 .root.dark {
-    -fx-background-color: #0F172A; /* Deep Navy */
+    /* Professional Dark Gradient */
+    -fx-background-color: linear-gradient(to bottom right, #0F172A, #1E293B);
 }
 
-/* Dark Mode Cards */
 .root.dark .card-container,
 .root.dark .login-form-box {
     -fx-background-color: #1E293B !important;
@@ -85,43 +86,30 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 10, 0, 0, 4);
 }
 
-/* Dark Mode Header */
 .root.dark .header-bar {
     -fx-background-color: #1E293B !important;
-    -fx-border-color: transparent transparent #334155 transparent;
+}
+
+.root.dark .chat-bubble-other {
+    -fx-background-color: #334155;
+    -fx-border-color: #475569;
+    -fx-text-fill: white;
 }
 
 /* Dark Mode Text Inversion */
 .root.dark .label { -fx-text-fill: #F8FAFC !important; }
-.root.dark .title { -fx-text-fill: #F59E0B !important; } /* Amber Accent */
+.root.dark .title { -fx-text-fill: #F59E0B !important; }
 .root.dark .subtitle { -fx-text-fill: #94A3B8 !important; }
 
 /* Dark Mode Tables */
-.root.dark .table-view {
-    -fx-background-color: #1E293B;
-    -fx-border-color: #334155;
-}
-.root.dark .table-view .column-header-background {
-    -fx-background-color: #0F172A;
-}
-.root.dark .table-view .column-header .label {
-    -fx-text-fill: #F59E0B !important;
-}
-.root.dark .table-cell {
-    -fx-text-fill: #E2E8F0 !important; /* White/Grey text for cells */
-}
-.root.dark .table-row-cell {
-    -fx-background-color: #1E293B;
-}
-.root.dark .table-row-cell:odd {
-    -fx-background-color: #273548; /* Slightly lighter for striping */
-}
-.root.dark .table-row-cell:selected {
-    -fx-background-color: #2563EB;
-}
+.root.dark .table-view { -fx-background-color: #1E293B; }
+.root.dark .table-view .column-header-background { -fx-background-color: #0F172A; }
+.root.dark .table-cell { -fx-text-fill: #E2E8F0 !important; }
+.root.dark .table-row-cell { -fx-background-color: #1E293B; }
+.root.dark .table-row-cell:odd { -fx-background-color: #273548; }
+.root.dark .table-row-cell:selected { -fx-background-color: #2563EB; }
 
-/* Dark Mode Inputs */
-.root.dark .text-field, .root.dark .combo-box {
+.root.dark .text-field, .root.dark .combo-box, .root.dark .list-view {
     -fx-background-color: #0F172A;
     -fx-text-fill: white;
     -fx-border-color: #334155;
